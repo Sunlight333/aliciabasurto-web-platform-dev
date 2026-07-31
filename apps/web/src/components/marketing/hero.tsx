@@ -4,28 +4,23 @@ import { Container } from '@/components/layout/container';
 import { StoreButtons } from './store-buttons';
 
 /**
- * Hero — kitchen-wide.avif, pinned, sharp on top.
+ * Hero — kitchen-wide.avif, sharp throughout. No blur anywhere.
  *
- * Composition: the photograph is positioned high so Alicia sits in the
- * upper band, fully visible and unblurred. The copy lives in the lower
- * half, where a stepped blur and a deepening veil make it legible. The
- * subject is therefore never covered by centred content, and the layout
- * stays symmetric rather than being pushed off to one side.
+ * Alicia sits right of centre; the copy occupies a left column that stops
+ * well short of her. The scrim runs horizontally, so it lightens only the
+ * text side and leaves her completely unveiled. She is neither covered nor
+ * washed out, and the column still reads as a deliberate two-part
+ * composition rather than an off-centre block.
  *
- * The background uses fixed attachment, so it neither travels with the
- * scroll nor ends in a hard cut. It runs up underneath the menu — the
- * header is transparent at rest and only frosts once scrolled.
+ * Small screens cannot hold two columns from a landscape frame, so mobile
+ * becomes a photo band with the copy centred beneath it.
  */
 export function Hero() {
   return (
-    <section className="relative -mt-32 flex min-h-[168vh] flex-col justify-end overflow-hidden pt-32 sm:min-h-[150vh] lg:min-h-[116vh]">
+    <section className="relative -mt-32 flex min-h-[148vh] flex-col justify-end overflow-hidden pt-32 sm:min-h-[132vh] lg:min-h-screen lg:justify-center">
       <div className="hero-bg absolute inset-0" />
       <div className="scrim-light pointer-events-none absolute inset-0" />
-
-      {/* Blur builds only downward — the top stays perfectly sharp. */}
-      <div className="blur-step blur-1" />
-      <div className="blur-step blur-2" />
-      <div className="blur-step blur-3" />
+      <div className="scrim-foot pointer-events-none absolute inset-0" />
 
       {/* Legibility field for the transparent menu */}
       <div className="scrim-top pointer-events-none absolute inset-x-0 top-0 h-56" />
@@ -34,30 +29,18 @@ export function Hero() {
         <div
           className="orb animate-drift"
           style={{
-            width: 'min(50vw, 600px)',
-            height: 'min(50vw, 600px)',
-            bottom: '2%',
-            left: '-8%',
+            width: 'min(48vw, 580px)',
+            height: 'min(48vw, 580px)',
+            bottom: '4%',
+            left: '-12%',
             background: 'var(--color-luteal)',
-            opacity: 0.24,
-          }}
-        />
-        <div
-          className="orb animate-drift"
-          style={{
-            width: 'min(42vw, 500px)',
-            height: 'min(42vw, 500px)',
-            bottom: '-6%',
-            right: '-6%',
-            background: 'var(--color-menstrual)',
-            opacity: 0.18,
-            animationDelay: '-13s',
+            opacity: 0.22,
           }}
         />
       </div>
 
       <Container className="relative">
-        <div className="flex flex-col items-center pb-20 text-center lg:pb-24">
+        <div className="flex flex-col items-center pb-20 text-center lg:max-w-[24rem] lg:items-start xl:max-w-[24rem] 2xl:max-w-[23rem] lg:pb-0 lg:text-left">
           <span className="glass-strong inline-flex items-center gap-2.5 rounded-full px-6 py-3 shadow-md">
             <Sparkles strokeWidth={2} className="h-5.5 w-5.5 text-accent" />
             <span className="font-sans text-caption font-semibold tracking-wide text-ink">
@@ -65,44 +48,49 @@ export function Hero() {
             </span>
           </span>
 
-          <h1 className="mt-8 max-w-5xl text-display text-ink">
-            Come con tu ciclo.
-            <br />
+          {/* Sized to the column, not the viewport — at full display scale
+              the headline would run straight across Alicia. */}
+          <h1 className="mt-8 font-display text-[clamp(2rem,2.7vw,2.875rem)] leading-[1.06] font-semibold tracking-[-0.02em] text-ink">
+            Come con tu ciclo.{' '}
             <span className="text-accent">Vuelve a sentirte tú.</span>
           </h1>
 
-          <p className="mt-7 max-w-2xl text-lead font-medium text-muted">
+          <p className="mt-6 max-w-md text-body font-medium text-muted lg:text-lead">
             Nutricycle adapta tu alimentación, tus recetas y tus rutinas a cada fase
             de tu ciclo menstrual — automáticamente.
           </p>
 
+          {/* Stacked in the narrow column — side by side the labels wrap. */}
           <StoreButtons
             source="home-hero"
-            size="lg"
-            className="mt-10 justify-center sm:inline-flex"
+            className="mt-9 w-full max-w-xs justify-center lg:max-w-none lg:flex-col lg:items-stretch"
           />
 
-          <p className="mt-6 text-caption font-medium text-muted">
+          <p className="mt-5 text-caption font-medium text-muted">
             Gratis · iOS y Android · Sin tarjeta
           </p>
 
-          <ul className="mt-12 flex flex-wrap justify-center gap-4">
-            <StatPill
-              icon={<Star strokeWidth={2.2} className="h-6 w-6 text-ovulation-ink" />}
+          {/* One grouped card rather than three pills: three separate cards
+              overflow a column this narrow. */}
+          <ul className="glass-strong mt-9 flex w-full max-w-xs items-stretch rounded-2xl shadow-md lg:max-w-none">
+            <Stat
+              icon={<Star strokeWidth={2.2} className="h-5 w-5 text-ovulation-ink" />}
               value={STORE.rating}
               label="Valoración"
             />
-            <StatPill
-              icon={<ChefHat strokeWidth={2} className="h-6 w-6 text-menstrual-ink" />}
+            <li aria-hidden className="my-3 w-px bg-hairline" />
+            <Stat
+              icon={<ChefHat strokeWidth={2} className="h-5 w-5 text-menstrual-ink" />}
               value={STORE.recipeCount}
               label="Recetas"
             />
-            <StatPill
+            <li aria-hidden className="my-3 w-px bg-hairline" />
+            <Stat
               icon={
-                <CircleDashed strokeWidth={2} className="h-6 w-6 text-luteal-ink" />
+                <CircleDashed strokeWidth={2} className="h-5 w-5 text-luteal-ink" />
               }
               value={STORE.phaseCount}
-              label="Fases del ciclo"
+              label="Fases"
             />
           </ul>
         </div>
@@ -111,7 +99,7 @@ export function Hero() {
   );
 }
 
-function StatPill({
+function Stat({
   icon,
   value,
   label,
@@ -121,13 +109,13 @@ function StatPill({
   label: string;
 }) {
   return (
-    <li className="glass-strong flex items-center gap-3.5 rounded-2xl px-6 py-4 shadow-md">
+    <li className="flex flex-1 flex-col items-center gap-1 px-3 py-4">
       {icon}
-      <span className="text-left">
-        <span className="block font-display text-h4 font-semibold text-ink">
-          {value}
-        </span>
-        <span className="block text-caption text-muted">{label}</span>
+      <span className="font-display text-h4 leading-none font-semibold text-ink">
+        {value}
+      </span>
+      <span className="text-center text-caption leading-tight text-muted">
+        {label}
       </span>
     </li>
   );

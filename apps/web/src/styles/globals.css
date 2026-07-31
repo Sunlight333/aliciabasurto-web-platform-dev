@@ -118,18 +118,26 @@
   /* Positioned high so Alicia's face sits in the upper, untouched band of
      the hero. The copy lives below her, in the blurred lower half — so the
      subject is never covered and the text never fights the photograph. */
+  /* Crop anchored left so Alicia sits to the right of centre, clear of the
+     copy column. No blur anywhere — the photograph stays fully sharp. */
   .hero-bg {
     background-image: url('/images/alicia/kitchen-wide.avif');
     background-size: cover;
-    background-position: center 14%;
+    background-position: 5% 14%;
     background-repeat: no-repeat;
     background-attachment: fixed;
   }
 
+  /* Mobile: the photograph occupies a band rather than the whole section.
+     Covering the full 168vh would scale this landscape frame to ~128% and
+     turn it into an extreme facial close-up; a band keeps the kitchen in
+     shot at a natural crop. */
   @media (max-width: 1023px) {
     .hero-bg {
       background-attachment: scroll;
-      background-position: 60% 2%;
+      background-position: 58% 22%;
+      bottom: auto;
+      height: 62vh;
     }
   }
 
@@ -145,16 +153,26 @@
     );
   }
 
-  /* Light at the top so the subject reads clearly, opaque toward the
-     bottom where the copy sits. */
+  /* Horizontal on desktop: opaque under the copy column on the left, gone
+     well before Alicia. She is never veiled and never covered. */
   .scrim-light {
     background: linear-gradient(
+      90deg,
+      rgb(253 252 244 / 0.97) 0%,
+      rgb(253 252 244 / 0.93) 24%,
+      rgb(253 252 244 / 0.62) 36%,
+      rgb(253 252 244 / 0.18) 46%,
+      rgb(253 252 244 / 0) 56%
+    );
+  }
+
+  /* Pure gradient, no blur — dissolves the hero into the section below. */
+  .scrim-foot {
+    background: linear-gradient(
       180deg,
-      rgb(253 252 244 / 0.14) 0%,
-      rgb(253 252 244 / 0.2) 34%,
-      rgb(253 252 244 / 0.55) 52%,
-      rgb(253 252 244 / 0.86) 68%,
-      rgb(253 252 244 / 0.97) 84%,
+      rgb(253 252 244 / 0) 74%,
+      rgb(253 252 244 / 0.5) 87%,
+      rgb(253 252 244 / 0.9) 95%,
       rgb(253 252 244 / 1) 100%
     );
   }
@@ -167,45 +185,13 @@
     .scrim-light {
       background: linear-gradient(
         180deg,
-        rgb(253 252 244 / 0.1) 0%,
-        rgb(253 252 244 / 0.14) 20%,
-        rgb(253 252 244 / 0.6) 31%,
-        rgb(253 252 244 / 0.94) 38%,
-        rgb(253 252 244 / 1) 44%
+        rgb(253 252 244 / 0.08) 0%,
+        rgb(253 252 244 / 0.12) 16%,
+        rgb(253 252 244 / 0.55) 26%,
+        rgb(253 252 244 / 0.93) 33%,
+        rgb(253 252 244 / 1) 37%
       );
     }
-  }
-
-  /* Progressive blur, bottom half only.
-     Stacked strips rather than one layer: backdrop-filter cannot be
-     animated across a gradient, so increasing blur is built by masking
-     successively stronger layers. The top of the hero stays perfectly
-     sharp, which is where the subject is. */
-  .blur-step {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-  }
-
-  .blur-1 {
-    backdrop-filter: blur(3px);
-    -webkit-backdrop-filter: blur(3px);
-    mask-image: linear-gradient(180deg, transparent 44%, #000 56%);
-    -webkit-mask-image: linear-gradient(180deg, transparent 44%, #000 56%);
-  }
-
-  .blur-2 {
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    mask-image: linear-gradient(180deg, transparent 56%, #000 70%);
-    -webkit-mask-image: linear-gradient(180deg, transparent 56%, #000 70%);
-  }
-
-  .blur-3 {
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    mask-image: linear-gradient(180deg, transparent 70%, #000 86%);
-    -webkit-mask-image: linear-gradient(180deg, transparent 70%, #000 86%);
   }
 
   .icon-chip {
