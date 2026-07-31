@@ -79,7 +79,7 @@ export function FounderSection() {
                 </div>
 
                 <div className="glass-strong absolute -bottom-8 -left-6 max-w-[17rem] rounded-2xl p-6 shadow-lg">
-                  <Quote strokeWidth={2} className="h-6 w-6 text-accent-display" />
+                  <Quote strokeWidth={2} className="h-8 w-8 text-accent-display" />
                   <p className="mt-3 font-display text-h4 leading-snug text-ink">
                     La comida correcta en el momento correcto.
                   </p>

@@ -24,7 +24,7 @@ export function ProofSection() {
           <Reveal>
             <div className="card mx-auto max-w-xl border-dashed p-11 text-center">
               <span className="icon-chip mx-auto bg-follicular-soft text-follicular-ink">
-                <MessageCircleHeart strokeWidth={1.9} className="h-7 w-7" />
+                <MessageCircleHeart strokeWidth={1.9} className="h-9 w-9" />
               </span>
               <Eyebrow className="mt-6">Testimonios</Eyebrow>
               <p className="mt-4 text-body text-muted">

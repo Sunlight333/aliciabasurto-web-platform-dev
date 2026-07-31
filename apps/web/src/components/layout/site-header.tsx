@@ -9,14 +9,17 @@ import { STORE } from '@nutricycle/shared';
 import { Container } from './container';
 import { cn } from '@/lib/cn';
 
-/** Split around the centred logo — 2 left, 3 right. */
+/**
+ * Balanced around the centred logo: three links left, two plus the CTA
+ * right, so neither side outweighs the other.
+ */
 const LEFT = [
   { label: 'Método', href: '/como-funciona' },
   { label: 'Tu ciclo', href: '/ciclo' },
+  { label: 'Recetas', href: '/recetas' },
 ];
 
 const RIGHT = [
-  { label: 'Recetas', href: '/recetas' },
   { label: 'Funciones', href: '/funcionalidades' },
   { label: 'Membresía', href: '/membresia' },
 ];
@@ -47,22 +50,16 @@ export function SiteHeader() {
   return (
     <header
       className={cn(
-        'sticky top-0 z-50 transition-all duration-500',
-        scrolled
-          ? 'glass shadow-sm'
-          : 'bg-gradient-to-b from-surface-raised/90 to-transparent',
+        'sticky top-0 z-50 transition-colors duration-500',
+        scrolled ? 'glass shadow-md' : 'glass',
       )}
     >
       <Container>
-        <div
-          className={cn(
-            'grid grid-cols-[1fr_auto_1fr] items-center transition-all duration-500',
-            scrolled ? 'py-3' : 'py-5',
-          )}
-        >
-          {/* Left nav */}
+        {/* Height is constant. Only the surface changes on scroll — a
+            resizing header made the page shift under the reader. */}
+        <div className="grid h-32 grid-cols-[1fr_auto_1fr] items-center gap-6">
           <nav aria-label="Principal izquierda" className="hidden lg:block">
-            <ul className="flex items-center gap-9">
+            <ul className="flex items-center gap-8 xl:gap-10">
               {LEFT.map((item) => (
                 <NavLink key={item.href} {...item} active={pathname === item.href} />
               ))}
@@ -76,34 +73,23 @@ export function SiteHeader() {
             aria-expanded={open}
             className="justify-self-start rounded-full p-2.5 text-ink transition-colors hover:bg-ink/5 lg:hidden"
           >
-            <Menu strokeWidth={1.75} className="h-7 w-7" />
+            <Menu strokeWidth={2} className="h-8 w-8" />
           </button>
 
-          {/* Centred logo — large */}
-          <Link
-            href="/"
-            aria-label="Nutricycle — inicio"
-            className="group justify-self-center"
-          >
+          <Link href="/" aria-label="Nutricycle — inicio" className="group justify-self-center">
             <Image
               src="/images/brand/logo-lockup.png"
               alt="Nutricycle"
               width={500}
               height={500}
               priority
-              /* The lockup is a square: rings stacked above the wordmark.
-                 It has to be this large for the wordmark to read at all. */
-              className={cn(
-                'w-auto drop-shadow-sm transition-all duration-500 group-hover:scale-105',
-                scrolled ? 'h-24' : 'h-32 lg:h-44',
-              )}
+              className="h-24 w-auto transition-transform duration-500 group-hover:scale-105 lg:h-28"
             />
           </Link>
 
-          {/* Right nav + CTA */}
-          <div className="hidden items-center justify-end gap-9 lg:flex">
+          <div className="hidden items-center justify-end gap-8 lg:flex xl:gap-10">
             <nav aria-label="Principal derecha">
-              <ul className="flex items-center gap-9">
+              <ul className="flex items-center gap-8 xl:gap-10">
                 {RIGHT.map((item) => (
                   <NavLink key={item.href} {...item} active={pathname === item.href} />
                 ))}
@@ -112,9 +98,9 @@ export function SiteHeader() {
 
             <a
               href={`${STORE.smart}?src=header`}
-              className="inline-flex items-center gap-2.5 rounded-full bg-action px-6 py-3 font-sans text-nav font-semibold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-action-hover hover:shadow-lg"
+              className="inline-flex items-center gap-2.5 rounded-full bg-action px-6 py-3.5 font-sans text-nav font-semibold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-action-hover hover:shadow-lg"
             >
-              <Download strokeWidth={2.2} className="h-5 w-5" />
+              <Download strokeWidth={2.2} className="h-5.5 w-5.5" />
               Descargar
             </a>
           </div>
@@ -122,9 +108,9 @@ export function SiteHeader() {
           <a
             href={`${STORE.smart}?src=header-mobile`}
             aria-label="Descargar la app"
-            className="justify-self-end rounded-full bg-action p-3 text-white shadow-md lg:hidden"
+            className="justify-self-end rounded-full bg-action p-3.5 text-white shadow-md lg:hidden"
           >
-            <Download strokeWidth={2.2} className="h-5 w-5" />
+            <Download strokeWidth={2.2} className="h-6 w-6" />
           </a>
         </div>
       </Container>
@@ -155,7 +141,7 @@ export function SiteHeader() {
               alt="Nutricycle"
               width={500}
               height={500}
-              className="h-16 w-auto"
+              className="h-20 w-auto"
             />
             <button
               type="button"
@@ -163,7 +149,7 @@ export function SiteHeader() {
               aria-label="Cerrar menú"
               className="rounded-full p-2.5 text-ink transition-colors hover:bg-ink/5"
             >
-              <X strokeWidth={1.75} className="h-7 w-7" />
+              <X strokeWidth={2} className="h-8 w-8" />
             </button>
           </div>
 
@@ -186,7 +172,7 @@ export function SiteHeader() {
             href={`${STORE.smart}?src=nav-mobile`}
             className="mt-8 inline-flex w-full items-center justify-center gap-2.5 rounded-full bg-action px-6 py-4 font-sans text-nav font-semibold text-white shadow-md"
           >
-            <Download strokeWidth={2.2} className="h-5 w-5" />
+            <Download strokeWidth={2.2} className="h-6 w-6" />
             Descargar gratis
           </a>
         </div>
@@ -210,7 +196,7 @@ function NavLink({
         href={href}
         aria-current={active ? 'page' : undefined}
         className={cn(
-          'relative font-sans text-nav font-medium transition-colors duration-300',
+          'relative font-sans text-nav font-medium whitespace-nowrap transition-colors duration-300',
           'after:absolute after:-bottom-1.5 after:left-0 after:h-[2px] after:w-0 after:rounded-full',
           'after:bg-accent after:transition-all after:duration-300 hover:after:w-full',
           active ? 'text-ink after:w-full' : 'text-muted hover:text-ink',

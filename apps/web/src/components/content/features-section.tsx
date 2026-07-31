@@ -48,7 +48,7 @@ export function FeaturesSection() {
                 >
                   <div className="flex items-start justify-between gap-4">
                     <span className={`icon-chip ${feature.tint}`}>
-                      <Icon strokeWidth={1.9} className="h-7 w-7" />
+                      <Icon strokeWidth={1.9} className="h-9 w-9" />
                     </span>
 
                     {feature.highlight && (

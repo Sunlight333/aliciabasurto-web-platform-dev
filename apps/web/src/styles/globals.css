@@ -111,42 +111,94 @@
 
   /* Light scrim so ink stays legible over the hero photograph without
      resorting to a dark overlay. */
+  /* Hero photograph: sharp, and pinned so it does not travel with the
+     scroll or end in a hard horizontal cut. `fixed` attachment keeps it
+     still while the section scrolls over it. iOS does not honour fixed
+     attachment, so small screens fall back to a normal cover. */
+  .hero-bg {
+    background-image: url('/images/alicia/kitchen-wide.avif');
+    background-size: cover;
+    background-position: center 35%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+
+  @media (max-width: 1023px) {
+    .hero-bg {
+      background-attachment: scroll;
+      /* Shifted off the face — the narrow crop otherwise puts the
+         headline straight across it. */
+      background-position: 78% center;
+    }
+  }
+
+  /* A light, even veil — enough to keep ink legible, weak enough that the
+     kitchen still reads. No blur: the photograph should stay sharp. */
   .scrim-light {
     background: linear-gradient(
-      100deg,
-      rgb(253 252 244 / 0.98) 0%,
-      rgb(253 252 244 / 0.95) 42%,
-      rgb(253 252 244 / 0.78) 66%,
-      rgb(253 252 244 / 0.5) 100%
+      180deg,
+      rgb(253 252 244 / 0.5) 0%,
+      rgb(253 252 244 / 0.35) 40%,
+      rgb(253 252 244 / 0.4) 100%
     );
   }
 
-  /* Softens the hero photograph into ambience. Without this it reads as a
-     second subject competing with the portrait card in front of it. */
-  .scrim-veil {
+  /* Spotlight behind the headline only. Keeps ink well clear of AA where
+     the copy sits, while leaving the rest of the photograph untouched —
+     without it the headline lands directly on a face. */
+  .scrim-spot {
     background: radial-gradient(
-      120% 90% at 30% 40%,
-      rgb(253 252 244 / 0.75) 0%,
-      rgb(253 252 244 / 0.25) 55%,
+      58% 52% at 50% 44%,
+      rgb(253 252 244 / 0.92) 0%,
+      rgb(253 252 244 / 0.72) 45%,
+      rgb(253 252 244 / 0.28) 72%,
       rgb(253 252 244 / 0) 100%
     );
   }
 
+  /* Narrow viewports crop much tighter, so the copy needs more cover. */
+  @media (max-width: 1023px) {
+    .scrim-spot {
+      background: radial-gradient(
+        130% 62% at 50% 42%,
+        rgb(253 252 244 / 0.95) 0%,
+        rgb(253 252 244 / 0.86) 50%,
+        rgb(253 252 244 / 0.55) 80%,
+        rgb(253 252 244 / 0.3) 100%
+      );
+    }
+  }
+
+  /* The only soft-focus in the hero, and only at the very bottom, so the
+     photograph dissolves into the next section instead of being cut. */
   .scrim-bottom {
     background: linear-gradient(
       180deg,
-      rgb(253 252 244 / 0) 55%,
-      rgb(253 252 244 / 0.85) 85%,
+      rgb(253 252 244 / 0) 45%,
+      rgb(253 252 244 / 0.35) 62%,
+      rgb(253 252 244 / 0.8) 80%,
+      rgb(253 252 244 / 0.97) 92%,
       rgb(253 252 244 / 1) 100%
     );
+    backdrop-filter: blur(0px);
+    mask-image: linear-gradient(180deg, transparent 45%, #000 80%);
+    -webkit-mask-image: linear-gradient(180deg, transparent 45%, #000 80%);
+  }
+
+  /* Progressive blur strip that only bites near the boundary. */
+  .fade-blur {
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    mask-image: linear-gradient(180deg, transparent 0%, #000 65%, #000 100%);
+    -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 65%, #000 100%);
   }
 
   .icon-chip {
     display: grid;
     place-items: center;
-    width: 3.5rem;
-    height: 3.5rem;
-    border-radius: 1.125rem;
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 1.375rem;
     box-shadow: var(--shadow-xs);
     transition: transform 400ms var(--ease-spring);
   }
@@ -200,10 +252,15 @@
     animation: float-y 7s ease-in-out infinite;
   }
 
-  /* Progressive enhancement: visible by default, hidden only once JS
-     has confirmed it can bring it back. */
+  /* Progressive enhancement, two layers deep.
+     1. Without JS the `.js` class is never added, so nothing is hidden.
+     2. With JS, content hides — but carries a 2.5s self-reveal as a safety
+        net. If the bundle 404s, errors, or simply never arrives on a bad
+        connection, the page still resolves instead of staying blank
+        forever. The observer normally wins long before the fallback. */
   .js .reveal {
     opacity: 0;
+    animation: reveal-rise 850ms var(--ease-out-soft) 2500ms forwards;
   }
 
   .js .reveal[data-visible='true'] {

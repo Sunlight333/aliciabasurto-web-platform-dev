@@ -82,13 +82,13 @@ function PhaseCard({ phase }: { phase: Phase }) {
 
   return (
     <article className="card card-hover flex h-full flex-col overflow-hidden">
-      <div className={`relative h-28 bg-gradient-to-br ${s.band}`}>
-        <span className="absolute -bottom-7 left-7 grid h-14 w-14 place-items-center rounded-2xl border border-white bg-white shadow-md">
-          <Icon strokeWidth={1.9} className={`h-7 w-7 ${s.ink}`} />
+      <div className={`relative h-32 bg-gradient-to-br ${s.band}`}>
+        <span className="absolute -bottom-8 left-7 grid h-16 w-16 place-items-center rounded-2xl border border-white bg-white shadow-md">
+          <Icon strokeWidth={1.9} className={`h-8 w-8 ${s.ink}`} />
         </span>
       </div>
 
-      <div className="flex flex-1 flex-col p-7 pt-11">
+      <div className="flex flex-1 flex-col p-8 pt-12">
         <span
           className={`inline-flex w-fit rounded-full px-3.5 py-1.5 font-sans text-caption font-bold tracking-wide ${s.chip}`}
         >

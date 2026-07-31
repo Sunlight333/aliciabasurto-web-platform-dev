@@ -26,7 +26,7 @@ export function ProblemSection() {
               <Reveal as="li" key={problem.pain} delay={i * 110}>
                 <article className="card card-hover h-full p-8 lg:p-9">
                   <span className={`icon-chip ${problem.tint}`}>
-                    <Icon strokeWidth={1.9} className="h-7 w-7" />
+                    <Icon strokeWidth={1.9} className="h-9 w-9" />
                   </span>
 
                   <h3 className="mt-6 text-h4 text-ink">“{problem.pain}”</h3>
