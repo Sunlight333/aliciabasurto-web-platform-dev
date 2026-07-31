@@ -25,6 +25,7 @@ Documentation for the **aliciabasurto.com** rebuild: Wix → React (Next.js) + T
 | Doc | Description |
 | --- | --- |
 | [project-brief.md](00-overview/project-brief.md) | Mission, scope, constraints, open decisions, decision log |
+| [revised-direction.md](00-overview/revised-direction.md) | Post-app-analysis revision — one content source, bilingual scope, merged palette, revised 26-route inventory, blockers, build order |
 
 ### 01 — Research
 | Doc | Description |
@@ -44,7 +45,12 @@ Documentation for the **aliciabasurto.com** rebuild: Wix → React (Next.js) + T
 | [folder-structure.md](03-architecture/folder-structure.md) | Repository layout for web, API, database, and shared packages |
 
 ### 04 — Content
-_Pending._ Content model, phase data spec, copy deck, SEO metadata, redirect implementation.
+| Doc | Description |
+| --- | --- |
+| [image-assets.md](04-content/image-assets.md) | Inventory of `apps/web/public/images/` — every asset identified, dimensions, placement, bilingual alt text, naming convention, and the 8 missing-asset blockers |
+| [about-page.md](04-content/about-page.md) | The founder section on `/` and the `/sobre` page — layout, sections, copy requirements, SEO, build placement |
+
+_Still pending:_ content model, phase data spec, copy deck, SEO metadata, redirect implementation.
 
 ### 05 — Development
 _Pending._ Local setup, coding conventions, branching, testing strategy, CI.

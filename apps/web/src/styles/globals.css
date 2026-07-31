@@ -1,0 +1,151 @@
+@import 'tailwindcss';
+@import './tokens.css';
+
+/* ============================================================
+   Base
+   ============================================================ */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-surface-raised);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Display serif. Light 300 only at >=28px — it gets fragile below. */
+  h1,
+  h2 {
+    font-family: var(--font-display);
+    font-weight: 300;
+  }
+
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display);
+    font-weight: 400;
+  }
+
+  /* A designed focus ring, replacing the browser default the audit
+     found on the live site (`3px solid highlight`). */
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background-color: var(--color-accent-display);
+    color: #fff;
+  }
+}
+
+/* ============================================================
+   The ethereal layer — decoration only, never the text layer
+   ============================================================ */
+
+@layer components {
+  /* Continuous gradient field. Sections dissolve rather than butt
+     against hard colour edges. (design-direction.md §6.1) */
+  .field-warm {
+    background-image: linear-gradient(
+      180deg,
+      var(--color-surface-raised) 0%,
+      var(--color-surface-wash) 55%,
+      var(--color-surface-wash-cool) 100%
+    );
+  }
+
+  /* Ambient orbs: 4-8% opacity, heavily blurred, slowly drifting. */
+  .orb {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(120px);
+    pointer-events: none;
+    will-change: transform;
+  }
+
+  /* Arch-masked portrait — the feminine-editorial silhouette. */
+  .mask-arch {
+    border-radius: 9999px 9999px var(--radius-card) var(--radius-card);
+  }
+
+  .hairline {
+    border-color: var(--color-hairline);
+  }
+}
+
+/* ============================================================
+   Motion
+   ============================================================ */
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(4%, -6%, 0) scale(1.08);
+  }
+}
+
+@keyframes reveal-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@layer components {
+  .animate-drift {
+    animation: drift 28s var(--ease-drift) infinite;
+  }
+
+  .reveal {
+    opacity: 0;
+  }
+
+  .reveal[data-visible='true'] {
+    animation: reveal-rise 800ms var(--ease-drift) forwards;
+  }
+}
+
+/* Atmosphere is the first thing to go. Interaction feedback stays. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .animate-drift {
+    animation: none;
+  }
+
+  .reveal,
+  .reveal[data-visible='true'] {
+    opacity: 1;
+    animation: none;
+    transform: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

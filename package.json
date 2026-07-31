@@ -1,0 +1,20 @@
+{
+  "name": "nutricycle",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Nutricycle — marketing and education website for the NutriCycle app",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace @nutricycle/web",
+    "build": "npm run build --workspace @nutricycle/web",
+    "start": "npm run start --workspace @nutricycle/web",
+    "lint": "npm run lint --workspace @nutricycle/web",
+    "typecheck": "npm run typecheck --workspace @nutricycle/web"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -253,7 +253,7 @@ The app is substantially more capable than the current site communicates. These 
 
 | Group | Routes |
 | --- | --- |
-| **Marketing** (6) | `/` · `/funcionalidades` · `/como-funciona` · `/membresia` · `/descargar` · `/sobre` |
+| **Marketing** (6) | `/` · `/funcionalidades` · `/como-funciona` · `/membresia` · `/descargar` · [`/sobre`](../04-content/about-page.md) |
 | **Education** (4) | `/blog` · `/blog/[slug]` · `/ciclo` · `/ciclo/[fase]` ×4 |
 | **Recipes** (3) | `/recetas` · `/recetas/fase/[fase]` ×4 · `/recetas/[slug]` |
 | **Video** (2) | `/videos` · `/videos/[slug]` |
@@ -299,13 +299,19 @@ The app is substantially more capable than the current site communicates. These 
 | 2 | **The app's phase-calculation logic** — source of truth for day ranges | Client / app dev | ❌ **New** |
 | 3 | App Store URL | Client | ❌ |
 | 4 | Google Play URL | Client | ❌ |
-| 5 | App icon 512×512 + store screenshots | Client | ❌ |
+| 5 | ~~App icon 512×512~~ + **store screenshots** | Client | ⚠️ Icon delivered (`brand/app-icon-1024.png`); **screenshots still missing** |
 | 6 | Real Youtube / Facebook / Instagram profile URLs | Client | ❌ |
 | 7 | Confirm `4.8 ★` is real store data | Client | ❌ |
 | 8 | Confirm pricing ($14.99 / $84.99) is live in both stores | Client | ❌ |
 | 9 | Instrument Serif weight availability | Design | Verify |
+| 10 | **Founder bio, credentials, positioning statement, testimonials** | Client | ❌ **New** — [about-page.md §4](../04-content/about-page.md) |
+| 11 | **App screenshots** — `/funcionalidades`, `/como-funciona`, `/descargar` are built around them; zero exist | Client / app dev | ❌ **New — blocks Phase 2** |
+| 12 | **Store badge artwork** (ES + EN) — `public/badges/` is empty | Client | ❌ **New** |
+| 13 | **SVG logo** + full favicon set — all brand assets are raster today | Client / design | ❌ **New** |
 
 Items 1 and 2 now gate more work than anything else. Without them the content layer cannot be built and the phase system cannot be trusted.
+
+Items 10–13 came out of the asset audit in [image-assets.md §5](../04-content/image-assets.md), which lists all eight gaps with their consequences. **11 and 12 gate Phase 2** — three of the six marketing pages cannot be filled without them.
 
 ---
 
@@ -314,12 +320,14 @@ Items 1 and 2 now gate more work than anything else. Without them the content la
 | Phase | Scope |
 | --- | --- |
 | **0** | Workspace, i18n routing, Supabase read client, `packages/shared` phase model |
-| **1** | Design tokens (merged palette + phase colors), header/footer, layout primitives, 404/500 |
-| **2** | `/`, `/funcionalidades`, `/como-funciona`, `/descargar` + the full CTA system |
-| **3** | `/membresia`, `/sobre`, `/faq`, `/contacto`, legal ×4 |
+| **1** | Design tokens (merged palette + phase colors), header/footer, layout primitives, `FullBleedQuote`, 404/500 |
+| **2** | `/` **including the `Sobre mí` founder section**, `/funcionalidades`, `/como-funciona`, `/descargar` + the full CTA system |
+| **3** | `/membresia`, **`/sobre`**, `/faq`, `/contacto`, legal ×4 |
 | **4** | `/ciclo` + `/ciclo/[fase]`, `/recetas` ×3 — reading from Supabase |
 | **5** | `/blog` ×2, `/videos` ×2, `/buscar` |
 | **6** | English locale, `hreflang`, localized sitemap |
 | **7** | Analytics, store-click attribution, launch checklist |
 
 Phase 0 moves first because everything downstream depends on the shared phase model and the Supabase connection.
+
+The founder section on `/` and the `/sobre` page are specified in [about-page.md](../04-content/about-page.md). The home section is **not optional** — it is section 3 of 4 on the current site and every photographic asset the project owns is founder imagery. It ships in Phase 2 with the rest of `/`; its `Conóceme` link resolves when `/sobre` lands in Phase 3.

@@ -2,6 +2,13 @@
 
 Content model, copy, and SEO. Pending.
 
+## Written
+
+| Doc | Contents |
+| --- | --- |
+| [`image-assets.md`](image-assets.md) | Inventory of every asset in `apps/web/public/images/` — identification, dimensions, placement, alt text (ES/EN), naming convention, and the 8 missing-asset blockers. |
+| [`about-page.md`](about-page.md) | The founder section on `/` and the `/sobre` page. Closes open decision #6 in [site-structure.md §7](../03-architecture/site-structure.md). |
+
 ## Planned documents
 
 | Doc | Contents |
@@ -12,6 +19,10 @@ Content model, copy, and SEO. Pending.
 | `seo.md` | Title/description patterns, JSON-LD schema per content type, OG image rules. |
 | `redirects.md` | Implementation of the 301 map in [site-structure.md §5](../03-architecture/site-structure.md), including the `/post/{slug}` per-post lookup rule. |
 
-## Note
+## Notes
 
 `phase-data.md` blocks the most work. Phase is the spine of ~50 of the ~117 URLs and is currently contradictory between `/app-1` and `/blog` on the live site.
+
+`copy-deck.md` must include the founder bio (long + short), credentials, and positioning statement specified in [about-page.md §4](about-page.md). None of it can be recovered from the existing site — the current `SOBRE MÍ` section contains no biographical detail.
+
+**Open housekeeping:** the 10 recipe clips in `apps/web/public/video/` are still named `#21.Taco de zanahoria y queso.mov`. The leading `#` is a URL fragment delimiter and will break any direct link; they need the same rename treatment as `public/images/`.

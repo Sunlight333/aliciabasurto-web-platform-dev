@@ -262,7 +262,7 @@ These change the final page count or the build shape. Flagged, not assumed:
 | 3 | **One-time purchase or subscription?** Affects checkout, pricing page, and account area. | Moderate |
 | 4 | **Does the app subscription share checkout with programs**, or stay in-app (App Store / Play billing)? | Moderate — in-app billing is simpler and avoids store-policy conflict |
 | 5 | **English version later?** Would add a locale prefix and roughly double URL count. | Large — cheap to plan for now, expensive later |
-| 6 | **Split `/metodo` into `/metodo` + `/sobre-mi`?** Methodology and founder story are currently one item. | +1 page |
+| 6 | ~~**Split `/metodo` into `/metodo` + `/sobre-mi`?**~~ | ✅ **Closed — split.** `/como-funciona` carries the methodology, `/sobre` carries the founder story. Both are spec'd: [about-page.md](../04-content/about-page.md). |
 
 **Recommendation on #2:** for a solo practitioner, start with an external course platform and Tier 1 only (31 templates). Self-hosting the member area is worth it only once program revenue justifies owning the customer relationship and the support burden. The route structure above is designed so Tier 2 can be added later without restructuring anything in Tier 1.
 

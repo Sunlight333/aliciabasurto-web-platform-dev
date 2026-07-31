@@ -41,9 +41,12 @@ nutricycle/
 ```text
 apps/web/
 ├── public/
-│   ├── fonts/                    Self-hosted Cormorant Garamond + Inter
+│   ├── fonts/                    Self-hosted Cormorant Garamond + Outfit
 │   ├── images/
-│   └── badges/                   Official App Store / Google Play artwork (ES)
+│   │   ├── brand/                Logo lockup, mark, app icon, favicons
+│   │   └── alicia/               Founder photography — masters, uncropped
+│   ├── badges/                   Official App Store / Google Play artwork (ES + EN)
+│   └── video/                    Recipe clips
 ├── src/
 │   ├── app/                      Next.js App Router — routes mirror site-structure.md
 │   │   ├── (marketing)/          /, /metodo, /app, /precios, /testimonios
@@ -91,6 +94,10 @@ apps/web/
 ### Component folders map to the design system
 
 `ui/` holds primitives with states; `marketing/` holds the CTA system from [cta-strategy.md](../02-design/cta-strategy.md); `motion/` isolates the ethereal layer (orbs, grain, reveal) so it can be disabled wholesale under `prefers-reduced-motion` without touching content components.
+
+### Asset conventions
+
+Files are kebab-case and **English**, even though routes are Spanish — they are build-time identifiers, not user-facing strings, and the site is bilingual. Photographic masters stay full-resolution and uncropped; crops are `next/image` or CSS decisions, never a second file. Alt text is defined once per asset in [image-assets.md](../04-content/image-assets.md), not per component.
 
 ---
 
