@@ -17,7 +17,10 @@ import { StoreButtons } from './store-buttons';
  */
 export function Hero() {
   return (
-    <section className="relative -mt-32 flex min-h-[148vh] flex-col justify-end overflow-hidden pt-32 sm:min-h-[132vh] lg:min-h-screen lg:justify-center">
+    // Mobile flows: the copy starts directly beneath the photo band, so the
+    // section is only as tall as its contents. Forcing a min-height with
+    // bottom-aligned content left a large dead gap between the two.
+    <section className="relative -mt-32 flex flex-col overflow-hidden pt-[65vh] sm:pt-[62vh] lg:min-h-screen lg:justify-center lg:pt-32">
       <div className="hero-bg absolute inset-0" />
       <div className="scrim-light pointer-events-none absolute inset-0" />
       <div className="scrim-foot pointer-events-none absolute inset-0" />
@@ -63,7 +66,7 @@ export function Hero() {
           {/* Stacked in the narrow column — side by side the labels wrap. */}
           <StoreButtons
             source="home-hero"
-            className="mt-9 w-full max-w-xs justify-center lg:max-w-none lg:flex-col lg:items-stretch"
+            className="mt-9 w-full max-w-xs justify-center sm:max-w-lg lg:max-w-none lg:flex-col lg:items-stretch"
           />
 
           <p className="mt-5 text-caption font-medium text-muted">
@@ -72,7 +75,7 @@ export function Hero() {
 
           {/* One grouped card rather than three pills: three separate cards
               overflow a column this narrow. */}
-          <ul className="glass-strong mt-9 flex w-full max-w-xs items-stretch rounded-2xl shadow-md lg:max-w-none">
+          <ul className="glass-strong mt-9 flex w-full max-w-xs items-stretch rounded-2xl shadow-md sm:max-w-md lg:max-w-none">
             <Stat
               icon={<Star strokeWidth={2.2} className="h-5 w-5 text-ovulation-ink" />}
               value={STORE.rating}

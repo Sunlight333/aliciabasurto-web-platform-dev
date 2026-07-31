@@ -181,16 +181,26 @@
      face fills the middle. Rather than fight it, small screens read as a
      photo band above the copy: the image holds the top third and the veil
      goes fully opaque before the headline starts. */
+  /* Matched to the photo band, not the section. The section height is now
+     driven by its content, so a percentage gradient over the whole thing
+     would fade the image at the wrong point. */
   @media (max-width: 1023px) {
     .scrim-light {
+      bottom: auto;
+      height: 62vh;
       background: linear-gradient(
         180deg,
-        rgb(253 252 244 / 0.08) 0%,
-        rgb(253 252 244 / 0.12) 16%,
-        rgb(253 252 244 / 0.55) 26%,
-        rgb(253 252 244 / 0.93) 33%,
-        rgb(253 252 244 / 1) 37%
+        rgb(253 252 244 / 0.06) 0%,
+        rgb(253 252 244 / 0.1) 44%,
+        rgb(253 252 244 / 0.5) 70%,
+        rgb(253 252 244 / 0.9) 89%,
+        rgb(253 252 244 / 1) 100%
       );
+    }
+
+    /* Desktop-only footer transition. */
+    .scrim-foot {
+      display: none;
     }
   }
 
