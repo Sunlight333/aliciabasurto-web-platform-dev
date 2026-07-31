@@ -18,7 +18,9 @@ export function Hero() {
 
       <Container className="relative">
         <div className="grid items-center gap-14 lg:grid-cols-12 lg:gap-16">
-          <div className="lg:col-span-6">
+          {/* 7/5 rather than 6/6 — at 6 columns the display line breaks
+              after "sentirte", orphaning "tú." onto a third line. */}
+          <div className="lg:col-span-7">
             <Eyebrow>Nutrición cíclica</Eyebrow>
 
             <h1 className="mt-7 text-display text-ink">
@@ -54,7 +56,7 @@ export function Hero() {
             </dl>
           </div>
 
-          <div className="lg:col-span-6">
+          <div className="lg:col-span-5">
             <div className="relative mx-auto max-w-md lg:ml-auto lg:max-w-none">
               <div className="mask-arch relative aspect-[2/3] overflow-hidden shadow-soft">
                 <Image
@@ -62,7 +64,7 @@ export function Hero() {
                   alt="Alicia Basurto, health coach de nutrición hormonal, en su cocina"
                   fill
                   priority
-                  sizes="(min-width: 1024px) 45vw, 90vw"
+                  sizes="(min-width: 1024px) 40vw, 90vw"
                   className="object-cover"
                 />
               </div>

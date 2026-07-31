@@ -26,15 +26,27 @@ export function SiteHeader() {
     <header className="sticky top-0 z-40 border-b border-hairline/60 bg-surface-raised/72 backdrop-blur-xl">
       <Container>
         <div className="flex h-18 items-center justify-between gap-6 py-3">
-          <Link href="/" className="shrink-0" aria-label="Nutricycle — inicio">
+          {/* The square lockup is unreadable at header scale — its wordmark
+              collapses to ~10px. Until an SVG exists (image-assets.md §5
+              gap #1), the header pairs the ring mark with a live Cormorant
+              wordmark. logo-mark.jpg can't be used here: its baked-in grey
+              background clashes with the cream surface. */}
+          <Link
+            href="/"
+            className="flex shrink-0 items-center gap-2.5"
+            aria-label="Nutricycle — inicio"
+          >
             <Image
-              src="/images/brand/logo-lockup.png"
-              alt="Nutricycle"
-              width={500}
-              height={500}
+              src="/images/brand/app-icon-1024.png"
+              alt=""
+              width={1024}
+              height={1024}
               priority
-              className="h-11 w-auto"
+              className="h-9 w-9 rounded-lg"
             />
+            <span className="font-display text-h4 leading-none font-normal tracking-wide text-ink">
+              nutricycle
+            </span>
           </Link>
 
           {/* Desktop nav — 15px, down from the live site's 26px.
@@ -62,12 +74,15 @@ export function SiteHeader() {
           </nav>
 
           <div className="flex items-center gap-3">
-            <Button
-              href={`${STORE.smart}?src=header`}
-              className="hidden px-5 sm:inline-flex"
-            >
-              Descargar
-            </Button>
+            {/* Wrapped rather than putting `hidden` on the Button: the
+                Button's own `inline-flex` is the same CSS property, so
+                which one wins depends on stylesheet order, not class
+                order. The wrapper makes it deterministic. */}
+            <div className="hidden sm:block">
+              <Button href={`${STORE.smart}?src=header`} className="px-5">
+                Descargar
+              </Button>
+            </div>
 
             <button
               type="button"

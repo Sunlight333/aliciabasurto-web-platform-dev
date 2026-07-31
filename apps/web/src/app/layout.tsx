@@ -51,7 +51,23 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" className={`${cormorant.variable} ${outfit.variable}`}>
+    // suppressHydrationWarning: the pre-paint script below adds `js` to
+    // this element, so the server and client markup differ by design.
+    <html
+      lang="es"
+      className={`${cormorant.variable} ${outfit.variable}`}
+      suppressHydrationWarning
+    >
+      <head>
+        {/* Runs before first paint. Scroll-reveal only engages once this
+            marks the document as scripted — otherwise content stays
+            visible rather than being hidden with no way back. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `document.documentElement.classList.add('js')`,
+          }}
+        />
+      </head>
       <body className="field-warm min-h-screen antialiased">
         <a
           href="#contenido"

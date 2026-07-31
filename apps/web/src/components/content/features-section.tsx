@@ -25,27 +25,33 @@ export function FeaturesSection() {
           </h2>
         </Reveal>
 
-        <ul className="mt-16 grid gap-px overflow-hidden rounded-card bg-hairline sm:grid-cols-2 lg:grid-cols-3">
-          {FEATURES.map((feature, i) => (
-            <Reveal
-              as="li"
-              key={feature.title}
-              delay={i * 70}
-              className={cn(
-                'bg-surface-base p-8 lg:p-10',
-                feature.highlight && 'sm:col-span-2',
-              )}
-            >
-              {feature.highlight && (
-                <span className="mb-4 inline-block rounded-full bg-luteal px-3 py-1 text-caption font-medium text-luteal-ink">
-                  Con IA
-                </span>
-              )}
-              <h3 className="text-h3 text-ink">{feature.title}</h3>
-              <p className="mt-3 max-w-md text-small text-muted">{feature.body}</p>
-            </Reveal>
-          ))}
-        </ul>
+        {/* The grid reveals as one unit rather than card-by-card: the
+            gap-px hairline background would otherwise show through as a
+            solid grey block while individual cards sit at opacity 0. */}
+        <Reveal>
+          <ul className="mt-16 grid gap-px overflow-hidden rounded-card bg-hairline sm:grid-cols-2 lg:grid-cols-3">
+            {FEATURES.map((feature) => (
+              <li
+                key={feature.title}
+                /* Not col-span-2: with 6 features in a 3-col grid, spanning
+                   leaves empty cells that show the hairline through. The AI
+                   card earns emphasis from its tint and badge instead. */
+                className={cn(
+                  'p-8 lg:p-10',
+                  feature.highlight ? 'bg-luteal/25' : 'bg-surface-base',
+                )}
+              >
+                {feature.highlight && (
+                  <span className="mb-4 inline-block rounded-full bg-luteal px-3 py-1 text-caption font-medium text-luteal-ink">
+                    Con IA
+                  </span>
+                )}
+                <h3 className="text-h3 text-ink">{feature.title}</h3>
+                <p className="mt-3 max-w-md text-small text-muted">{feature.body}</p>
+              </li>
+            ))}
+          </ul>
+        </Reveal>
 
         <Reveal className="mt-14" delay={500}>
           <Button href="/funcionalidades" variant="outline">

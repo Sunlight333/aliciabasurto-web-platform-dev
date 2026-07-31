@@ -115,11 +115,15 @@
     animation: drift 28s var(--ease-drift) infinite;
   }
 
-  .reveal {
+  /* Progressive enhancement: content is visible by default and only
+     hidden once JS has confirmed it can reveal it again. Without the
+     `.js` guard, a no-JS visitor — or a crawler rendering without
+     scrolling — sees an entirely blank page below the hero. */
+  .js .reveal {
     opacity: 0;
   }
 
-  .reveal[data-visible='true'] {
+  .js .reveal[data-visible='true'] {
     animation: reveal-rise 800ms var(--ease-drift) forwards;
   }
 }
@@ -134,8 +138,8 @@
     animation: none;
   }
 
-  .reveal,
-  .reveal[data-visible='true'] {
+  .js .reveal,
+  .js .reveal[data-visible='true'] {
     opacity: 1;
     animation: none;
     transform: none;
