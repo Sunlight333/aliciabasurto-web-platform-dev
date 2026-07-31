@@ -4,54 +4,60 @@ import { Container } from '@/components/layout/container';
 import { StoreButtons } from './store-buttons';
 
 /**
- * Hero — kitchen-wide.avif, sharp and pinned.
+ * Hero — kitchen-wide.avif, pinned, sharp on top.
  *
- * The photograph is a CSS background with `fixed` attachment, so it never
- * travels with the scroll or ends in a hard cut. The only soft-focus is a
- * blur strip at the very bottom, which dissolves the hero into the next
- * section.
+ * Composition: the photograph is positioned high so Alicia sits in the
+ * upper band, fully visible and unblurred. The copy lives in the lower
+ * half, where a stepped blur and a deepening veil make it legible. The
+ * subject is therefore never covered by centred content, and the layout
+ * stays symmetric rather than being pushed off to one side.
  *
- * Content is centred, echoing the centred logo above it.
+ * The background uses fixed attachment, so it neither travels with the
+ * scroll nor ends in a hard cut. It runs up underneath the menu — the
+ * header is transparent at rest and only frosts once scrolled.
  */
 export function Hero() {
   return (
-    <section className="relative -mt-32 overflow-hidden pt-32">
+    <section className="relative -mt-32 flex min-h-[168vh] flex-col justify-end overflow-hidden pt-32 sm:min-h-[150vh] lg:min-h-[116vh]">
       <div className="hero-bg absolute inset-0" />
-      <div className="scrim-light absolute inset-0" />
-      <div className="scrim-spot pointer-events-none absolute inset-0" />
+      <div className="scrim-light pointer-events-none absolute inset-0" />
 
-      {/* Bottom-only transition into the section below */}
-      <div className="fade-blur pointer-events-none absolute inset-x-0 bottom-0 h-72" />
-      <div className="scrim-bottom pointer-events-none absolute inset-0" />
+      {/* Blur builds only downward — the top stays perfectly sharp. */}
+      <div className="blur-step blur-1" />
+      <div className="blur-step blur-2" />
+      <div className="blur-step blur-3" />
+
+      {/* Legibility field for the transparent menu */}
+      <div className="scrim-top pointer-events-none absolute inset-x-0 top-0 h-56" />
 
       <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
         <div
           className="orb animate-drift"
           style={{
-            width: 'min(55vw, 640px)',
-            height: 'min(55vw, 640px)',
-            top: '-18%',
+            width: 'min(50vw, 600px)',
+            height: 'min(50vw, 600px)',
+            bottom: '2%',
             left: '-8%',
             background: 'var(--color-luteal)',
-            opacity: 0.22,
+            opacity: 0.24,
           }}
         />
         <div
           className="orb animate-drift"
           style={{
-            width: 'min(45vw, 520px)',
-            height: 'min(45vw, 520px)',
-            bottom: '-5%',
+            width: 'min(42vw, 500px)',
+            height: 'min(42vw, 500px)',
+            bottom: '-6%',
             right: '-6%',
             background: 'var(--color-menstrual)',
-            opacity: 0.16,
+            opacity: 0.18,
             animationDelay: '-13s',
           }}
         />
       </div>
 
       <Container className="relative">
-        <div className="flex flex-col items-center py-20 text-center lg:py-28">
+        <div className="flex flex-col items-center pb-20 text-center lg:pb-24">
           <span className="glass-strong inline-flex items-center gap-2.5 rounded-full px-6 py-3 shadow-md">
             <Sparkles strokeWidth={2} className="h-5.5 w-5.5 text-accent" />
             <span className="font-sans text-caption font-semibold tracking-wide text-ink">
@@ -59,13 +65,13 @@ export function Hero() {
             </span>
           </span>
 
-          <h1 className="mt-9 max-w-5xl text-display text-ink">
+          <h1 className="mt-8 max-w-5xl text-display text-ink">
             Come con tu ciclo.
             <br />
             <span className="text-accent">Vuelve a sentirte tú.</span>
           </h1>
 
-          <p className="mt-8 max-w-2xl text-lead font-medium text-muted">
+          <p className="mt-7 max-w-2xl text-lead font-medium text-muted">
             Nutricycle adapta tu alimentación, tus recetas y tus rutinas a cada fase
             de tu ciclo menstrual — automáticamente.
           </p>
@@ -73,14 +79,14 @@ export function Hero() {
           <StoreButtons
             source="home-hero"
             size="lg"
-            className="mt-11 justify-center sm:inline-flex"
+            className="mt-10 justify-center sm:inline-flex"
           />
 
           <p className="mt-6 text-caption font-medium text-muted">
             Gratis · iOS y Android · Sin tarjeta
           </p>
 
-          <ul className="mt-14 flex flex-wrap justify-center gap-4">
+          <ul className="mt-12 flex flex-wrap justify-center gap-4">
             <StatPill
               icon={<Star strokeWidth={2.2} className="h-6 w-6 text-ovulation-ink" />}
               value={STORE.rating}

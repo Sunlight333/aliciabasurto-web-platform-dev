@@ -115,10 +115,13 @@
      scroll or end in a hard horizontal cut. `fixed` attachment keeps it
      still while the section scrolls over it. iOS does not honour fixed
      attachment, so small screens fall back to a normal cover. */
+  /* Positioned high so Alicia's face sits in the upper, untouched band of
+     the hero. The copy lives below her, in the blurred lower half — so the
+     subject is never covered and the text never fights the photograph. */
   .hero-bg {
     background-image: url('/images/alicia/kitchen-wide.avif');
     background-size: cover;
-    background-position: center 35%;
+    background-position: center 14%;
     background-repeat: no-repeat;
     background-attachment: fixed;
   }
@@ -126,71 +129,83 @@
   @media (max-width: 1023px) {
     .hero-bg {
       background-attachment: scroll;
-      /* Shifted off the face — the narrow crop otherwise puts the
-         headline straight across it. */
-      background-position: 78% center;
+      background-position: 60% 2%;
     }
   }
 
-  /* A light, even veil — enough to keep ink legible, weak enough that the
-     kitchen still reads. No blur: the photograph should stay sharp. */
-  .scrim-light {
+  /* A soft field behind the transparent menu. Light enough that the
+     photograph still reads through it, strong enough that the nav and the
+     logo stay legible over whatever the image happens to be doing. */
+  .scrim-top {
     background: linear-gradient(
       180deg,
-      rgb(253 252 244 / 0.5) 0%,
-      rgb(253 252 244 / 0.35) 40%,
-      rgb(253 252 244 / 0.4) 100%
-    );
-  }
-
-  /* Spotlight behind the headline only. Keeps ink well clear of AA where
-     the copy sits, while leaving the rest of the photograph untouched —
-     without it the headline lands directly on a face. */
-  .scrim-spot {
-    background: radial-gradient(
-      58% 52% at 50% 44%,
-      rgb(253 252 244 / 0.92) 0%,
-      rgb(253 252 244 / 0.72) 45%,
-      rgb(253 252 244 / 0.28) 72%,
+      rgb(253 252 244 / 0.62) 0%,
+      rgb(253 252 244 / 0.34) 55%,
       rgb(253 252 244 / 0) 100%
     );
   }
 
-  /* Narrow viewports crop much tighter, so the copy needs more cover. */
+  /* Light at the top so the subject reads clearly, opaque toward the
+     bottom where the copy sits. */
+  .scrim-light {
+    background: linear-gradient(
+      180deg,
+      rgb(253 252 244 / 0.14) 0%,
+      rgb(253 252 244 / 0.2) 34%,
+      rgb(253 252 244 / 0.55) 52%,
+      rgb(253 252 244 / 0.86) 68%,
+      rgb(253 252 244 / 0.97) 84%,
+      rgb(253 252 244 / 1) 100%
+    );
+  }
+
+  /* A portrait viewport crops this landscape frame so tightly that Alicia's
+     face fills the middle. Rather than fight it, small screens read as a
+     photo band above the copy: the image holds the top third and the veil
+     goes fully opaque before the headline starts. */
   @media (max-width: 1023px) {
-    .scrim-spot {
-      background: radial-gradient(
-        130% 62% at 50% 42%,
-        rgb(253 252 244 / 0.95) 0%,
-        rgb(253 252 244 / 0.86) 50%,
-        rgb(253 252 244 / 0.55) 80%,
-        rgb(253 252 244 / 0.3) 100%
+    .scrim-light {
+      background: linear-gradient(
+        180deg,
+        rgb(253 252 244 / 0.1) 0%,
+        rgb(253 252 244 / 0.14) 20%,
+        rgb(253 252 244 / 0.6) 31%,
+        rgb(253 252 244 / 0.94) 38%,
+        rgb(253 252 244 / 1) 44%
       );
     }
   }
 
-  /* The only soft-focus in the hero, and only at the very bottom, so the
-     photograph dissolves into the next section instead of being cut. */
-  .scrim-bottom {
-    background: linear-gradient(
-      180deg,
-      rgb(253 252 244 / 0) 45%,
-      rgb(253 252 244 / 0.35) 62%,
-      rgb(253 252 244 / 0.8) 80%,
-      rgb(253 252 244 / 0.97) 92%,
-      rgb(253 252 244 / 1) 100%
-    );
-    backdrop-filter: blur(0px);
-    mask-image: linear-gradient(180deg, transparent 45%, #000 80%);
-    -webkit-mask-image: linear-gradient(180deg, transparent 45%, #000 80%);
+  /* Progressive blur, bottom half only.
+     Stacked strips rather than one layer: backdrop-filter cannot be
+     animated across a gradient, so increasing blur is built by masking
+     successively stronger layers. The top of the hero stays perfectly
+     sharp, which is where the subject is. */
+  .blur-step {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
   }
 
-  /* Progressive blur strip that only bites near the boundary. */
-  .fade-blur {
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    mask-image: linear-gradient(180deg, transparent 0%, #000 65%, #000 100%);
-    -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 65%, #000 100%);
+  .blur-1 {
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    mask-image: linear-gradient(180deg, transparent 44%, #000 56%);
+    -webkit-mask-image: linear-gradient(180deg, transparent 44%, #000 56%);
+  }
+
+  .blur-2 {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    mask-image: linear-gradient(180deg, transparent 56%, #000 70%);
+    -webkit-mask-image: linear-gradient(180deg, transparent 56%, #000 70%);
+  }
+
+  .blur-3 {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    mask-image: linear-gradient(180deg, transparent 70%, #000 86%);
+    -webkit-mask-image: linear-gradient(180deg, transparent 70%, #000 86%);
   }
 
   .icon-chip {

@@ -25,11 +25,11 @@ export function SiteFooter() {
         <div className="grid gap-12 py-18 md:grid-cols-2 lg:grid-cols-4 lg:py-24">
           <div>
             <Image
-              src="/images/brand/logo-lockup.png"
+              src="/images/brand/logo-lockup-trimmed.png"
               alt="Nutricycle"
-              width={500}
-              height={500}
-              className="h-32 w-auto"
+              width={202}
+              height={179}
+              className="h-24 w-auto"
             />
             <p className="mt-6 max-w-xs text-small text-muted">
               Nutrición cíclica para tu salud hormonal. Aprende a comer según tu

@@ -50,8 +50,8 @@ export function SiteHeader() {
   return (
     <header
       className={cn(
-        'sticky top-0 z-50 transition-colors duration-500',
-        scrolled ? 'glass shadow-md' : 'glass',
+        'sticky top-0 z-50 border border-transparent transition-colors duration-500',
+        scrolled ? 'glass-strong shadow-md' : 'bg-transparent',
       )}
     >
       <Container>
@@ -78,12 +78,12 @@ export function SiteHeader() {
 
           <Link href="/" aria-label="Nutricycle — inicio" className="group justify-self-center">
             <Image
-              src="/images/brand/logo-lockup.png"
+              src="/images/brand/logo-lockup-trimmed.png"
               alt="Nutricycle"
-              width={500}
-              height={500}
+              width={202}
+              height={179}
               priority
-              className="h-24 w-auto transition-transform duration-500 group-hover:scale-105 lg:h-28"
+              className="h-16 w-auto transition-transform duration-500 group-hover:scale-105 lg:h-20"
             />
           </Link>
 
@@ -137,11 +137,11 @@ export function SiteHeader() {
         >
           <div className="flex items-center justify-between">
             <Image
-              src="/images/brand/logo-lockup.png"
+              src="/images/brand/logo-lockup-trimmed.png"
               alt="Nutricycle"
-              width={500}
-              height={500}
-              className="h-20 w-auto"
+              width={202}
+              height={179}
+              className="h-16 w-auto"
             />
             <button
               type="button"
