@@ -16,72 +16,143 @@
     color: var(--color-ink);
     font-family: var(--font-sans);
     font-size: var(--text-body);
-    line-height: 1.8;
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-  }
-
-  /* Display serif. Light 300 only at >=28px — it gets fragile below. */
-  h1,
-  h2 {
-    font-family: var(--font-display);
-    font-weight: 300;
-  }
-
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-family: var(--font-display);
     font-weight: 400;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
   }
 
-  /* A designed focus ring, replacing the browser default the audit
-     found on the live site (`3px solid highlight`). */
+  /* Weights raised from v1 — Cormorant 300 read as too thin. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+
   :focus-visible {
-    outline: 2px solid var(--color-ink);
-    outline-offset: 2px;
-    border-radius: 2px;
+    outline: 2.5px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 4px;
   }
 
   ::selection {
-    background-color: var(--color-accent-display);
-    color: #fff;
+    background-color: var(--color-luteal);
+    color: var(--color-ink);
   }
 }
 
 /* ============================================================
-   The ethereal layer — decoration only, never the text layer
+   Surface & depth
    ============================================================ */
 
 @layer components {
-  /* Continuous gradient field. Sections dissolve rather than butt
-     against hard colour edges. (design-direction.md §6.1) */
-  .field-warm {
-    background-image: linear-gradient(
-      180deg,
-      var(--color-surface-raised) 0%,
-      var(--color-surface-wash) 55%,
-      var(--color-surface-wash-cool) 100%
-    );
+  /* Frosted glass — used on the header and on anything floating
+     over the hero photograph. */
+  .glass {
+    background-color: rgb(255 255 255 / 0.72);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgb(255 255 255 / 0.7);
   }
 
-  /* Ambient orbs: 4-8% opacity, heavily blurred, slowly drifting. */
+  .glass-strong {
+    background-color: rgb(255 255 255 / 0.88);
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
+    border: 1px solid rgb(255 255 255 / 0.85);
+  }
+
+  /* The card baseline. Cards were previously indistinguishable from
+     the page — they now carry a border, a real shadow and a hover lift. */
+  .card {
+    position: relative;
+    background-color: #fff;
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-sm);
+    transition:
+      transform 400ms var(--ease-out-soft),
+      box-shadow 400ms var(--ease-out-soft),
+      border-color 400ms var(--ease-out-soft);
+  }
+
+  .card-hover:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--color-hairline-strong);
+  }
+
+  /* 3D tilt for feature imagery. Perspective on the parent, lift on
+     the child, so the card reads as a physical object. */
+  .scene {
+    perspective: 1400px;
+  }
+
+  .tilt {
+    transform: rotateY(-7deg) rotateX(2deg) translateZ(0);
+    transition: transform 700ms var(--ease-out-soft), box-shadow 700ms var(--ease-out-soft);
+    transform-style: preserve-3d;
+  }
+
+  .scene:hover .tilt {
+    transform: rotateY(0deg) rotateX(0deg) translateZ(28px);
+    box-shadow: var(--shadow-xl);
+  }
+
   .orb {
     position: absolute;
     border-radius: 9999px;
-    filter: blur(120px);
+    filter: blur(110px);
     pointer-events: none;
     will-change: transform;
   }
 
-  /* Arch-masked portrait — the feminine-editorial silhouette. */
-  .mask-arch {
-    border-radius: 9999px 9999px var(--radius-card) var(--radius-card);
+  /* Light scrim so ink stays legible over the hero photograph without
+     resorting to a dark overlay. */
+  .scrim-light {
+    background: linear-gradient(
+      100deg,
+      rgb(253 252 244 / 0.98) 0%,
+      rgb(253 252 244 / 0.95) 42%,
+      rgb(253 252 244 / 0.78) 66%,
+      rgb(253 252 244 / 0.5) 100%
+    );
   }
 
-  .hairline {
-    border-color: var(--color-hairline);
+  /* Softens the hero photograph into ambience. Without this it reads as a
+     second subject competing with the portrait card in front of it. */
+  .scrim-veil {
+    background: radial-gradient(
+      120% 90% at 30% 40%,
+      rgb(253 252 244 / 0.75) 0%,
+      rgb(253 252 244 / 0.25) 55%,
+      rgb(253 252 244 / 0) 100%
+    );
+  }
+
+  .scrim-bottom {
+    background: linear-gradient(
+      180deg,
+      rgb(253 252 244 / 0) 55%,
+      rgb(253 252 244 / 0.85) 85%,
+      rgb(253 252 244 / 1) 100%
+    );
+  }
+
+  .icon-chip {
+    display: grid;
+    place-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 1.125rem;
+    box-shadow: var(--shadow-xs);
+    transition: transform 400ms var(--ease-spring);
+  }
+
+  .card-hover:hover .icon-chip {
+    transform: scale(1.09) rotate(-4deg);
   }
 }
 
@@ -95,14 +166,14 @@
     transform: translate3d(0, 0, 0) scale(1);
   }
   50% {
-    transform: translate3d(4%, -6%, 0) scale(1.08);
+    transform: translate3d(5%, -7%, 0) scale(1.12);
   }
 }
 
 @keyframes reveal-rise {
   from {
     opacity: 0;
-    transform: translate3d(0, 12px, 0);
+    transform: translate3d(0, 26px, 0);
   }
   to {
     opacity: 1;
@@ -110,32 +181,53 @@
   }
 }
 
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
 @layer components {
   .animate-drift {
-    animation: drift 28s var(--ease-drift) infinite;
+    animation: drift 26s var(--ease-out-soft) infinite;
   }
 
-  /* Progressive enhancement: content is visible by default and only
-     hidden once JS has confirmed it can reveal it again. Without the
-     `.js` guard, a no-JS visitor — or a crawler rendering without
-     scrolling — sees an entirely blank page below the hero. */
+  .animate-float {
+    animation: float-y 7s ease-in-out infinite;
+  }
+
+  /* Progressive enhancement: visible by default, hidden only once JS
+     has confirmed it can bring it back. */
   .js .reveal {
     opacity: 0;
   }
 
   .js .reveal[data-visible='true'] {
-    animation: reveal-rise 800ms var(--ease-drift) forwards;
+    animation: reveal-rise 850ms var(--ease-out-soft) forwards;
   }
 }
 
-/* Atmosphere is the first thing to go. Interaction feedback stays. */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
 
-  .animate-drift {
+  .animate-drift,
+  .animate-float {
     animation: none;
+  }
+
+  .tilt,
+  .scene:hover .tilt {
+    transform: none;
+  }
+
+  .card-hover:hover {
+    transform: none;
   }
 
   .js .reveal,

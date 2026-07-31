@@ -1,110 +1,120 @@
 /* ============================================================
-   Nutricycle — Design Tokens
-   Source: doc/02-design/design-direction.md
-           doc/00-overview/revised-direction.md §4 (palette merge)
+   Nutricycle — Design Tokens  (v2 — redesign)
 
-   Every contrast ratio below is measured, not estimated.
+   Changes from v1, per client feedback:
+   - Weights raised across the board. Cormorant 300 read as too light;
+     display now sits at 500/600 and body at 400/500.
+   - Every size up one step. Nav, body and captions were too small.
+   - Real elevation scale added for card separation.
+   - No dark surfaces. The plum band is gone.
    ============================================================ */
 
 @theme {
-  /* ---------- Type families ----------
-     Cormorant Garamond = display  (brand voice, Light 300 at >=28px)
-     Outfit             = UI/body  (parity with the app)                */
+  /* ---------- Type families ---------- */
   --font-display: var(--font-cormorant), Georgia, 'Times New Roman', serif;
   --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
 
-  /* ---------- Surfaces ----------
-     Warm builds structure. A continuous field, not flat blocks.        */
-  --color-surface-base: #ffffff;      /* ink 15.88:1 */
-  --color-surface-raised: #fdfcf4;    /* cream — ink 15.43:1 */
-  --color-surface-sunken: #f0ede6;    /* sand  — ink 13.58:1 */
-  --color-surface-lilac: #eceaf2;     /* founder section — ink 13.32:1 */
-  --color-surface-wash: #faf7f2;      /* ink 14.86:1 */
-  --color-surface-wash-cool: #f7f4f9; /* ink 14.56:1 */
-  --color-surface-inverse: #4a4453;   /* plum — white 9.36:1 */
+  /* ---------- Surfaces — all light ---------- */
+  --color-surface-base: #ffffff;
+  --color-surface-raised: #fdfcf4;    /* cream  — ink 15.43:1 */
+  --color-surface-sunken: #f7f4ef;    /* sand   — ink 14.3:1  */
+  --color-surface-lilac: #f3f0f9;     /* lilac  — ink 14.2:1  */
+  --color-surface-blush: #fdf4f2;     /* blush  — ink 15.0:1  */
+  --color-surface-mint: #f1f7f2;      /* mint   — ink 14.7:1  */
 
   /* ---------- Text ---------- */
-  --color-ink: #27211e;               /* 15.88:1 on white */
-  --color-muted: #65564e;             /* 7.01:1  on white */
-  --color-accent: #756b82;            /* 5.02:1  — any size */
-  --color-accent-display: #968da1;    /* 3.17:1  — >=24px ONLY */
+  --color-ink: #221d1a;               /* 16.6:1 on white */
+  --color-muted: #5c4f48;             /* 7.87:1 on white */
+  --color-accent: #6b5f80;            /* 6.1:1  on white */
+  --color-accent-display: #8b7fa3;    /* 3.9:1  — >=24px only */
 
-  /* ---------- Action ----------
-     Contrast IMPROVES on interaction. The old site did the reverse
-     (3.62 -> 2.27). See site-audit.md §10.1.                          */
+  /* ---------- Action ---------- */
   --color-action: #5f6b5b;            /* white 5.61:1  AA  */
   --color-action-hover: #4e594b;      /* white 7.36:1  AAA */
   --color-action-active: #3f4a3d;     /* white 9.30:1  AAA */
 
-  /* ---------- Lines & shadow ---------- */
-  --color-hairline: #e5ded4;          /* 1.30:1 — decorative only */
-  --color-hairline-strong: #cfc5c1;   /* 1.64:1 */
+  /* ---------- Lines ---------- */
+  --color-hairline: #ece5db;
+  --color-hairline-strong: #d8cec2;
 
-  /* ---------- Cycle phases ----------
-     Tints come from the app (revised-direction.md §4).
-     They FAIL as text (1.25-2.20:1), so each has an ink sibling.       */
-  --color-menstrual: #e8a0a2;         /* tint — ink 6.64:1  */
-  --color-menstrual-ink: #a34e52;     /* text — white 5.57:1 */
-  --color-follicular: #b8d8bc;        /* tint — ink 9.04:1  */
-  --color-follicular-ink: #3f6b47;    /* text — white 6.17:1 */
-  --color-ovulation: #f9e4b7;         /* tint — ink 11.18:1 */
-  --color-ovulation-ink: #7a5c15;     /* text — white 6.23:1 */
-  --color-luteal: #c8bce0;            /* tint — ink 7.80:1  */
-  --color-luteal-ink: #5c4c7d;        /* text — white 7.54:1 */
+  /* ---------- Cycle phases ---------- */
+  --color-menstrual: #f2b8ba;
+  --color-menstrual-soft: #fdeeee;
+  --color-menstrual-ink: #a34e52;     /* white 5.57:1 */
+  --color-follicular: #b8d8bc;
+  --color-follicular-soft: #eef7ef;
+  --color-follicular-ink: #3f6b47;    /* white 6.17:1 */
+  --color-ovulation: #f9dfa8;
+  --color-ovulation-soft: #fdf6e7;
+  --color-ovulation-ink: #7a5c15;     /* white 6.23:1 */
+  --color-luteal: #cdc0e6;
+  --color-luteal-soft: #f2eefa;
+  --color-luteal-ink: #5c4c7d;        /* white 7.54:1 */
 
-  /* Sage from the app palette. Fails as action (2.20:1) — tint only. */
   --color-sage: #a3b3a5;
 
-  /* ---------- Type scale ----------
-     10 tokens replacing 16 ad-hoc sizes. Fluid via clamp().            */
-  --text-display: clamp(2.75rem, 7vw, 5.5rem);   /* 44 -> 88 */
-  --text-display--line-height: 1.02;
-  --text-display--letter-spacing: -0.01em;
+  /* ---------- Type scale — every step larger than v1 ---------- */
+  --text-display: clamp(3rem, 6.5vw, 5.25rem);
+  --text-display--line-height: 1.04;
+  --text-display--letter-spacing: -0.02em;
+  --text-display--font-weight: 600;
 
-  --text-h1: clamp(2.25rem, 5vw, 3.75rem);       /* 36 -> 60 */
-  --text-h1--line-height: 1.08;
-  --text-h1--letter-spacing: -0.01em;
+  --text-h1: clamp(2.5rem, 4.6vw, 3.75rem);
+  --text-h1--line-height: 1.1;
+  --text-h1--letter-spacing: -0.02em;
+  --text-h1--font-weight: 600;
 
-  --text-h2: clamp(1.75rem, 3.5vw, 2.625rem);    /* 28 -> 42 */
-  --text-h2--line-height: 1.15;
+  --text-h2: clamp(2rem, 3.4vw, 3rem);
+  --text-h2--line-height: 1.14;
+  --text-h2--letter-spacing: -0.015em;
+  --text-h2--font-weight: 600;
 
-  --text-h3: 1.5rem;                             /* 24 */
-  --text-h3--line-height: 1.3;
+  --text-h3: 1.625rem;                /* 26 */
+  --text-h3--line-height: 1.28;
+  --text-h3--font-weight: 600;
 
-  --text-h4: 1.25rem;                            /* 20 */
-  --text-h4--line-height: 1.3;
+  --text-h4: 1.375rem;                /* 22 */
+  --text-h4--line-height: 1.35;
+  --text-h4--font-weight: 500;
 
-  --text-lead: 1.25rem;                          /* 20 */
-  --text-lead--line-height: 1.75;
+  --text-lead: 1.375rem;              /* 22 */
+  --text-lead--line-height: 1.6;
+  --text-lead--font-weight: 400;
 
-  --text-body: 1.0625rem;                        /* 17 */
-  --text-body--line-height: 1.8;
+  --text-body: 1.1875rem;             /* 19 */
+  --text-body--line-height: 1.7;
+  --text-body--font-weight: 400;
 
-  --text-small: 0.9375rem;                       /* 15 */
+  --text-small: 1.0625rem;            /* 17 */
   --text-small--line-height: 1.6;
+  --text-small--font-weight: 400;
 
-  --text-caption: 0.8125rem;                     /* 13 */
+  --text-caption: 0.9375rem;          /* 15 */
   --text-caption--line-height: 1.5;
+  --text-caption--font-weight: 500;
 
-  --text-eyebrow: 0.75rem;                       /* 12 */
+  --text-eyebrow: 0.8125rem;          /* 13 */
   --text-eyebrow--line-height: 1.4;
-  --text-eyebrow--letter-spacing: 0.2em;
+  --text-eyebrow--letter-spacing: 0.16em;
+  --text-eyebrow--font-weight: 600;
+
+  --text-nav: 1.0625rem;              /* 17 — was 15 */
+  --text-nav--font-weight: 500;
 
   /* ---------- Layout ---------- */
-  --container-content: 75rem;   /* 1200px */
-  --container-prose: 62ch;      /* reading measure */
+  --container-content: 78rem;
+  --radius-card: 1.5rem;
+  --radius-lg: 2rem;
+  --radius-button: 999px;
 
-  /* ---------- Radius ---------- */
-  --radius-card: 1rem;          /* 16 */
-  --radius-button: 0.75rem;     /* 12 */
+  /* ---------- Elevation — warm-tinted, layered ---------- */
+  --shadow-xs: 0 1px 2px rgba(34, 29, 26, 0.04);
+  --shadow-sm: 0 2px 8px rgba(34, 29, 26, 0.05), 0 1px 2px rgba(34, 29, 26, 0.04);
+  --shadow-md: 0 8px 24px rgba(34, 29, 26, 0.07), 0 2px 6px rgba(34, 29, 26, 0.04);
+  --shadow-lg: 0 18px 48px rgba(34, 29, 26, 0.1), 0 4px 12px rgba(34, 29, 26, 0.05);
+  --shadow-xl: 0 32px 72px rgba(34, 29, 26, 0.14), 0 8px 20px rgba(34, 29, 26, 0.06);
+  --shadow-glow: 0 24px 64px rgba(139, 127, 163, 0.22);
 
-  /* ---------- Motion ----------
-     Two speeds: UI stays instant, atmosphere drifts.                   */
-  --ease-drift: cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-/* Warm-tinted shadows. Grey shadows on cream read dirty. */
-@theme {
-  --shadow-soft: 0 24px 64px rgba(39, 33, 30, 0.06);
-  --shadow-lift: 0 32px 72px rgba(39, 33, 30, 0.1);
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
 }

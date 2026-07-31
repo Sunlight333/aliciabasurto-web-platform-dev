@@ -1,72 +1,133 @@
 import Image from 'next/image';
+import { Sparkles, Star, ChefHat, CircleDashed } from 'lucide-react';
 import { STORE } from '@nutricycle/shared';
 import { Container } from '@/components/layout/container';
-import { Button } from '@/components/ui/button';
-import { Eyebrow } from '@/components/ui/eyebrow';
-import { AmbientOrbs } from '@/components/motion/ambient-orbs';
+import { StoreButtons } from './store-buttons';
 
 /**
- * ⚠️ The design called for an app mockup here. Zero app screenshots exist
- * in the repo (image-assets.md §5 gap #4), so the hero uses the strongest
- * founder frame instead — arch-masked, per design-direction.md §7.
- * Swap in the device mockup when screenshots arrive.
+ * Hero — kitchen-wide.avif full-bleed behind a light scrim.
+ *
+ * The scrim is cream, not dark: ink stays at 14:1+ over the left half
+ * while the photograph shows through on the right. The founder portrait
+ * floats over it in a 3D-tilted glass frame.
  */
 export function Hero() {
   return (
-    <section className="relative overflow-hidden pt-16 pb-20 md:pt-24 md:pb-28 lg:pt-32 lg:pb-36">
-      <AmbientOrbs />
+    <section className="relative -mt-40 overflow-hidden pt-40">
+      {/* Background photograph */}
+      <div className="absolute inset-0">
+        {/* Blurred and scaled: the photograph is ambience here, not a
+            subject. Left sharp it competes with the portrait card. */}
+        <Image
+          src="/images/alicia/kitchen-wide.avif"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="scale-110 object-cover object-center blur-[3px]"
+        />
+        <div className="scrim-veil absolute inset-0" />
+        <div className="scrim-light absolute inset-0" />
+        <div className="scrim-bottom absolute inset-0" />
+      </div>
+
+      {/* Ambient colour */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div
+          className="orb animate-drift"
+          style={{
+            width: 'min(60vw, 700px)',
+            height: 'min(60vw, 700px)',
+            top: '-15%',
+            left: '-10%',
+            background: 'var(--color-luteal)',
+            opacity: 0.28,
+          }}
+        />
+        <div
+          className="orb animate-drift"
+          style={{
+            width: 'min(45vw, 520px)',
+            height: 'min(45vw, 520px)',
+            bottom: '-10%',
+            left: '35%',
+            background: 'var(--color-menstrual)',
+            opacity: 0.18,
+            animationDelay: '-13s',
+          }}
+        />
+      </div>
 
       <Container className="relative">
-        <div className="grid items-center gap-14 lg:grid-cols-12 lg:gap-16">
-          {/* 7/5 rather than 6/6 — at 6 columns the display line breaks
-              after "sentirte", orphaning "tú." onto a third line. */}
+        <div className="grid items-center gap-14 pt-14 pb-24 lg:grid-cols-12 lg:gap-10 lg:pt-20 lg:pb-32">
           <div className="lg:col-span-7">
-            <Eyebrow>Nutrición cíclica</Eyebrow>
+            <span className="glass inline-flex items-center gap-2.5 rounded-full px-5 py-2.5 shadow-sm">
+              <Sparkles strokeWidth={2} className="h-4.5 w-4.5 text-accent" />
+              <span className="font-sans text-caption font-semibold tracking-wide text-ink">
+                Nutrición cíclica con IA
+              </span>
+            </span>
 
             <h1 className="mt-7 text-display text-ink">
               Come con tu ciclo.
               <br />
-              <em className="font-display italic text-accent-display">
-                Vuelve a sentirte tú.
-              </em>
+              <span className="text-accent">Vuelve a sentirte tú.</span>
             </h1>
 
-            <p className="mt-8 max-w-lg text-lead text-muted">
+            <p className="mt-7 max-w-xl text-lead text-muted">
               Nutricycle adapta tu alimentación, tus recetas y tus rutinas a cada
               fase de tu ciclo menstrual — automáticamente.
             </p>
 
-            <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
-              <Button href={`${STORE.smart}?src=home-hero`}>Descargar gratis</Button>
-              <Button href="#como-funciona" variant="ghost">
-                Ver cómo funciona
-              </Button>
-            </div>
+            <StoreButtons source="home-hero" size="lg" className="mt-10" />
 
-            <p className="mt-6 text-caption text-muted">
+            <p className="mt-5 text-caption text-muted">
               Gratis · iOS y Android · Sin tarjeta
             </p>
 
-            <dl className="mt-12 flex items-center gap-8 border-t border-hairline pt-8">
-              <Stat value={`★ ${STORE.rating}`} label="Valoración" />
-              <span aria-hidden className="h-9 w-px bg-hairline" />
-              <Stat value={STORE.recipeCount} label="Recetas" />
-              <span aria-hidden className="h-9 w-px bg-hairline" />
-              <Stat value={STORE.phaseCount} label="Fases del ciclo" />
-            </dl>
+            {/* Glass stat pills */}
+            <ul className="mt-12 flex flex-wrap gap-3.5">
+              <StatPill
+                icon={<Star strokeWidth={2.2} className="h-5 w-5 text-ovulation-ink" />}
+                value={STORE.rating}
+                label="Valoración"
+              />
+              <StatPill
+                icon={<ChefHat strokeWidth={2} className="h-5 w-5 text-menstrual-ink" />}
+                value={STORE.recipeCount}
+                label="Recetas"
+              />
+              <StatPill
+                icon={
+                  <CircleDashed strokeWidth={2} className="h-5 w-5 text-luteal-ink" />
+                }
+                value={STORE.phaseCount}
+                label="Fases"
+              />
+            </ul>
           </div>
 
-          <div className="lg:col-span-5">
-            <div className="relative mx-auto max-w-md lg:ml-auto lg:max-w-none">
-              <div className="mask-arch relative aspect-[2/3] overflow-hidden shadow-soft">
-                <Image
-                  src="/images/alicia/portrait-smiling.jpg"
-                  alt="Alicia Basurto, health coach de nutrición hormonal, en su cocina"
-                  fill
-                  priority
-                  sizes="(min-width: 1024px) 40vw, 90vw"
-                  className="object-cover"
-                />
+          {/* Floating portrait, tilted in 3D */}
+          <div className="scene lg:col-span-5">
+            <div className="animate-float relative mx-auto max-w-sm lg:ml-auto">
+              <div className="tilt relative overflow-hidden rounded-[2rem] border-4 border-white shadow-xl">
+                <div className="relative aspect-[3/4]">
+                  <Image
+                    src="/images/alicia/portrait-tea.jpg"
+                    alt="Alicia Basurto sosteniendo una infusión en su cocina"
+                    fill
+                    priority
+                    sizes="(min-width: 1024px) 400px, 80vw"
+                    className="object-cover"
+                  />
+                </div>
+              </div>
+
+              <div className="glass-strong absolute -bottom-7 -left-7 max-w-[15rem] rounded-2xl p-5 shadow-lg">
+                <p className="font-display text-h4 text-ink">Alicia Basurto</p>
+                <p className="mt-1 text-caption text-muted">
+                  Health coach de nutrición hormonal
+                </p>
               </div>
             </div>
           </div>
@@ -76,14 +137,24 @@ export function Hero() {
   );
 }
 
-function Stat({ value, label }: { value: string; label: string }) {
+function StatPill({
+  icon,
+  value,
+  label,
+}: {
+  icon: React.ReactNode;
+  value: string;
+  label: string;
+}) {
   return (
-    <div>
-      <dt className="sr-only">{label}</dt>
-      <dd>
-        <span className="block font-display text-h3 font-normal text-ink">{value}</span>
-        <span className="mt-1 block text-caption text-muted">{label}</span>
-      </dd>
-    </div>
+    <li className="glass flex items-center gap-3 rounded-2xl px-5 py-3.5 shadow-sm">
+      {icon}
+      <span>
+        <span className="block font-display text-h4 font-semibold text-ink">
+          {value}
+        </span>
+        <span className="block text-caption text-muted">{label}</span>
+      </span>
+    </li>
   );
 }

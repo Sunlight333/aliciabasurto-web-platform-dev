@@ -1,64 +1,78 @@
 import Image from 'next/image';
+import { CalendarHeart, Utensils, HeartPulse, ArrowRight } from 'lucide-react';
 import { Section } from '@/components/layout/section';
 import { Container } from '@/components/layout/container';
 import { Eyebrow } from '@/components/ui/eyebrow';
-import { Button } from '@/components/ui/button';
 import { Reveal } from '@/components/motion/reveal';
 import { STEPS } from '@/data/home';
 
+const ICONS = { CalendarHeart, Utensils, HeartPulse };
+
 export function HowItWorks() {
   return (
-    <Section surface="sunken" id="como-funciona">
+    <Section surface="base" id="como-funciona">
       <Container>
         <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-5">
             <Reveal>
               <Eyebrow>Cómo funciona</Eyebrow>
-              <h2 className="mt-6 text-h2 text-ink">
-                Nutrición que se{' '}
-                <em className="font-display italic text-accent-display">
-                  sincroniza
-                </em>{' '}
-                a tu cuerpo
+              <h2 className="mt-5 text-h2 text-ink">
+                Nutrición que se <span className="text-accent">sincroniza</span> a tu
+                cuerpo
               </h2>
               <p className="mt-6 max-w-md text-body text-muted">
                 Tres pasos. El resto lo calcula la app cada día por ti.
               </p>
 
-              <div className="mask-arch relative mt-12 hidden aspect-[2/3] max-w-sm overflow-hidden shadow-soft lg:block">
-                <Image
-                  src="/images/alicia/kitchen-chopping.jpg"
-                  alt="Alicia Basurto preparando verduras para una receta por fase del ciclo"
-                  fill
-                  sizes="380px"
-                  className="object-cover"
-                />
+              <div className="scene mt-12 hidden lg:block">
+                <div className="tilt relative overflow-hidden rounded-[2rem] border-4 border-white shadow-lg">
+                  <div className="relative aspect-[4/5]">
+                    <Image
+                      src="/images/alicia/kitchen-chopping.jpg"
+                      alt="Alicia Basurto preparando verduras para una receta por fase del ciclo"
+                      fill
+                      sizes="420px"
+                      className="object-cover"
+                    />
+                  </div>
+                </div>
               </div>
             </Reveal>
           </div>
 
-          <ol className="lg:col-span-7 lg:pt-4">
-            {STEPS.map((step, i) => (
-              <Reveal as="li" key={step.number} delay={i * 120}>
-                <div className="flex gap-6 border-t border-hairline py-9 first:border-t-0 first:pt-0 md:gap-10">
-                  <span
-                    aria-hidden
-                    className="font-display text-h2 leading-none font-light text-accent-display"
-                  >
-                    {step.number}
-                  </span>
-                  <div>
-                    <h3 className="text-h3 text-ink">{step.title}</h3>
-                    <p className="mt-3 max-w-lg text-body text-muted">{step.body}</p>
-                  </div>
-                </div>
-              </Reveal>
-            ))}
+          <ol className="flex flex-col gap-6 lg:col-span-7">
+            {STEPS.map((step, i) => {
+              const Icon = ICONS[step.icon];
+              return (
+                <Reveal as="li" key={step.number} delay={i * 130}>
+                  <article className="card card-hover flex items-start gap-6 p-7 lg:p-9">
+                    <span className={`icon-chip shrink-0 ${step.tint}`}>
+                      <Icon strokeWidth={1.9} className="h-7 w-7" />
+                    </span>
 
-            <Reveal as="li" delay={360}>
-              <Button href="/como-funciona" variant="outline" className="mt-8">
+                    <div>
+                      <span className="font-sans text-caption font-bold tracking-[0.16em] text-accent-display uppercase">
+                        Paso {step.number}
+                      </span>
+                      <h3 className="mt-2 text-h3 text-ink">{step.title}</h3>
+                      <p className="mt-3 text-small text-muted">{step.body}</p>
+                    </div>
+                  </article>
+                </Reveal>
+              );
+            })}
+
+            <Reveal as="li" delay={420}>
+              <a
+                href="/como-funciona"
+                className="group inline-flex items-center gap-2.5 font-sans text-nav font-semibold text-action transition-colors hover:text-action-hover"
+              >
                 Conoce el método
-              </Button>
+                <ArrowRight
+                  strokeWidth={2.2}
+                  className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1.5"
+                />
+              </a>
             </Reveal>
           </ol>
         </div>

@@ -1,58 +1,123 @@
+import { Star, ChefHat, CircleDashed } from 'lucide-react';
+import Image from 'next/image';
 import { STORE } from '@nutricycle/shared';
-import { Section } from '@/components/layout/section';
 import { Container } from '@/components/layout/container';
 import { Eyebrow } from '@/components/ui/eyebrow';
-import { StoreBadges } from './store-badges';
+import { StoreButtons } from './store-buttons';
 import { Reveal } from '@/components/motion/reveal';
 
 /**
- * The closing conversion band. Reused verbatim at the foot of every
- * /ciclo/[fase] and /recetas/[slug] page — that is where educational
- * search traffic lands, and the highest-intent moment on the site
- * (cta-strategy.md §3).
+ * Closing conversion band — light, per the no-dark-backgrounds rule.
+ * A glass card floats on a soft blush/lilac gradient.
+ *
+ * Reused verbatim at the foot of /ciclo/[fase] and /recetas/[slug].
  */
 export function CtaBand({ source = 'closing' }: { source?: string }) {
   return (
-    <Section surface="inverse" size="feature" className="overflow-hidden">
-      <Container>
-        <Reveal className="mx-auto max-w-3xl text-center">
-          <Eyebrow className="text-white/60">Disponible en iOS y Android</Eyebrow>
+    <section className="relative overflow-hidden bg-gradient-to-br from-surface-blush via-surface-raised to-surface-lilac py-24 lg:py-36">
+      <div aria-hidden className="pointer-events-none absolute inset-0">
+        <div
+          className="orb animate-drift"
+          style={{
+            width: 'min(55vw, 640px)',
+            height: 'min(55vw, 640px)',
+            top: '-25%',
+            left: '-5%',
+            background: 'var(--color-menstrual)',
+            opacity: 0.3,
+          }}
+        />
+        <div
+          className="orb animate-drift"
+          style={{
+            width: 'min(50vw, 580px)',
+            height: 'min(50vw, 580px)',
+            bottom: '-25%',
+            right: '-5%',
+            background: 'var(--color-luteal)',
+            opacity: 0.35,
+            animationDelay: '-11s',
+          }}
+        />
+      </div>
 
-          <h2 className="mt-6 text-h1 text-white">
-            Tu ciclo, tu guía —{' '}
-            <em className="font-display italic text-luteal">en tu bolsillo</em>
-          </h2>
+      <Container className="relative">
+        <Reveal>
+          <div className="glass-strong mx-auto max-w-4xl rounded-[2.5rem] px-8 py-14 text-center shadow-xl lg:px-16 lg:py-16">
+            <Image
+              src="/images/brand/app-icon-1024.png"
+              alt=""
+              width={1024}
+              height={1024}
+              className="animate-float mx-auto h-24 w-24 rounded-[1.5rem] shadow-lg"
+            />
 
-          <p className="mx-auto mt-6 max-w-xl text-lead text-white/75">
-            Cada día, los alimentos y recetas que tu cuerpo necesita según tu fase.
-            Sin dietas, sin restricciones.
-          </p>
+            <Eyebrow className="mt-8">Disponible en iOS y Android</Eyebrow>
 
-          {/* Social proof adjacent to the CTA, not stranded up the page. */}
-          <div className="mt-10 flex items-center justify-center gap-8 text-white">
-            <Stat value={`★ ${STORE.rating}`} label="Valoración" />
-            <span aria-hidden className="h-8 w-px bg-white/20" />
-            <Stat value={STORE.recipeCount} label="Recetas" />
-            <span aria-hidden className="h-8 w-px bg-white/20" />
-            <Stat value={STORE.phaseCount} label="Fases" />
+            <h2 className="mt-5 text-h1 text-ink">
+              Tu ciclo, tu guía —{' '}
+              <span className="text-accent">en tu bolsillo</span>
+            </h2>
+
+            <p className="mx-auto mt-6 max-w-xl text-lead text-muted">
+              Cada día, los alimentos y recetas que tu cuerpo necesita según tu
+              fase. Sin dietas, sin restricciones.
+            </p>
+
+            <ul className="mt-10 flex flex-wrap items-center justify-center gap-4">
+              <Stat
+                icon={<Star strokeWidth={2.2} className="h-5 w-5 text-ovulation-ink" />}
+                value={STORE.rating}
+                label="Valoración"
+              />
+              <Stat
+                icon={<ChefHat strokeWidth={2} className="h-5 w-5 text-menstrual-ink" />}
+                value={STORE.recipeCount}
+                label="Recetas"
+              />
+              <Stat
+                icon={
+                  <CircleDashed strokeWidth={2} className="h-5 w-5 text-luteal-ink" />
+                }
+                value={STORE.phaseCount}
+                label="Fases"
+              />
+            </ul>
+
+            <StoreButtons
+              source={source}
+              size="lg"
+              className="mt-10 justify-center sm:inline-flex"
+            />
+
+            <p className="mt-6 text-caption text-muted">
+              Descarga gratis · Plan Hormonal desde la app
+            </p>
           </div>
-
-          <StoreBadges tone="dark" source={source} className="mt-10 justify-center" />
-
-          <p className="mt-6 text-caption text-white/60">
-            Descarga gratis · Plan Hormonal desde la app
-          </p>
         </Reveal>
       </Container>
-    </Section>
+    </section>
   );
 }
 
-function Stat({ value, label }: { value: string; label: string }) {
+function Stat({
+  icon,
+  value,
+  label,
+}: {
+  icon: React.ReactNode;
+  value: string;
+  label: string;
+}) {
   return (
-    <div className="text-center">
-      <p className="font-display text-h3 font-normal">{value}</p>
-      <p className="mt-1 text-caption text-white/60">{label}</p>
-    </div>
+    <li className="flex items-center gap-3 rounded-2xl border border-hairline bg-white/70 px-5 py-3 shadow-sm">
+      {icon}
+      <span className="text-left">
+        <span className="block font-display text-h4 font-semibold text-ink">
+          {value}
+        </span>
+        <span className="block text-caption text-muted">{label}</span>
+      </span>
+    </li>
   );
 }

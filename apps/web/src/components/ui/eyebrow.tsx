@@ -1,7 +1,5 @@
 import { cn } from '@/lib/cn';
 
-/** 12px, 0.2em tracking, uppercase. Wide letterspacing is the
- *  luxury-editorial signal (design-direction.md §3.3). */
 export function Eyebrow({
   children,
   className,
@@ -12,7 +10,7 @@ export function Eyebrow({
   return (
     <p
       className={cn(
-        'font-sans text-eyebrow font-medium tracking-[0.2em] uppercase text-muted',
+        'font-sans text-eyebrow font-bold tracking-[0.16em] uppercase text-accent-display',
         className,
       )}
     >

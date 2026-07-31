@@ -1,6 +1,7 @@
 import { cn } from '@/lib/cn';
 
-type Surface = 'none' | 'base' | 'raised' | 'sunken' | 'lilac' | 'inverse';
+/** All surfaces are light — no dark backgrounds anywhere on the site. */
+type Surface = 'none' | 'base' | 'raised' | 'sunken' | 'lilac' | 'blush' | 'mint';
 
 const SURFACES: Record<Surface, string> = {
   none: '',
@@ -8,14 +9,10 @@ const SURFACES: Record<Surface, string> = {
   raised: 'bg-surface-raised',
   sunken: 'bg-surface-sunken',
   lilac: 'bg-surface-lilac',
-  inverse: 'bg-surface-inverse text-white',
+  blush: 'bg-surface-blush',
+  mint: 'bg-surface-mint',
 };
 
-/**
- * Section rhythm from design-direction.md §4:
- * mobile 64 / tablet 96 / desktop 160 — `feature` goes to 200.
- * "Loose" is fewer things per screen, not more padding on each.
- */
 export function Section({
   children,
   className,
@@ -35,9 +32,9 @@ export function Section({
       className={cn(
         'relative',
         SURFACES[surface],
-        size === 'standard' && 'py-16 md:py-24 lg:py-40',
-        size === 'feature' && 'py-20 md:py-30 lg:py-50',
-        size === 'tight' && 'py-12 md:py-16 lg:py-24',
+        size === 'standard' && 'py-20 md:py-24 lg:py-32',
+        size === 'feature' && 'py-24 md:py-32 lg:py-40',
+        size === 'tight' && 'py-14 md:py-18 lg:py-24',
         className,
       )}
     >

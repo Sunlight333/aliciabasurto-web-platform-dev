@@ -2,15 +2,11 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { X, Star } from 'lucide-react';
 import { STORE } from '@nutricycle/shared';
 
 const DISMISSED_KEY = 'nc.appbar.dismissed';
 
-/**
- * Mobile-only persistent install CTA.
- * Appears once the hero has scrolled out, hides on scroll-up, and is
- * dismissible (remembered). Respects the iOS home indicator inset.
- */
 export function StickyAppBar() {
   const [shown, setShown] = useState(false);
   const [dismissed, setDismissed] = useState(true);
@@ -25,8 +21,7 @@ export function StickyAppBar() {
 
     const onScroll = () => {
       const y = window.scrollY;
-      const past = y > window.innerHeight * 0.8;
-      setShown(past && y <= last);
+      setShown(y > window.innerHeight * 0.8 && y <= last);
       last = y;
     };
 
@@ -38,31 +33,34 @@ export function StickyAppBar() {
 
   return (
     <div
-      className="fixed inset-x-0 bottom-0 z-50 transition-transform duration-300 ease-out lg:hidden"
+      className="fixed inset-x-0 bottom-0 z-40 transition-transform duration-400 lg:hidden"
       style={{
-        transform: shown ? 'translateY(0)' : 'translateY(120%)',
+        transform: shown ? 'translateY(0)' : 'translateY(150%)',
         paddingBottom: 'env(safe-area-inset-bottom)',
       }}
     >
-      <div className="m-3 flex items-center gap-3 rounded-card bg-action p-3 shadow-lift">
+      <div className="glass-strong m-3.5 flex items-center gap-3.5 rounded-[1.5rem] p-3.5 shadow-xl">
         <Image
           src="/images/brand/app-icon-1024.png"
           alt=""
           width={1024}
           height={1024}
-          className="h-11 w-11 rounded-xl"
+          className="h-13 w-13 rounded-2xl shadow-sm"
         />
 
-        <div className="min-w-0 flex-1 leading-tight text-white">
-          <p className="truncate font-sans text-small font-medium">Nutricycle</p>
-          <p className="truncate text-caption text-white/80">
-            ★ {STORE.rating} · {STORE.price}
+        <div className="min-w-0 flex-1 leading-tight">
+          <p className="truncate font-display text-h4 font-semibold text-ink">
+            Nutricycle
+          </p>
+          <p className="mt-0.5 flex items-center gap-1.5 text-caption text-muted">
+            <Star strokeWidth={2.4} className="h-3.5 w-3.5 text-ovulation-ink" />
+            {STORE.rating} · {STORE.price}
           </p>
         </div>
 
         <a
           href={`${STORE.smart}?src=sticky`}
-          className="rounded-button bg-white px-5 py-2.5 font-sans text-small font-medium tracking-[0.08em] text-ink uppercase transition-colors duration-200 hover:bg-surface-raised"
+          className="rounded-full bg-action px-6 py-3 font-sans text-caption font-bold tracking-wide text-white uppercase shadow-md transition-colors hover:bg-action-hover"
         >
           Instalar
         </a>
@@ -74,11 +72,9 @@ export function StickyAppBar() {
             setDismissed(true);
           }}
           aria-label="Cerrar"
-          className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-white/80 transition-colors hover:bg-white/15 hover:text-white"
+          className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-muted transition-colors hover:bg-ink/5 hover:text-ink"
         >
-          <span aria-hidden className="text-lg leading-none">
-            ×
-          </span>
+          <X strokeWidth={2.2} className="h-5 w-5" />
         </button>
       </div>
     </div>
