@@ -1,3 +1,8 @@
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const here = path.dirname(fileURLToPath(import.meta.url));
+
 /** @type {import('next').NextConfig} */
 const isProd = process.env.NODE_ENV === 'production';
 
@@ -17,14 +22,22 @@ const nextConfig = {
   // app/page.js start 404ing. Separate directories make that impossible.
   distDir: isProd ? '.next-build' : '.next',
 
-  webpack: (config, { dev }) => {
+  // Standalone output bundles a minimal server with only the traced
+  // dependencies, so the VPS never needs node_modules or a build step.
+  // That box runs six other apps on 2GB of RAM — building there risks
+  // OOM-killing a live service.
+  // Traced from the workspace root so the monorepo's hoisted node_modules
+  // are included. Must be a real filesystem path — a URL pathname yields
+  // "/C:/..." on Windows, which silently produces no standalone output.
+  output: 'standalone',
+  outputFileTracingRoot: path.join(here, '..', '..'),
+
+  webpack: (config) => {
     // On this Windows volume webpack's filesystem cache repeatedly fails to
     // rename its pack files (EBUSY — an antivirus or sync client holds the
     // handle), and a failed write leaves the client chunks truncated.
-    // An in-memory cache keeps dev rebuilds fast without touching disk.
-    if (dev) {
-      config.cache = { type: 'memory' };
-    }
+    // An in-memory cache avoids the disk churn entirely, in dev and build.
+    config.cache = { type: 'memory' };
     return config;
   },
 };
