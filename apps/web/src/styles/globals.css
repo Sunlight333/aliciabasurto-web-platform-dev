@@ -204,6 +204,17 @@
     }
   }
 
+  /* The reviews track scrolls horizontally by design; the native bar would
+     cut across the card shadows. Keyboard and wheel scrolling still work. */
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
   .icon-chip {
     display: grid;
     place-items: center;

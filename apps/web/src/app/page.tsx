@@ -5,7 +5,7 @@ import { HowItWorks } from '@/components/content/how-it-works';
 import { PhasesSection } from '@/components/content/phases-section';
 import { FeaturesSection } from '@/components/content/features-section';
 import { FounderSection } from '@/components/content/founder-section';
-import { ProofSection } from '@/components/content/proof-section';
+import { ReviewsSection } from '@/components/content/reviews-section';
 import { CtaBand } from '@/components/marketing/cta-band';
 
 export const metadata: Metadata = {
@@ -32,7 +32,7 @@ export default function HomePage() {
       <PhasesSection />
       <FeaturesSection />
       <FounderSection />
-      <ProofSection />
+      <ReviewsSection />
       <CtaBand source="home-closing" />
     </>
   );
