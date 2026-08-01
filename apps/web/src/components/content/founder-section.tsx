@@ -1,17 +1,46 @@
 import Image from 'next/image';
-import { ArrowRight, Quote } from 'lucide-react';
+import { ArrowRight, Leaf, CircleDashed, HeartHandshake } from 'lucide-react';
 import { Section } from '@/components/layout/section';
 import { Container } from '@/components/layout/container';
 import { Eyebrow } from '@/components/ui/eyebrow';
 import { Reveal } from '@/components/motion/reveal';
 
 /**
- * Required, not decorative — the founder bridges the "Nutricycle" product
- * name and the "Alicia Basurto" personal brand (about-page.md §1).
+ * Founder section — the site's trust anchor.
  *
- * ⚠️ Body copy is placeholder; ~80 words needed from the client.
- * No app CTA here by design — the closing band owns the download ask.
+ * The product is paid health guidance with no free trial on the web, so a
+ * named, visible practitioner is the cheapest credibility available
+ * (about-page.md §1). This section therefore carries more structure than
+ * a plain text-and-photo split.
+ *
+ * The three pillars are drawn from the site's own existing copy — food as
+ * medicine, syncing to the cycle, no restrictive dieting. They are method
+ * principles, not credentials: real qualifications are still pending from
+ * the client (about-page.md §4) and nothing here invents them.
+ *
+ * No app CTA by design — the closing band owns the download ask.
  */
+const PILLARS = [
+  {
+    icon: Leaf,
+    title: 'La comida como medicina',
+    body: 'Cada alimento elegido por lo que le hace a tus hormonas.',
+    tint: 'bg-follicular-soft text-follicular-ink',
+  },
+  {
+    icon: CircleDashed,
+    title: 'Sincronizada a tu ciclo',
+    body: 'Lo que tu cuerpo necesita cambia cada semana. Tu plan también.',
+    tint: 'bg-luteal-soft text-luteal-ink',
+  },
+  {
+    icon: HeartHandshake,
+    title: 'Sin dietas restrictivas',
+    body: 'Nada de contar calorías ni prohibirte comida.',
+    tint: 'bg-menstrual-soft text-menstrual-ink',
+  },
+];
+
 export function FounderSection() {
   return (
     <Section surface="lilac" className="overflow-hidden">
@@ -19,24 +48,71 @@ export function FounderSection() {
         <div
           className="orb animate-drift"
           style={{
-            width: 'min(50vw, 560px)',
-            height: 'min(50vw, 560px)',
-            top: '-20%',
-            right: '-8%',
+            width: 'min(46vw, 540px)',
+            height: 'min(46vw, 540px)',
+            top: '-22%',
+            right: '-10%',
             background: 'var(--color-luteal)',
-            opacity: 0.35,
+            opacity: 0.4,
           }}
         />
       </div>
 
       <Container className="relative">
         <div className="grid items-center gap-14 lg:grid-cols-12 lg:gap-16">
-          <Reveal className="lg:col-span-6">
+          {/* ---------- Portrait ---------- */}
+          <Reveal className="lg:col-span-5 lg:order-2">
+            <div className="group relative mx-auto max-w-md lg:mx-0">
+              {/* A tinted layer offset behind the frame. Depth comes from
+                  this rather than a resting 3D tilt, which made the frame
+                  read as crooked next to straight-edged copy. */}
+              <div
+                aria-hidden
+                className="absolute -top-6 -right-6 h-full w-full rounded-[2rem] bg-luteal/45 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-x-2 group-hover:translate-y-2"
+              />
+
+              <div className="relative overflow-hidden rounded-[2rem] border-4 border-white shadow-xl transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-1.5">
+                <div className="relative aspect-[4/5]">
+                  <Image
+                    src="/images/alicia/portrait-smiling.jpg"
+                    alt="Alicia Basurto, health coach de nutrición hormonal, en su cocina"
+                    fill
+                    sizes="(min-width: 1024px) 440px, 90vw"
+                    className="object-cover"
+                  />
+                </div>
+              </div>
+
+              {/* Desktop only. On mobile the columns stack, putting this
+                  directly above a heading carrying the same name — the
+                  repetition read as a mistake. */}
+              <div className="glass-strong relative z-10 -mt-10 ml-6 mr-10 hidden rounded-2xl px-6 py-5 shadow-lg lg:block">
+                <p className="font-display text-h4 font-semibold text-ink">
+                  Alicia Basurto
+                </p>
+                <p className="mt-1 text-caption text-muted">
+                  Health coach de nutrición hormonal
+                </p>
+              </div>
+            </div>
+          </Reveal>
+
+          {/* ---------- Copy ---------- */}
+          <Reveal className="lg:col-span-7 lg:order-1" delay={140}>
             <Eyebrow>Sobre mí</Eyebrow>
 
+            {/* Deliberate two-line lockup — as one run it orphaned "Cíclica". */}
             <h2 className="mt-5 text-h2 text-ink">
-              Alicia Basurto: <span className="text-accent">Nutrición Cíclica</span>
+              Alicia Basurto:
+              <br />
+              <span className="text-accent">Nutrición Cíclica</span>
             </h2>
+
+            <blockquote className="mt-8 border-l-2 border-accent-display/50 pl-6">
+              <p className="font-display text-h3 leading-snug text-ink italic">
+                La comida correcta en el momento correcto.
+              </p>
+            </blockquote>
 
             <div className="mt-7 max-w-xl space-y-5 text-body text-muted">
               <p>
@@ -51,41 +127,34 @@ export function FounderSection() {
               </p>
             </div>
 
+            <ul className="mt-10 flex flex-col gap-px overflow-hidden rounded-card border border-white/70 bg-white/50">
+              {PILLARS.map(({ icon: Icon, title, body, tint }) => (
+                <li key={title} className="flex items-start gap-5 bg-white/70 p-5">
+                  <span
+                    className={`grid h-12 w-12 shrink-0 place-items-center rounded-xl ${tint}`}
+                  >
+                    <Icon strokeWidth={1.9} className="h-6 w-6" />
+                  </span>
+                  <div>
+                    <p className="font-sans text-small font-semibold text-ink">
+                      {title}
+                    </p>
+                    <p className="mt-1 text-caption text-muted">{body}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+
             <a
               href="/sobre"
-              className="group mt-9 inline-flex items-center gap-2.5 rounded-full bg-white px-7 py-4 font-sans text-nav font-semibold text-ink shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+              className="group mt-10 inline-flex items-center gap-2.5 rounded-full bg-action px-7 py-4 font-sans text-nav font-semibold text-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:bg-action-hover hover:shadow-lg"
             >
               Conóceme
               <ArrowRight
                 strokeWidth={2.2}
-                className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1.5"
+                className="h-5.5 w-5.5 transition-transform duration-300 group-hover:translate-x-1.5"
               />
             </a>
-          </Reveal>
-
-          <Reveal className="lg:col-span-6" delay={150}>
-            <div className="scene">
-              <div className="relative mx-auto max-w-md lg:ml-auto">
-                <div className="tilt overflow-hidden rounded-[2rem] border-4 border-white shadow-xl">
-                  <div className="relative aspect-[4/5]">
-                    <Image
-                      src="/images/alicia/portrait-smiling.jpg"
-                      alt="Alicia Basurto, health coach de nutrición hormonal, en su cocina"
-                      fill
-                      sizes="(min-width: 1024px) 460px, 85vw"
-                      className="object-cover"
-                    />
-                  </div>
-                </div>
-
-                <div className="glass-strong absolute -bottom-8 -left-6 max-w-[17rem] rounded-2xl p-6 shadow-lg">
-                  <Quote strokeWidth={2} className="h-8 w-8 text-accent-display" />
-                  <p className="mt-3 font-display text-h4 leading-snug text-ink">
-                    La comida correcta en el momento correcto.
-                  </p>
-                </div>
-              </div>
-            </div>
           </Reveal>
         </div>
       </Container>
