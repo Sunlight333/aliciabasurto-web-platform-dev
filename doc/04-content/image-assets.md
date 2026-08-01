@@ -77,7 +77,7 @@ The 0.64–0.67 portrait ratios are close enough to be treated as a single `2:3`
 | `portrait-tea.jpg` | Home `Sobre mí` section ([about-page.md §2](about-page.md)); author byline on `/blog/[slug]` |
 | `kitchen-chopping.jpg` | `/como-funciona` or the home method section — activity, not identity |
 | `kitchen-wide.avif` | Full-bleed band on `/sobre`; fallback home hero background |
-| `kitchen-chopping-alt.avif` | Hold. Redundant with `kitchen-chopping.jpg` and too small to ship. |
+| `kitchen-chopping-alt.avif` | **In use** — third frame of the `/` founder rotator, at the client's direction. Renders acceptably at the 448px slot; a DSLR master is still worth requesting (§5 gap #3). |
 
 ### Alt text
 
@@ -116,7 +116,7 @@ Add to the blocker list in [revised-direction.md §10](../00-overview/revised-di
 | --- | --- | --- | --- |
 | 1 | **SVG logo** — lockup + mark | Both existing files are raster. The header logo will be soft on any retina display, and `logo-mark.jpg` cannot go on a non-white background at all. | Client / designer |
 | 2 | **Full favicon set** — 16, 32, 180 (apple-touch), `.ico` | Only 192 exists. | Design |
-| 3 | **DSLR masters for `kitchen-wide` and `kitchen-chopping-alt`** | Both were pulled from the live Wix CDN. `kitchen-chopping-alt` at 467×718 is unshippable; `kitchen-wide` at 1905px is adequate but not future-proof for a full-bleed band. | Client |
+| 3 | **DSLR masters for `kitchen-wide` and `kitchen-chopping-alt`** | Both were pulled from the live Wix CDN. `kitchen-chopping-alt` at 467×718 is now shipping in the founder rotator against a 448px slot — native at 1×, soft on retina. `kitchen-wide` at 1905px is adequate but not future-proof for a full-bleed band. | Client |
 | 4 | **App screenshots** | `/funcionalidades`, `/como-funciona`, and `/descargar` are all built around app screenshots ([revised-direction.md §8](../00-overview/revised-direction.md)). **Zero exist in the repo.** This blocks three of the six marketing pages. | Client / app dev |
 | 5 | **App Store / Google Play badges** (ES + EN) | `public/badges/` is empty. Official artwork only — store terms forbid redrawing. | Client |
 | 6 | **Landscape founder frames** | One landscape image for the entire site. Any second full-width band has nothing to use. | Client |

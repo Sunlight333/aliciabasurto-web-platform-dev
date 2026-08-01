@@ -10,11 +10,11 @@ import { PortraitRotator, type Portrait } from './portrait-rotator';
  * doc/04-content/image-assets.md §3 — it belongs to the photograph, not
  * to the slot it fills.
  *
- * ⚠️ Only two shippable portraits exist. The other unused frame,
- * kitchen-chopping-alt.avif, is 467×718 — too soft for this 448px frame
- * on a retina display — and is a near-duplicate of the photo already in
- * "Cómo funciona". More founder frames are gap #6 in image-assets.md §5.
- * Adding one here is a single entry.
+ * Three frames. The third, kitchen-chopping-alt, is 467×718 against a
+ * 448px slot, so it is effectively native at 1× and softer on a retina
+ * display — included at the client's direction. A DSLR master for this
+ * frame is still worth requesting (image-assets.md §5 gap #3); dropping
+ * it back to two is one deletion.
  */
 const PORTRAITS: readonly Portrait[] = [
   {
@@ -24,6 +24,10 @@ const PORTRAITS: readonly Portrait[] = [
   {
     src: '/images/alicia/portrait-tea.jpg',
     alt: 'Alicia Basurto sosteniendo una infusión en su cocina',
+  },
+  {
+    src: '/images/alicia/kitchen-chopping-alt.avif',
+    alt: 'Alicia Basurto cortando verduras frescas en su cocina',
   },
 ];
 
