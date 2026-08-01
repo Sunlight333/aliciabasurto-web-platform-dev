@@ -11,32 +11,44 @@ export interface Portrait {
 }
 
 /**
- * Cross-fading portrait rotator.
+ * Portrait rotator with a flash-free dissolve.
  *
- * Flexible by construction: it takes any number of frames and the timing
- * is a prop, so adding a photo is one line in the caller. With a single
- * frame it degrades to a plain image — no controls, no timer.
+ * A naive cross-fade animates both frames at once, so mid-transition both
+ * sit near 50% opacity and the light surface behind them shows through —
+ * the composite brightens and reads as a flash. Here the outgoing frame
+ * stays fully opaque underneath while the incoming one fades in above it,
+ * so the stack is never less than fully covered and there is nothing to
+ * flash through.
  *
- * Behaviour:
- * - pauses while off-screen, so an unseen section is not burning timers
- * - pauses on hover and while focused, so it can't swap mid-read
- * - prefers-reduced-motion disables auto-rotation entirely and drops the
- *   cross-fade; the dots still work, so the other frames stay reachable
+ * Timing is deliberately unhurried: a long dissolve on a short hold, so
+ * the change registers as movement rather than a cut. Both are props.
+ *
+ * Pauses on hover, on focus, and while off-screen.
+ * prefers-reduced-motion swaps instantly and stops auto-advancing.
  */
 export function PortraitRotator({
   images,
-  interval = 5200,
+  /** Time a frame is held before the next dissolve begins */
+  hold = 3600,
+  /** Length of the dissolve itself */
+  fade = 1800,
   className,
 }: {
   images: readonly Portrait[];
-  interval?: number;
+  hold?: number;
+  fade?: number;
   className?: string;
 }) {
-  const [index, setIndex] = useState(0);
+  // `base` is the frame currently covering the stack; `top` is the one
+  // dissolving in above it. Once the dissolve ends, top becomes base.
+  const [base, setBase] = useState(0);
+  const [top, setTop] = useState<number | null>(null);
+
   const [paused, setPaused] = useState(false);
   const [reduced, setReduced] = useState(false);
   const hostRef = useRef<HTMLDivElement>(null);
-  const visible = useRef(true);
+  const onScreen = useRef(true);
+  const settle = useRef<number>(0);
 
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -49,25 +61,46 @@ export function PortraitRotator({
   useEffect(() => {
     const node = hostRef.current;
     if (!node || typeof IntersectionObserver === 'undefined') return;
-    const io = new IntersectionObserver(
-      ([e]) => {
-        visible.current = e.isIntersecting;
-      },
-      { threshold: 0.25 },
-    );
+    const io = new IntersectionObserver(([e]) => (onScreen.current = e.isIntersecting), {
+      threshold: 0.2,
+    });
     io.observe(node);
     return () => io.disconnect();
   }, []);
 
+  const goTo = useCallback(
+    (next: number) => {
+      if (next === base && top === null) return;
+      window.clearTimeout(settle.current);
+
+      if (reduced) {
+        setTop(null);
+        setBase(next);
+        return;
+      }
+
+      setTop(next);
+      // Promote to base only after the dissolve has fully covered, so the
+      // outgoing frame is never removed while still visible.
+      settle.current = window.setTimeout(() => {
+        setBase(next);
+        setTop(null);
+      }, fade + 40);
+    },
+    [base, top, reduced, fade],
+  );
+
   useEffect(() => {
     if (images.length < 2 || paused || reduced) return;
     const id = window.setInterval(() => {
-      if (visible.current) setIndex((i) => (i + 1) % images.length);
-    }, interval);
+      if (onScreen.current) goTo((base + 1) % images.length);
+    }, hold + fade);
     return () => window.clearInterval(id);
-  }, [images.length, interval, paused, reduced]);
+  }, [images.length, paused, reduced, base, hold, fade, goTo]);
 
-  const go = useCallback((i: number) => setIndex(i), []);
+  useEffect(() => () => window.clearTimeout(settle.current), []);
+
+  const current = top ?? base;
 
   return (
     <div
@@ -79,23 +112,31 @@ export function PortraitRotator({
       onBlurCapture={() => setPaused(false)}
     >
       {images.map((img, i) => {
-        const active = i === index;
+        const isBase = i === base;
+        const isTop = i === top;
+        // Covered frames stay at full opacity beneath the stack; only the
+        // incoming frame animates, and only upward.
+        const opacity = isTop ? 1 : isBase ? 1 : 0;
         return (
           <Image
             key={img.src}
             src={img.src}
-            alt={active ? img.alt : ''}
-            aria-hidden={!active}
+            alt={i === current ? img.alt : ''}
+            aria-hidden={i !== current}
             fill
             sizes="(min-width: 1024px) 440px, 90vw"
             priority={i === 0}
-            className={cn(
-              'object-cover',
-              !reduced &&
-                'transition-[opacity,transform] duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)]',
-              active ? 'opacity-100' : 'opacity-0',
-              !reduced && (active ? 'scale-100' : 'scale-105'),
-            )}
+            draggable={false}
+            style={{
+              opacity,
+              zIndex: isTop ? 2 : isBase ? 1 : 0,
+              transform: reduced ? undefined : `scale(${isTop || isBase ? 1 : 1.03})`,
+              transitionProperty: reduced ? 'none' : 'opacity, transform',
+              transitionDuration: `${fade}ms`,
+              // Sine ease-in-out: no sharp onset, no abrupt finish
+              transitionTimingFunction: 'cubic-bezier(0.37, 0, 0.63, 1)',
+            }}
+            className="object-cover"
           />
         );
       })}
@@ -106,13 +147,13 @@ export function PortraitRotator({
             <button
               key={img.src}
               type="button"
-              onClick={() => go(i)}
+              onClick={() => goTo(i)}
               aria-label={`Ver foto ${i + 1} de ${images.length}`}
-              aria-current={i === index}
+              aria-current={i === current}
               className={cn(
-                'h-2.5 rounded-full transition-all duration-500',
-                'ring-1 ring-ink/10 backdrop-blur-sm',
-                i === index ? 'w-7 bg-white' : 'w-2.5 bg-white/60 hover:bg-white/85',
+                'h-2.5 rounded-full ring-1 ring-ink/10 backdrop-blur-sm',
+                'transition-all duration-500 ease-out',
+                i === current ? 'w-7 bg-white' : 'w-2.5 bg-white/60 hover:bg-white/85',
               )}
             />
           ))}

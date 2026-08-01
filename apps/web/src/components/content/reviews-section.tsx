@@ -105,7 +105,10 @@ export function ReviewsSection() {
         const t = d * d;
         el.style.transform = `translate3d(0,${t * 30}px,0) scale(${1 - t * 0.26})`;
         el.style.opacity = String(1 - t * 0.5);
-        el.style.zIndex = String(100 - Math.round(t * 100));
+        // Kept well below the header's z-50. The section is also isolated,
+        // but a low range means nothing here can ever outrank site chrome
+        // even if that isolation is lost to a future refactor.
+        el.style.zIndex = String(1 + Math.round((1 - t) * 20));
       }
     };
 
@@ -188,7 +191,10 @@ export function ReviewsSection() {
   const items = Array.from({ length: SETS }, () => REVIEWS).flat();
 
   return (
-    <Section surface="mint" className="overflow-hidden">
+    // `isolate` gives this section its own stacking context, so the cards'
+    // z-index is scoped here and cannot paint over the sticky header when
+    // the section scrolls underneath it.
+    <Section surface="mint" className="isolate overflow-hidden">
       <Container>
         <Reveal className="mx-auto max-w-2xl text-center">
           <Eyebrow>Testimonios</Eyebrow>
