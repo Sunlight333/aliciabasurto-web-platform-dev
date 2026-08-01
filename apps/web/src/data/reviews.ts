@@ -19,22 +19,29 @@
 export interface Review {
   id: string;
   name: string;
-  /** Optional location line under the name */
-  location?: string;
   quote: string;
+  /** Required: an absent line would break vertical alignment across cards */
+  location: string;
   /** Ties the review to the product's spine — must match a PhaseSlug */
   phase: 'menstrual' | 'folicular' | 'ovulatoria' | 'lutea';
   rating: number;
   avatar?: string;
 }
 
+/**
+ * Quotes are kept within a narrow length band (~120–130 characters) so no
+ * card has to stretch. The card also enforces a fixed quote block, but
+ * matching the copy means nothing is ever clipped to achieve it.
+ * `location` is required, not optional — an absent line would shift every
+ * element below it out of alignment with its neighbours.
+ */
 export const REVIEWS: readonly Review[] = [
   {
     id: 'r1',
     name: 'Camila Restrepo',
     location: 'Medellín',
     quote:
-      'Llevaba años culpándome por no tener disciplina. Resulta que solo necesitaba comer distinto cada semana. Mi SPM bajó muchísimo en dos ciclos.',
+      'Llevaba años culpándome por no tener disciplina. Resulta que solo necesitaba comer distinto cada semana.',
     phase: 'lutea',
     rating: 5,
     avatar: '/images/reviews/avatar-1.jpg',
@@ -44,7 +51,7 @@ export const REVIEWS: readonly Review[] = [
     name: 'Valentina Ortiz',
     location: 'Ciudad de México',
     quote:
-      'La app me dice qué cocinar según el día de mi ciclo. Dejé de improvisar y mi energía por las mañanas cambió por completo.',
+      'La app me dice qué cocinar según el día de mi ciclo. Dejé de improvisar y mi energía por las mañanas cambió.',
     phase: 'folicular',
     rating: 5,
     avatar: '/images/reviews/avatar-2.jpg',
@@ -54,7 +61,7 @@ export const REVIEWS: readonly Review[] = [
     name: 'Daniela Ruiz',
     location: 'Bogotá',
     quote:
-      'El acné hormonal era mi mayor inseguridad. Después de cuatro meses siguiendo las recetas por fase, mi piel es otra.',
+      'El acné hormonal era mi mayor inseguridad. Cuatro meses siguiendo las recetas por fase y mi piel es otra.',
     phase: 'menstrual',
     rating: 5,
     avatar: '/images/reviews/avatar-3.jpg',
@@ -64,7 +71,7 @@ export const REVIEWS: readonly Review[] = [
     name: 'Mariana Peña',
     location: 'Lima',
     quote:
-      'Lo que más valoro es que no me prohíbe nada. Solo me enseña cuándo mi cuerpo aprovecha mejor cada alimento.',
+      'Lo que más valoro es que no me prohíbe nada. Me enseña cuándo mi cuerpo aprovecha mejor cada alimento.',
     phase: 'ovulatoria',
     rating: 5,
     avatar: '/images/reviews/avatar-4.jpg',
@@ -74,7 +81,7 @@ export const REVIEWS: readonly Review[] = [
     name: 'Sofía Aguirre',
     location: 'Buenos Aires',
     quote:
-      'Entender por qué me sentía distinta cada semana me quitó un peso enorme. Ya no peleo con mi cuerpo, lo acompaño.',
+      'Entender por qué me sentía distinta cada semana me quitó un peso enorme. Ya no peleo con mi cuerpo.',
     phase: 'lutea',
     rating: 5,
     avatar: '/images/reviews/avatar-5.jpg',
@@ -84,7 +91,7 @@ export const REVIEWS: readonly Review[] = [
     name: 'Lucía Fernández',
     location: 'Santiago',
     quote:
-      'La lista de compras automática me ahorra la peor parte. Llego al súper y ya sé exactamente qué necesita mi fase.',
+      'La lista de compras me ahorra la peor parte. Llego al súper y ya sé exactamente qué necesita mi fase.',
     phase: 'folicular',
     rating: 5,
     avatar: '/images/reviews/avatar-6.jpg',

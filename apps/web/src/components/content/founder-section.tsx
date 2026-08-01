@@ -1,9 +1,31 @@
-import Image from 'next/image';
 import { ArrowRight, Leaf, CircleDashed, HeartHandshake } from 'lucide-react';
 import { Section } from '@/components/layout/section';
 import { Container } from '@/components/layout/container';
 import { Eyebrow } from '@/components/ui/eyebrow';
 import { Reveal } from '@/components/motion/reveal';
+import { PortraitRotator, type Portrait } from './portrait-rotator';
+
+/**
+ * Frames the rotator cycles through. Alt text per asset comes from
+ * doc/04-content/image-assets.md §3 — it belongs to the photograph, not
+ * to the slot it fills.
+ *
+ * ⚠️ Only two shippable portraits exist. The other unused frame,
+ * kitchen-chopping-alt.avif, is 467×718 — too soft for this 448px frame
+ * on a retina display — and is a near-duplicate of the photo already in
+ * "Cómo funciona". More founder frames are gap #6 in image-assets.md §5.
+ * Adding one here is a single entry.
+ */
+const PORTRAITS: readonly Portrait[] = [
+  {
+    src: '/images/alicia/portrait-smiling.jpg',
+    alt: 'Alicia Basurto, health coach de nutrición hormonal, en su cocina',
+  },
+  {
+    src: '/images/alicia/portrait-tea.jpg',
+    alt: 'Alicia Basurto sosteniendo una infusión en su cocina',
+  },
+];
 
 /**
  * Founder section — the site's trust anchor.
@@ -72,15 +94,7 @@ export function FounderSection() {
               />
 
               <div className="relative overflow-hidden rounded-[2rem] border-4 border-white shadow-xl transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-1.5">
-                <div className="relative aspect-[4/5]">
-                  <Image
-                    src="/images/alicia/portrait-smiling.jpg"
-                    alt="Alicia Basurto, health coach de nutrición hormonal, en su cocina"
-                    fill
-                    sizes="(min-width: 1024px) 440px, 90vw"
-                    className="object-cover"
-                  />
-                </div>
+                <PortraitRotator images={PORTRAITS} className="aspect-[4/5]" />
               </div>
 
               {/* Desktop only. On mobile the columns stack, putting this
