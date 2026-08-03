@@ -85,7 +85,23 @@ export default function FuncionalidadesPage() {
 
       {FEATURE_GROUPS.map((group) => (
         <Section key={group.id} id={group.id} surface={group.surface}>
-          <Container>
+          {/* Photographic texture on alternating sections. Held well behind
+              a cream scrim: it should register as material, not imagery —
+              the page has no room for a second subject competing with the
+              cards. Contrast over the scrim is measured, not assumed. */}
+          {group.bgImage && (
+            <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+              <div
+                className="absolute inset-0 bg-cover bg-center"
+                style={{ backgroundImage: `url('${group.bgImage}')` }}
+              />
+              <div className="absolute inset-0 bg-surface-raised/[0.84]" />
+              <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-surface-raised to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-surface-raised to-transparent" />
+            </div>
+          )}
+
+          <Container className="relative">
             <Reveal className="mx-auto max-w-2xl text-center">
               <Eyebrow>{group.eyebrow}</Eyebrow>
               <h2 className="mt-5 text-h2 text-ink">

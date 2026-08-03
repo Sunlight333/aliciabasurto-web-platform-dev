@@ -96,6 +96,44 @@ Descriptive, bilingual, written once here so it is not reinvented per component.
 
 ---
 
+## 3b. Section textures — licensed stock
+
+Photographic textures used as **section backgrounds**, not as subjects.
+They sit behind an 84% cream scrim, so they read as material rather than
+imagery and never compete with the cards in front of them.
+
+**Source:** [Pexels](https://www.pexels.com) · Pexels License — free for
+commercial use, no attribution required, modification permitted.
+Downloaded 2026-08-01, resized to 1920×1080 and re-encoded to AVIF.
+
+| File | Pexels ID | Subject | Size | Used on |
+| --- | --- | --- | --- | --- |
+| `textures/counter.avif` | 6739221 | Warm neutral marble | 8 KB | `/funcionalidades` → Nutrición y recetas |
+| `textures/calma.avif` | 16408396 | Soft plant shadows on a warm wall | 91 KB | `/funcionalidades` → Registro diario |
+| `textures/papel.avif` | 8941369 | Soft off-white paper texture | 80 KB | `/funcionalidades` → Tu cuenta |
+
+**Alt text:** none — all three are decorative and rendered as CSS
+backgrounds behind `aria-hidden` layers. They carry no information a
+screen reader needs.
+
+### Selection criteria
+
+The first search returned saturated farmers-market produce — the obvious
+match for a nutrition site, and completely wrong here. Backgrounds behind
+text need the opposite of a striking photograph:
+
+- **Light and low-contrast** — the site forbids dark surfaces, and text
+  sits directly on these
+- **Warm-neutral** — anything cool fights the cream/sage palette
+- **No subject** — a recognisable object competes with the cards
+- **Even across the frame** — a bright corner would break contrast locally
+
+Contrast is **measured from rendered pixels**, not estimated: 13.72,
+12.44 and 16.10:1 for ink on the three scrimmed backdrops — all AAA.
+Re-measure if the scrim opacity changes.
+
+---
+
 ## 4. Format policy
 
 | Source | Delivery |

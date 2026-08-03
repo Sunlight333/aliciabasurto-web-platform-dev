@@ -32,6 +32,8 @@ export interface FeatureGroup {
   accent: string;
   lead: string;
   surface: Surface;
+  /** Optional photographic texture behind the section (see page.tsx) */
+  bgImage?: string;
   /** Cards per row at lg. Groups vary so six sections don't read identically. */
   columns: 2 | 3;
   features: Feature[];
@@ -80,6 +82,7 @@ export const FEATURE_GROUPS: readonly FeatureGroup[] = [
     accent: 'decidido por tu fase',
     lead: 'Nada de improvisar frente a la nevera. Cada receta y cada alimento está elegido por lo que le hace a tus hormonas esta semana.',
     surface: 'base',
+    bgImage: '/images/textures/counter.avif',
     columns: 3,
     features: [
       {
@@ -146,6 +149,7 @@ export const FEATURE_GROUPS: readonly FeatureGroup[] = [
     accent: 'meses de patrones',
     lead: 'Mientras más registras, más se ajusta la app a ti — y más claro ves lo que tu cuerpo repite cada mes.',
     surface: 'sunken',
+    bgImage: '/images/textures/calma.avif',
     columns: 3,
     features: [
       {
@@ -204,6 +208,7 @@ export const FEATURE_GROUPS: readonly FeatureGroup[] = [
     accent: 'en tu idioma',
     lead: '',
     surface: 'blush',
+    bgImage: '/images/textures/papel.avif',
     columns: 2,
     features: [
       {
