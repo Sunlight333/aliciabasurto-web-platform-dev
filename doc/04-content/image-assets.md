@@ -108,9 +108,30 @@ Downloaded 2026-08-01, resized to 1920×1080 and re-encoded to AVIF.
 
 | File | Pexels ID | Subject | Size | Used on |
 | --- | --- | --- | --- | --- |
+| `textures/hero-funciones.avif` | 18011826 | Lemon, water glass and a wildflower on sunlit linen | 189 KB | `/funcionalidades` → page hero |
 | `textures/counter.avif` | 6739221 | Warm neutral marble | 8 KB | `/funcionalidades` → Nutrición y recetas |
 | `textures/calma.avif` | 16408396 | Soft plant shadows on a warm wall | 91 KB | `/funcionalidades` → Registro diario |
 | `textures/papel.avif` | 8941369 | Soft off-white paper texture | 80 KB | `/funcionalidades` → Tu cuenta |
+
+### Page hero photography — the system
+
+Every route opens the same way: a **full-viewport sharp photograph under
+a light cream scrim**, running up beneath the sticky header. `/` uses
+founder photography; interior pages pass their own image to `PageHero`.
+Adding a page means adding one row above — not inventing a new header.
+
+What a hero image has to be:
+
+| Requirement | Why |
+| --- | --- |
+| Light and warm-toned | Text sits on it, and the site forbids dark surfaces |
+| A still life, not a scene | Interiors and posed people read as stock; still lifes read as the brand |
+| Generous negative space near the centre | The copy block lands there |
+| Subject off-centre | It should be visible beside the copy, never behind it |
+
+Encode at ~1400px wide, AVIF q30. The scrim hides fine detail, so
+anything larger is wasted bytes — the same frame at q56 was 803 KB
+against 189 KB here, with no visible difference through the veil.
 
 **Alt text:** none — all three are decorative and rendered as CSS
 backgrounds behind `aria-hidden` layers. They carry no information a

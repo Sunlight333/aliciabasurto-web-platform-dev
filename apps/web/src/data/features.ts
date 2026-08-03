@@ -148,7 +148,7 @@ export const FEATURE_GROUPS: readonly FeatureGroup[] = [
     title: 'Un minuto al día,',
     accent: 'meses de patrones',
     lead: 'Mientras más registras, más se ajusta la app a ti — y más claro ves lo que tu cuerpo repite cada mes.',
-    surface: 'sunken',
+    surface: 'base',
     bgImage: '/images/textures/calma.avif',
     columns: 3,
     features: [
@@ -178,7 +178,7 @@ export const FEATURE_GROUPS: readonly FeatureGroup[] = [
     title: 'Entiende',
     accent: 'lo que te está pasando',
     lead: 'Educación hormonal en un lenguaje que se entiende, dentro de la misma app.',
-    surface: 'mint',
+    surface: 'raised',
     columns: 3,
     features: [
       {
@@ -207,7 +207,7 @@ export const FEATURE_GROUPS: readonly FeatureGroup[] = [
     title: 'Tuya,',
     accent: 'en tu idioma',
     lead: '',
-    surface: 'blush',
+    surface: 'base',
     bgImage: '/images/textures/papel.avif',
     columns: 2,
     features: [

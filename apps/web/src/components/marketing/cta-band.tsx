@@ -15,6 +15,13 @@ import { Reveal } from '@/components/motion/reveal';
 export function CtaBand({ source = 'closing' }: { source?: string }) {
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-surface-blush via-surface-raised to-surface-lilac py-24 lg:py-36">
+      {/* The band's tint met the preceding section on a hard line. This
+          fades it in from cream so the page closes rather than switches. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 h-56 bg-gradient-to-b from-surface-raised via-surface-raised/60 to-transparent"
+      />
+
       <div aria-hidden className="pointer-events-none absolute inset-0">
         <div
           className="orb animate-drift"

@@ -3,50 +3,84 @@ import { Eyebrow } from '@/components/ui/eyebrow';
 import { cn } from '@/lib/cn';
 
 /**
- * Standard header for interior pages.
+ * Full-viewport header for interior pages.
  *
- * `/` gets a full-bleed photograph; every other route uses this — a light
- * gradient field with drifting orbs, so subpages share the home page's
- * atmosphere without needing founder imagery the project doesn't have
- * (image-assets.md §5 gap #6).
+ * Deliberately the same construction as the home hero — a sharp
+ * photograph under a light cream scrim — so every route opens the same
+ * way and the site reads as one thing. `/` uses founder photography;
+ * interior pages pass their own `image`, and each new page adds one entry
+ * to image-assets.md §3b rather than inventing a new header treatment.
  *
- * The site header is sticky, not fixed, so it occupies layout space and
- * this needs no negative offset.
+ * Without `image` it falls back to the gradient field, which is what a
+ * page should look like before its photography is chosen — not a
+ * different design.
+ *
+ * The scrim, the `focal` crop and the closing fade are the whole system.
+ * The fade matters: it dissolves the photograph into the first section's
+ * surface so the seam never reads as two pages stacked together.
  */
 export function PageHero({
   eyebrow,
   title,
   accent,
   lead,
+  image,
+  /** object-position for the photograph; defaults to centre */
+  focal = 'center',
   children,
   className,
 }: {
   eyebrow: string;
   title: string;
-  /** Trailing fragment rendered in the accent colour */
   accent?: string;
   lead?: string;
+  image?: string;
+  focal?: string;
   children?: React.ReactNode;
   className?: string;
 }) {
   return (
     <section
       className={cn(
-        'relative overflow-hidden bg-gradient-to-b from-surface-lilac via-surface-raised to-surface-raised',
-        'pt-16 pb-20 lg:pt-24 lg:pb-28',
+        // Runs up under the sticky header, exactly as the home hero does —
+        // otherwise a band of page background sits above the photograph and
+        // the header reads as detached from the page.
+        'relative -mt-32 flex min-h-svh flex-col justify-center overflow-hidden pt-32',
+        'pb-20 lg:pb-24',
+        !image && 'bg-gradient-to-b from-surface-lilac via-surface-raised to-surface-raised',
         className,
       )}
     >
-      <div aria-hidden className="pointer-events-none absolute inset-0">
+      {image && (
+        <div aria-hidden className="pointer-events-none absolute inset-0">
+          <div
+            className="absolute inset-0 bg-cover"
+            style={{ backgroundImage: `url('${image}')`, backgroundPosition: focal }}
+          />
+          {/* Light, even veil — the photograph stays sharp and legible
+              underneath; ink over it is measured, not assumed. */}
+          <div className="absolute inset-0 bg-surface-raised/[0.82]" />
+          {/* Brightest where the copy sits */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                'radial-gradient(70% 55% at 50% 50%, rgb(253 252 244 / 0.72) 0%, rgb(253 252 244 / 0.35) 55%, rgb(253 252 244 / 0) 100%)',
+            }}
+          />
+        </div>
+      )}
+
+      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
         <div
           className="orb animate-drift"
           style={{
             width: 'min(50vw, 580px)',
             height: 'min(50vw, 580px)',
-            top: '-30%',
+            top: '-28%',
             right: '-8%',
             background: 'var(--color-luteal)',
-            opacity: 0.35,
+            opacity: image ? 0.22 : 0.35,
           }}
         />
         <div
@@ -54,14 +88,28 @@ export function PageHero({
           style={{
             width: 'min(40vw, 460px)',
             height: 'min(40vw, 460px)',
-            bottom: '-30%',
+            bottom: '-28%',
             left: '-6%',
             background: 'var(--color-menstrual)',
-            opacity: 0.22,
+            opacity: image ? 0.16 : 0.22,
             animationDelay: '-14s',
           }}
         />
       </div>
+
+      {/* Legibility field for the transparent header sitting over the photo */}
+      {image && (
+        <div
+          aria-hidden
+          className="scrim-top pointer-events-none absolute inset-x-0 top-0 h-52"
+        />
+      )}
+
+      {/* Dissolves into whatever section follows */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-surface-raised via-surface-raised/70 to-transparent"
+      />
 
       <Container className="relative">
         <div className="mx-auto max-w-3xl text-center">

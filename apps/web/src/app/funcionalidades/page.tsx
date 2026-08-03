@@ -68,6 +68,8 @@ export default function FuncionalidadesPage() {
         title="Todo lo que Nutricycle"
         accent="hace por ti"
         lead="Un rastreador de ciclo, un plan de alimentación y una asesora hormonal en la misma app. Esto es lo que encuentras dentro."
+        image="/images/textures/hero-funciones.avif"
+        focal="center 38%"
       >
         <ul className="flex flex-wrap justify-center gap-3">
           {FEATURE_GROUPS.map((g) => (
@@ -84,7 +86,22 @@ export default function FuncionalidadesPage() {
       </PageHero>
 
       {FEATURE_GROUPS.map((group) => (
-        <Section key={group.id} id={group.id} surface={group.surface}>
+        <Section
+          key={group.id}
+          id={group.id}
+          surface={group.surface === 'lilac' ? 'raised' : group.surface}
+        >
+          {/* A flat tint between two cream sections leaves a hard line at
+              both edges. Rendering the tint as a vertical gradient that
+              starts and ends on the neighbouring surface removes the seam
+              without giving up the accent. */}
+          {group.surface === 'lilac' && (
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 bg-gradient-to-b from-surface-raised via-surface-lilac to-surface-raised"
+            />
+          )}
+
           {/* Photographic texture on alternating sections. Held well behind
               a cream scrim: it should register as material, not imagery —
               the page has no room for a second subject competing with the
