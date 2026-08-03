@@ -13,11 +13,21 @@ import { cn } from '@/lib/cn';
 /**
  * Symmetric around the centred logo:
  *
- *   [ ES · EN ]  Método  Tu ciclo  Recetas  ◯  Funciones  Membresía  [⌕] [ Descargar ]
+ *   [ ⇄A ES ]  Método  Tu ciclo  Recetas  ◯  Funciones  Membresía  [⌕] [ Descargar ]
  *
- * A control pill bookends each side, three links balance two links plus the
- * CTA, and all three buttons share one height (h-14) so neither end outweighs
- * the other.
+ * A green pill bookends each side, and all three buttons share one height
+ * (h-14) so neither end outweighs the other.
+ *
+ * Symmetry is structural, not hand-tuned. The `1fr auto 1fr` columns are
+ * equal by construction, and each side is `justify-between` with exactly two
+ * children — pill and nav on the left, nav and controls on the right. The nav
+ * blocks therefore land on the inner column edges, so the gap from the logo to
+ * the first link is the grid gap on both sides, at every viewport.
+ *
+ * Anchoring content to the *outer* edges instead (justify-start / justify-end)
+ * is what made this look wrong before: the left block is ~40px narrower than
+ * the right, so all of the slack pooled beside the logo on one side — measured
+ * 100px to the left of the logo against 38px to its right.
  *
  * ⚠️ Breakpoint note: the full bar now needs ~1080px of content width, so it
  * resolves at `xl` (1280) rather than `lg` (1024). Two extra controls do not
@@ -68,9 +78,9 @@ export function SiteHeader() {
       <Container>
         {/* Height is constant. Only the surface changes on scroll — a
             resizing header made the page shift under the reader. */}
-        <div className="grid h-32 grid-cols-[1fr_auto_1fr] items-center gap-6">
+        <div className="grid h-32 grid-cols-[1fr_auto_1fr] items-center gap-10">
           {/* ---------- Left: language + primary links ---------- */}
-          <div className="hidden items-center gap-8 xl:flex">
+          <div className="hidden items-center justify-between gap-8 xl:flex">
             <LocaleSwitch />
 
             <nav aria-label="Principal izquierda">
@@ -113,7 +123,7 @@ export function SiteHeader() {
           </Link>
 
           {/* ---------- Right: links + search + CTA ---------- */}
-          <div className="hidden items-center justify-end gap-7 xl:flex 2xl:gap-9">
+          <div className="hidden items-center justify-between gap-8 xl:flex">
             <nav aria-label="Principal derecha">
               <ul className="flex items-center gap-7 2xl:gap-9">
                 {RIGHT.map((item) => (
@@ -126,29 +136,34 @@ export function SiteHeader() {
               </ul>
             </nav>
 
-            <Link
-              href="/buscar"
-              aria-label="Buscar en el sitio"
-              className={cn(
-                'grid h-14 w-14 shrink-0 place-items-center rounded-full',
-                'border border-hairline-strong bg-white/70 text-ink shadow-sm backdrop-blur-md',
-                'transition-all duration-300 hover:-translate-y-0.5 hover:border-hairline-strong hover:bg-white hover:shadow-md',
-              )}
-            >
-              <Search strokeWidth={2.1} className="h-5.5 w-5.5" />
-            </Link>
+            {/* Grouped so `justify-between` sees exactly two children here as
+                it does on the left. Ungrouped, the search and the CTA would be
+                spread apart and the nav would drift off the column edge. */}
+            <div className="flex items-center gap-7 2xl:gap-9">
+              <Link
+                href="/buscar"
+                aria-label="Buscar en el sitio"
+                className={cn(
+                  'grid h-14 w-14 shrink-0 place-items-center rounded-full',
+                  'border border-hairline-strong bg-white/70 text-ink shadow-sm backdrop-blur-md',
+                  'transition-all duration-300 hover:-translate-y-0.5 hover:border-hairline-strong hover:bg-white hover:shadow-md',
+                )}
+              >
+                <Search strokeWidth={2.1} className="h-5.5 w-5.5" />
+              </Link>
 
-            <a
-              href={`${STORE.smart}?src=header`}
-              className={cn(
-                'inline-flex h-14 shrink-0 items-center gap-2.5 rounded-full bg-action px-6',
-                'font-sans text-nav font-semibold text-white shadow-md',
-                'transition-all duration-300 hover:-translate-y-0.5 hover:bg-action-hover hover:shadow-lg',
-              )}
-            >
-              <Download strokeWidth={2.2} className="h-5.5 w-5.5" />
-              Descargar
-            </a>
+              <a
+                href={`${STORE.smart}?src=header`}
+                className={cn(
+                  'inline-flex h-14 shrink-0 items-center gap-2.5 rounded-full bg-action px-6',
+                  'font-sans text-nav font-semibold text-white shadow-md',
+                  'transition-all duration-300 hover:-translate-y-0.5 hover:bg-action-hover hover:shadow-lg',
+                )}
+              >
+                <Download strokeWidth={2.2} className="h-5.5 w-5.5" />
+                Descargar
+              </a>
+            </div>
           </div>
 
           <a
