@@ -4,14 +4,25 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, Download } from 'lucide-react';
+import { Menu, X, Download, Search } from 'lucide-react';
 import { STORE } from '@nutricycle/shared';
 import { Container } from './container';
+import { LocaleSwitch } from '@/components/ui/locale-switch';
 import { cn } from '@/lib/cn';
 
 /**
- * Balanced around the centred logo: three links left, two plus the CTA
- * right, so neither side outweighs the other.
+ * Symmetric around the centred logo:
+ *
+ *   [ ES · EN ]  Método  Tu ciclo  Recetas  ◯  Funciones  Membresía  [⌕] [ Descargar ]
+ *
+ * A control pill bookends each side, three links balance two links plus the
+ * CTA, and all three buttons share one height (h-14) so neither end outweighs
+ * the other.
+ *
+ * ⚠️ Breakpoint note: the full bar now needs ~1080px of content width, so it
+ * resolves at `xl` (1280) rather than `lg` (1024). Two extra controls do not
+ * fit beside the nav at 1024 without shrinking the type below its token size.
+ * 1024–1279 gets the compact bar and the sheet, which carry the same controls.
  */
 const LEFT = [
   { label: 'Método', href: '/como-funciona' },
@@ -58,47 +69,82 @@ export function SiteHeader() {
         {/* Height is constant. Only the surface changes on scroll — a
             resizing header made the page shift under the reader. */}
         <div className="grid h-32 grid-cols-[1fr_auto_1fr] items-center gap-6">
-          <nav aria-label="Principal izquierda" className="hidden lg:block">
-            <ul className="flex items-center gap-8 xl:gap-10">
-              {LEFT.map((item) => (
-                <NavLink key={item.href} {...item} active={pathname === item.href} />
-              ))}
-            </ul>
-          </nav>
+          {/* ---------- Left: language + primary links ---------- */}
+          <div className="hidden items-center gap-8 xl:flex">
+            <LocaleSwitch />
+
+            <nav aria-label="Principal izquierda">
+              <ul className="flex items-center gap-7 2xl:gap-9">
+                {LEFT.map((item) => (
+                  <NavLink
+                    key={item.href}
+                    {...item}
+                    active={pathname === item.href}
+                  />
+                ))}
+              </ul>
+            </nav>
+          </div>
 
           <button
             type="button"
             onClick={() => setOpen(true)}
             aria-label="Abrir menú"
             aria-expanded={open}
-            className="justify-self-start rounded-full p-2.5 text-ink transition-colors hover:bg-ink/5 lg:hidden"
+            className="justify-self-start rounded-full p-2.5 text-ink transition-colors hover:bg-ink/5 xl:hidden"
           >
             <Menu strokeWidth={2} className="h-8 w-8" />
           </button>
 
-          <Link href="/" aria-label="Nutricycle — inicio" className="group justify-self-center">
+          {/* ---------- Centre: logo ---------- */}
+          <Link
+            href="/"
+            aria-label="Nutricycle — inicio"
+            className="group justify-self-center"
+          >
             <Image
               src="/images/brand/logo-lockup-trimmed.png"
               alt="Nutricycle"
               width={202}
               height={179}
               priority
-              className="h-16 w-auto transition-transform duration-500 group-hover:scale-105 lg:h-20"
+              className="h-16 w-auto transition-transform duration-500 group-hover:scale-105 xl:h-20"
             />
           </Link>
 
-          <div className="hidden items-center justify-end gap-8 lg:flex xl:gap-10">
+          {/* ---------- Right: links + search + CTA ---------- */}
+          <div className="hidden items-center justify-end gap-7 xl:flex 2xl:gap-9">
             <nav aria-label="Principal derecha">
-              <ul className="flex items-center gap-8 xl:gap-10">
+              <ul className="flex items-center gap-7 2xl:gap-9">
                 {RIGHT.map((item) => (
-                  <NavLink key={item.href} {...item} active={pathname === item.href} />
+                  <NavLink
+                    key={item.href}
+                    {...item}
+                    active={pathname === item.href}
+                  />
                 ))}
               </ul>
             </nav>
 
+            <Link
+              href="/buscar"
+              aria-label="Buscar en el sitio"
+              className={cn(
+                'grid h-14 w-14 shrink-0 place-items-center rounded-full',
+                'border border-hairline-strong bg-white/70 text-ink shadow-sm backdrop-blur-md',
+                'transition-all duration-300 hover:-translate-y-0.5 hover:border-hairline-strong hover:bg-white hover:shadow-md',
+              )}
+            >
+              <Search strokeWidth={2.1} className="h-5.5 w-5.5" />
+            </Link>
+
             <a
               href={`${STORE.smart}?src=header`}
-              className="inline-flex items-center gap-2.5 rounded-full bg-action px-6 py-3.5 font-sans text-nav font-semibold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-action-hover hover:shadow-lg"
+              className={cn(
+                'inline-flex h-14 shrink-0 items-center gap-2.5 rounded-full bg-action px-6',
+                'font-sans text-nav font-semibold text-white shadow-md',
+                'transition-all duration-300 hover:-translate-y-0.5 hover:bg-action-hover hover:shadow-lg',
+              )}
             >
               <Download strokeWidth={2.2} className="h-5.5 w-5.5" />
               Descargar
@@ -108,17 +154,17 @@ export function SiteHeader() {
           <a
             href={`${STORE.smart}?src=header-mobile`}
             aria-label="Descargar la app"
-            className="justify-self-end rounded-full bg-action p-3.5 text-white shadow-md lg:hidden"
+            className="justify-self-end rounded-full bg-action p-3.5 text-white shadow-md xl:hidden"
           >
             <Download strokeWidth={2.2} className="h-6 w-6" />
           </a>
         </div>
       </Container>
 
-      {/* Mobile sheet */}
+      {/* ---------- Mobile / tablet sheet ---------- */}
       <div
         className={cn(
-          'fixed inset-0 z-50 transition-all duration-400 lg:hidden',
+          'fixed inset-0 z-50 transition-all duration-400 xl:hidden',
           open ? 'visible opacity-100' : 'invisible opacity-0',
         )}
       >
@@ -168,9 +214,26 @@ export function SiteHeader() {
             </ul>
           </nav>
 
+          {/* The two controls the compact bar has no room for. */}
+          <div className="mt-7 flex items-center gap-3">
+            <LocaleSwitch className="flex-1 justify-center" />
+
+            <Link
+              href="/buscar"
+              className={cn(
+                'inline-flex h-14 flex-1 items-center justify-center gap-2.5 rounded-full',
+                'border border-hairline-strong bg-white/70 font-sans text-nav font-medium text-ink shadow-sm',
+                'transition-colors hover:bg-white',
+              )}
+            >
+              <Search strokeWidth={2.1} className="h-5.5 w-5.5" />
+              Buscar
+            </Link>
+          </div>
+
           <a
             href={`${STORE.smart}?src=nav-mobile`}
-            className="mt-8 inline-flex w-full items-center justify-center gap-2.5 rounded-full bg-action px-6 py-4 font-sans text-nav font-semibold text-white shadow-md"
+            className="mt-3 inline-flex h-14 w-full items-center justify-center gap-2.5 rounded-full bg-action px-6 font-sans text-nav font-semibold text-white shadow-md"
           >
             <Download strokeWidth={2.2} className="h-6 w-6" />
             Descargar gratis

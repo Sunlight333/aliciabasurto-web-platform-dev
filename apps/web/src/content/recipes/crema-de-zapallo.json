@@ -1,0 +1,66 @@
+{
+  "slug": "crema-de-zapallo",
+  "title": "Crema de Zapallo",
+  "excerpt": "Una comida reconfortante y sencilla, con la dulzura natural del zapallo y una textura suave. Cae bien cuando el cuerpo pide calor y descanso.",
+  "phase": "menstrual",
+  "mealType": "cena",
+  "minutes": 35,
+  "servings": 4,
+  "intro": "La crema de zapallo es una opción perfecta para quienes buscan una comida reconfortante, nutritiva y sencilla de preparar. Este plato combina la dulzura natural del zapallo con una textura suave que encanta a grandes y chicos. Además, es ideal para cualquier época del año, ya sea para un almuerzo ligero o una cena cálida.",
+  "ingredients": [
+    "1 kilo de zapallo (anco o butternut)",
+    "1 cebolla mediana",
+    "2 dientes de ajo",
+    "1 papa mediana (opcional, para más cremosidad)",
+    "1 litro de caldo de verduras o agua",
+    "200 ml de crema de leche o leche evaporada",
+    "Aceite de oliva o mantequilla",
+    "Sal y pimienta al gusto",
+    "Nuez moscada (opcional)",
+    "Perejil o cilantro para decorar"
+  ],
+  "steps": [
+    {
+      "title": "Preparar los ingredientes",
+      "body": "Pela y corta el zapallo en cubos medianos para que se cocine de manera uniforme. Pela la papa y córtala en trozos similares. Pica finamente la cebolla y los dientes de ajo."
+    },
+    {
+      "title": "Sofreír la base",
+      "body": "En una olla grande, calienta un poco de aceite de oliva o mantequilla a fuego medio. Agrega la cebolla y el ajo picados y sofríe hasta que estén transparentes y fragantes, unos 5 minutos. Esto potencia el sabor de la crema."
+    },
+    {
+      "title": "Cocinar el zapallo y la papa",
+      "body": "Incorpora el zapallo y la papa. Revuelve bien y añade el caldo o agua hasta cubrir los ingredientes. Sube el fuego hasta que hierva, luego baja a fuego medio-bajo y cocina tapado entre 20 y 25 minutos, hasta que estén tiernos."
+    },
+    {
+      "title": "Licuar la mezcla",
+      "body": "Retira la olla del fuego y procesa con licuadora de mano o común hasta obtener una crema suave y homogénea. Si queda muy espesa, agrega un poco más de caldo o agua."
+    },
+    {
+      "title": "Añadir la crema y sazonar",
+      "body": "Devuelve la crema a la olla y agrega la crema de leche o leche evaporada. Calienta a fuego bajo sin dejar que hierva, para que no se corte. Sazona con sal, pimienta y una pizca de nuez moscada."
+    }
+  ],
+  "tips": [
+    "Usa zapallo fresco y firme: un zapallo dulce hace toda la diferencia en el sabor final.",
+    "La nuez moscada realza el sabor del zapallo sin dominarlo.",
+    "Un poco de jengibre fresco rallado le da un picante suave y distinto.",
+    "Para una versión vegana, sustituye la crema de leche por leche de coco o crema vegetal.",
+    "Sirve con semillas de zapallo tostadas, un chorrito de aceite de oliva extra virgen o crutones caseros."
+  ],
+  "benefits": "El zapallo es rico en vitaminas A y C, fibra y antioxidantes. Aporta nutrientes que acompañan al sistema inmunológico y a la digestión, y es saciante sin ser pesado — algo que se agradece en la fase menstrual, cuando el cuerpo digiere mejor la comida caliente y cocida.",
+  "pairings": [
+    "Pan integral tostado o baguette",
+    "Ensalada fresca de hojas verdes",
+    "Queso rallado o en cubos",
+    "Un huevo pochado o duro, para sumar proteína"
+  ],
+  "variations": [
+    "Añade zanahoria o calabacín junto con el zapallo para un sabor más complejo.",
+    "Incorpora curry o comino para un toque distinto.",
+    "Usa caldo de pollo en lugar de caldo de verduras para un sabor más intenso.",
+    "Agrega queso crema o ricotta para una textura aún más cremosa."
+  ],
+  "publishedToWeb": true,
+  "source": "Migrada de aliciabasurto.com/post/deliciosa-receta-de-crema-de-zapallo (2 jul 2026)"
+}
