@@ -31,6 +31,14 @@
     letter-spacing: -0.015em;
   }
 
+  /* The header is sticky at 128px, so an anchored section would otherwise
+     land underneath it. Applies to every in-page jump target site-wide. */
+  :target,
+  section[id],
+  [id][data-anchor] {
+    scroll-margin-top: 9.5rem;
+  }
+
   :focus-visible {
     outline: 2.5px solid var(--color-accent);
     outline-offset: 3px;

@@ -39,28 +39,30 @@ export function StickyAppBar() {
         paddingBottom: 'env(safe-area-inset-bottom)',
       }}
     >
-      <div className="glass-strong m-3.5 flex items-center gap-3.5 rounded-[1.5rem] p-3.5 shadow-xl">
+      {/* Sized to survive a 390px viewport: at the previous scale the name
+          truncated to "Nutri…" and the rating wrapped onto two lines. */}
+      <div className="glass-strong m-3 flex items-center gap-3 rounded-[1.5rem] p-3 shadow-xl">
         <Image
           src="/images/brand/app-icon-1024.png"
           alt=""
           width={1024}
           height={1024}
-          className="h-13 w-13 rounded-2xl shadow-sm"
+          className="h-12 w-12 shrink-0 rounded-xl shadow-sm"
         />
 
         <div className="min-w-0 flex-1 leading-tight">
-          <p className="truncate font-display text-h4 font-semibold text-ink">
+          <p className="truncate font-display text-small font-semibold text-ink">
             Nutricycle
           </p>
-          <p className="mt-0.5 flex items-center gap-1.5 text-caption text-muted">
-            <Star strokeWidth={2.4} className="h-3.5 w-3.5 text-ovulation-ink" />
+          <p className="mt-0.5 flex items-center gap-1 text-caption whitespace-nowrap text-muted">
+            <Star strokeWidth={2.4} className="h-3.5 w-3.5 shrink-0 text-ovulation-ink" />
             {STORE.rating} · {STORE.price}
           </p>
         </div>
 
         <a
           href={`${STORE.smart}?src=sticky`}
-          className="rounded-full bg-action px-6 py-3 font-sans text-caption font-bold tracking-wide text-white uppercase shadow-md transition-colors hover:bg-action-hover"
+          className="shrink-0 rounded-full bg-action px-5 py-2.5 font-sans text-caption font-bold text-white shadow-md transition-colors hover:bg-action-hover"
         >
           Instalar
         </a>
@@ -72,7 +74,7 @@ export function StickyAppBar() {
             setDismissed(true);
           }}
           aria-label="Cerrar"
-          className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-muted transition-colors hover:bg-ink/5 hover:text-ink"
+          className="grid h-8 w-8 shrink-0 place-items-center rounded-full text-muted transition-colors hover:bg-ink/5 hover:text-ink"
         >
           <X strokeWidth={2.2} className="h-5 w-5" />
         </button>
