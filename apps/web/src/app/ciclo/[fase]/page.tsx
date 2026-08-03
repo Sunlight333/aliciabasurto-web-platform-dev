@@ -17,11 +17,13 @@ import {
 import { PHASES, getPhase, phaseDays, type PhaseSlug } from '@nutricycle/shared';
 import { PageHero } from '@/components/layout/page-hero';
 import { Section } from '@/components/layout/section';
+import { SectionTexture } from '@/components/layout/section-texture';
 import { Container } from '@/components/layout/container';
 import { Eyebrow } from '@/components/ui/eyebrow';
 import { Reveal } from '@/components/motion/reveal';
 import { CtaBand } from '@/components/marketing/cta-band';
 import { PHASE_DETAIL } from '@/data/phase-detail';
+import { PHASE_HERO } from '@/lib/phase-hero';
 
 const ICONS: Record<PhaseSlug, LucideIcon> = {
   menstrual: Droplet,
@@ -30,27 +32,11 @@ const ICONS: Record<PhaseSlug, LucideIcon> = {
   lutea: Moon,
 };
 
-const STYLES: Record<PhaseSlug, { chip: string; ink: string; texture: string }> = {
-  menstrual: {
-    chip: 'bg-menstrual-soft text-menstrual-ink',
-    ink: 'text-menstrual-ink',
-    texture: '/images/textures/calma.avif',
-  },
-  folicular: {
-    chip: 'bg-follicular-soft text-follicular-ink',
-    ink: 'text-follicular-ink',
-    texture: '/images/textures/counter.avif',
-  },
-  ovulatoria: {
-    chip: 'bg-ovulation-soft text-ovulation-ink',
-    ink: 'text-ovulation-ink',
-    texture: '/images/textures/hero-funciones.avif',
-  },
-  lutea: {
-    chip: 'bg-luteal-soft text-luteal-ink',
-    ink: 'text-luteal-ink',
-    texture: '/images/textures/papel.avif',
-  },
+const STYLES: Record<PhaseSlug, { chip: string; ink: string }> = {
+  menstrual: { chip: 'bg-menstrual-soft text-menstrual-ink', ink: 'text-menstrual-ink' },
+  folicular: { chip: 'bg-follicular-soft text-follicular-ink', ink: 'text-follicular-ink' },
+  ovulatoria: { chip: 'bg-ovulation-soft text-ovulation-ink', ink: 'text-ovulation-ink' },
+  lutea: { chip: 'bg-luteal-soft text-luteal-ink', ink: 'text-luteal-ink' },
 };
 
 /** Prerenders all four at build time — they are a fixed set, not a feed. */
@@ -84,6 +70,7 @@ export default async function FasePage({
 
   const detail = PHASE_DETAIL[phase.slug];
   const s = STYLES[phase.slug];
+  const hero = PHASE_HERO[phase.slug];
   const Icon = ICONS[phase.slug];
 
   const index = PHASES.findIndex((p) => p.slug === phase.slug);
@@ -97,8 +84,9 @@ export default async function FasePage({
         title={phase.name}
         accent={phase.tagline}
         lead={detail.summary}
-        image={s.texture}
-        focal="center 45%"
+        image={hero.image}
+        focal="center 50%"
+        veil={hero.veil}
       />
 
       {/* Hormonal state + how it feels */}
@@ -218,7 +206,8 @@ export default async function FasePage({
 
       {/* Prev / next — the cycle is a loop, so this never dead-ends */}
       <Section surface="base" size="tight">
-        <Container>
+        <SectionTexture src="/images/textures/calma.avif" />
+        <Container className="relative">
           <nav aria-label="Otras fases" className="grid gap-5 sm:grid-cols-2">
             <Link
               href={`/ciclo/${prev.slug}`}

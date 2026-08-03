@@ -17,15 +17,17 @@ apps/web/public/images/
 │   ├── logo-mark.jpg
 │   ├── app-icon-1024.png
 │   └── favicon-192.png
-└── alicia/                       Founder photography
-    ├── portrait-smiling.jpg
-    ├── portrait-tea.jpg
-    ├── kitchen-chopping.jpg
-    ├── kitchen-chopping-alt.avif
-    └── kitchen-wide.avif
+├── alicia/                       Founder photography
+│   ├── portrait-smiling.jpg
+│   ├── portrait-tea.jpg
+│   ├── kitchen-chopping.jpg
+│   ├── kitchen-chopping-alt.avif
+│   └── kitchen-wide.avif
+├── heroes/                       One landscape frame per route (§3b)
+└── textures/                     Section backgrounds (§3b)
 ```
 
-Two folders, because the two groups have different lifecycles: brand assets are versioned with the identity and change rarely; founder photography is replaced whenever there is a new shoot.
+Four folders, because the groups have different lifecycles: brand assets are versioned with the identity and change rarely; founder photography is replaced whenever there is a new shoot; heroes and textures are licensed stock, swappable per route without touching a component.
 
 ### Naming convention
 
@@ -103,22 +105,72 @@ They sit behind an 84% cream scrim, so they read as material rather than
 imagery and never compete with the cards in front of them.
 
 **Source:** [Pexels](https://www.pexels.com) · Pexels License — free for
-commercial use, no attribution required, modification permitted.
-Downloaded 2026-08-01, resized to 1920×1080 and re-encoded to AVIF.
+commercial use, no attribution required, modification permitted. Textures
+downloaded 2026-08-01, heroes 2026-08-03; all resized and re-encoded to
+AVIF. Pexels IDs are recorded per file below so any frame can be traced
+back to its licence.
 
 | File | Pexels ID | Subject | Size | Used on |
 | --- | --- | --- | --- | --- |
-| `textures/hero-funciones.avif` | 18011826 | Lemon, water glass and a wildflower on sunlit linen | 189 KB | `/funcionalidades` → page hero |
-| `textures/counter.avif` | 6739221 | Warm neutral marble | 8 KB | `/funcionalidades` → Nutrición y recetas |
-| `textures/calma.avif` | 16408396 | Soft plant shadows on a warm wall | 91 KB | `/funcionalidades` → Registro diario |
-| `textures/papel.avif` | 8941369 | Soft off-white paper texture | 80 KB | `/funcionalidades` → Tu cuenta |
+| `textures/counter.avif` | 6739221 | Warm neutral marble | 8 KB | `/funcionalidades` · `/recetas` · `/recetas/fase/[fase]` |
+| `textures/calma.avif` | 16408396 | Soft plant shadows on a warm wall | 91 KB | `/funcionalidades` · `/ciclo` · `/ciclo/[fase]` |
+| `textures/papel.avif` | 8941369 | Soft off-white paper texture | 80 KB | `/funcionalidades` · `/sobre` · `/membresia` · `/blog` · `/recetas/[slug]` |
+| `textures/luz.avif` | 16408400 | Shadow bars across warm plaster | 79 KB | `/videos` · `/faq` (alternating groups) |
+| `textures/arena.avif` | 6279955 | Soft beige diagonal bands | 2 KB | `/contacto` |
+
+`arena.avif` is 2 KB because it genuinely is three flat bands — the
+encoder is not failing, there is simply almost nothing to encode. It is
+used at `scrim={0.9}` for the same reason: any less and the bands read as
+a gradient artefact rather than a surface.
+
+`textures/hero-funciones.avif` (Pexels 18011826) was **removed** — it was
+the only texture doing hero duty, and heroes now have their own set below.
 
 ### Page hero photography — the system
 
 Every route opens the same way: a **full-viewport sharp photograph under
 a light cream scrim**, running up beneath the sticky header. `/` uses
 founder photography; interior pages pass their own image to `PageHero`.
-Adding a page means adding one row above — not inventing a new header.
+Adding a page means adding one row to the table below — not inventing a
+new header.
+
+#### The frames
+
+Downloaded 2026-08-03 from Pexels, encoded 1600 px wide, AVIF q42.
+**Landscape only.** The first set was sourced portrait (1400×2100) and
+fed to a `bg-cover` band, so roughly two thirds of every frame was thrown
+away at render and what survived was a featureless centre slice — the
+reason `/funcionalidades` read as flat mush. Portrait sources are now
+centre-cropped to 3:2 at encode time, so the frame that ships is the
+frame that shows.
+
+| File | Pexels ID | Subject | Size | Route | `veil` |
+| --- | --- | --- | --- | --- | --- |
+| `heroes/funciones.avif` | 5420378 | Figs, pears and a water glass on sunlit linen | 55 KB | `/funcionalidades` | 0.66 |
+| `heroes/ciclo.avif` | 9518512 | Five dried stems laid out in a row | 5 KB | `/ciclo` | 0.40 |
+| `heroes/fase-menstrual.avif` | 12486422 | A dried bloom on a fold of cream linen | 34 KB | `/ciclo/menstrual` | 0.55 |
+| `heroes/fase-folicular.avif` | 8543321 | Green sprig and its shadow on a white wall | 12 KB | `/ciclo/folicular` | 0.48 |
+| `heroes/fase-ovulatoria.avif` | 15956086 | White ranunculus opening in a pewter jug | 8 KB | `/ciclo/ovulatoria` | 0.50 |
+| `heroes/fase-lutea.avif` | 10794667 | Dried gypsophila across warm olive stripes | 11 KB | `/ciclo/lutea` | 0.58 |
+| `heroes/recetas.avif` | 18278511 | Bread, flowers and candles on a morning table | 75 KB | `/recetas` · `/recetas/[slug]` | 0.68 |
+| `heroes/metodo.avif` | 6962747 | Wooden bowl on a striped linen napkin | 33 KB | `/como-funciona` | 0.50 |
+| `heroes/membresia.avif` | 8101910 | Olive branch, ceramic and a lit candle | 12 KB | `/membresia` | 0.50 |
+| `heroes/blog.avif` | 7657877 | Coffee, notebook and pen on white | 7 KB | `/blog` | 0.45 |
+| `heroes/faq.avif` | 9850185 | A single dried flower on a beige plate | 68 KB | `/faq` | 0.56 |
+| `heroes/contacto.avif` | 6958775 | Vase, frame and candle on a white shelf | 18 KB | `/contacto` | 0.58 |
+| `heroes/videos.avif` | 19085283 | Circular shadow on a sunlit cream wall | 6 KB | `/videos` | 0.45 |
+
+The four phase frames are chosen as a **colour story**, not four
+illustrations of the same idea: linen warmth, new growth, an open bloom,
+banked gold. Read in order they should feel like the month passing. They
+are mapped once in [`lib/phase-hero.ts`](../../apps/web/src/lib/phase-hero.ts)
+and shared by `/ciclo/[fase]` and `/recetas/fase/[fase]`, so the two
+phase routes cannot drift apart.
+
+`veil` is per-frame because the frames do not carry the same weight. A
+single flat wash either erases the pale frames or leaves the busy ones
+shouting; the values above are tuned per image and verified by the
+contrast measurement below.
 
 What a hero image has to be:
 
@@ -129,12 +181,13 @@ What a hero image has to be:
 | Generous negative space near the centre | The copy block lands there |
 | Subject off-centre | It should be visible beside the copy, never behind it |
 
-Encode at ~1400px wide, AVIF q30. The scrim hides fine detail, so
-anything larger is wasted bytes — the same frame at q56 was 803 KB
-against 189 KB here, with no visible difference through the veil.
+Encode at 1600px wide, AVIF q42. The old q30 guidance came from a heavier
+82% wash; at the lighter veil the photograph is genuinely visible, and q30
+banded on the smooth frames. File sizes above range 5–75 KB — the small
+ones are not broken, they are smooth frames with little to encode.
 
-**Alt text:** none — all three are decorative and rendered as CSS
-backgrounds behind `aria-hidden` layers. They carry no information a
+**Alt text:** none — every hero and texture is decorative and rendered as
+a CSS background behind `aria-hidden` layers. They carry no information a
 screen reader needs.
 
 ### Selection criteria
@@ -149,9 +202,38 @@ text need the opposite of a striking photograph:
 - **No subject** — a recognisable object competes with the cards
 - **Even across the frame** — a bright corner would break contrast locally
 
-Contrast is **measured from rendered pixels**, not estimated: 13.72,
-12.44 and 16.10:1 for ink on the three scrimmed backdrops — all AAA.
-Re-measure if the scrim opacity changes.
+Contrast is **measured from rendered pixels**, not estimated — and from
+the *page*, not the asset: the `<h1>` box is located in a real render, the
+copy is hidden, and ink `#221d1a` is measured against the surface actually
+beneath it. Every hero is AAA at worst-case pixel, measured 2026-08-03:
+
+| Route | worst | mean | | Route | worst | mean |
+| --- | --- | --- | --- | --- | --- | --- |
+| `/funcionalidades` | 11.56 | 14.65 | | `/recetas` | 12.08 | 15.00 |
+| `/ciclo` | 13.17 | 15.43 | | `/recetas/[slug]` | 12.32 | 14.95 |
+| `/ciclo/menstrual` | 12.04 | 15.01 | | `/como-funciona` | 11.66 | 14.74 |
+| `/ciclo/folicular` | 12.45 | 15.50 | | `/membresia` | 10.59 | 14.33 |
+| `/ciclo/ovulatoria` | 11.93 | 14.20 | | `/faq` | 13.37 | 15.02 |
+| `/ciclo/lutea` | 14.00 | 15.07 | | `/contacto` | 11.74 | 15.26 |
+| `/blog` | 11.93 | 15.03 | | `/videos` | 12.87 | 15.13 |
+
+Worst case across the site is 10.59:1 on `/membresia`, comfortably past
+the 7:1 AAA floor. Re-measure if any `veil` or the radial changes.
+
+### Section seams
+
+Tinted sections fade in and out rather than filling flat, so a join never
+lands on a hard line. Measured as the largest single-row luminance step
+within 14px of each `<section>` boundary, sampled down the left gutter:
+every route is now ≤ 5.3, against a 6.0 threshold.
+
+One seam survived the original pass on **every** page. `CtaBand`'s top
+orb is positioned above the band and clipped by `overflow-hidden`, and
+the cream top-fade was painted *before* the orbs — so the orb drew over
+its own softening layer and its clipped edge became a 13-step line across
+the left gutter. The fade now paints after the orbs. Worth remembering
+when adding any decorative layer to a band that fades at its edges:
+**order in the DOM is order on the screen.**
 
 ---
 

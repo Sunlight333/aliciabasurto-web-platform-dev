@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { PageHero } from '@/components/layout/page-hero';
 import { Section } from '@/components/layout/section';
+import { SectionTexture } from '@/components/layout/section-texture';
 import { Container } from '@/components/layout/container';
 import { Reveal } from '@/components/motion/reveal';
 import { CtaBand } from '@/components/marketing/cta-band';
@@ -25,12 +26,14 @@ export default function BlogPage() {
         title="Entender tu ciclo"
         accent="cambia cómo te tratás"
         lead="Artículos sobre lo que hacen tus hormonas, por qué te sentís distinta cada semana y qué hacer al respecto."
-        image="/images/textures/papel.avif"
-        focal="center 40%"
+        image="/images/heroes/blog.avif"
+        focal="center 50%"
+        veil={0.45}
       />
 
       <Section surface="raised">
-        <Container>
+        <SectionTexture src="/images/textures/papel.avif" />
+        <Container className="relative">
           {articles.length === 0 ? (
             <Reveal>
               <EmptyState

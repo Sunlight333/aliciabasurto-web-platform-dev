@@ -25,6 +25,9 @@ export function PageHero({
   accent,
   lead,
   image,
+  /** Flat veil opacity over the photograph. Lower for pale frames that
+   *  would otherwise disappear; higher for busy or contrasty ones. */
+  veil = 0.55,
   /** object-position for the photograph; defaults to centre */
   focal = 'center',
   children,
@@ -35,6 +38,7 @@ export function PageHero({
   accent?: string;
   lead?: string;
   image?: string;
+  veil?: number;
   focal?: string;
   children?: React.ReactNode;
   className?: string;
@@ -57,15 +61,21 @@ export function PageHero({
             className="absolute inset-0 bg-cover"
             style={{ backgroundImage: `url('${image}')`, backgroundPosition: focal }}
           />
-          {/* Light, even veil — the photograph stays sharp and legible
-              underneath; ink over it is measured, not assumed. */}
-          <div className="absolute inset-0 bg-surface-raised/[0.82]" />
-          {/* Brightest where the copy sits */}
+          {/* A light, even veil, kept deliberately weak. A flat 82% wash
+              read fine over the darker frames but erased the pale ones
+              entirely — several heroes were invisible. Legibility now
+              comes mostly from the radial below, which only covers where
+              the copy actually sits, so pale photographs survive. */}
+          <div
+            className="absolute inset-0 bg-surface-raised"
+            style={{ opacity: veil }}
+          />
+          {/* Brightest exactly under the copy block */}
           <div
             className="absolute inset-0"
             style={{
               background:
-                'radial-gradient(70% 55% at 50% 50%, rgb(253 252 244 / 0.72) 0%, rgb(253 252 244 / 0.35) 55%, rgb(253 252 244 / 0) 100%)',
+                'radial-gradient(62% 48% at 50% 50%, rgb(253 252 244 / 0.9) 0%, rgb(253 252 244 / 0.62) 48%, rgb(253 252 244 / 0.18) 78%, rgb(253 252 244 / 0) 100%)',
             }}
           />
         </div>

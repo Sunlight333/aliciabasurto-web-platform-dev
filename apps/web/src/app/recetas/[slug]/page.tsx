@@ -5,6 +5,7 @@ import { Clock, Users, ArrowLeft, ArrowRight, Sparkles, Info } from 'lucide-reac
 import { getPhase, phaseDays } from '@nutricycle/shared';
 import { PageHero } from '@/components/layout/page-hero';
 import { Section } from '@/components/layout/section';
+import { SectionTexture } from '@/components/layout/section-texture';
 import { Container } from '@/components/layout/container';
 import { Eyebrow } from '@/components/ui/eyebrow';
 import { Reveal } from '@/components/motion/reveal';
@@ -78,8 +79,9 @@ export default async function RecetaPage({
         eyebrow={`Receta · Fase ${phase?.name.toLowerCase()}`}
         title={recipe.title}
         lead={recipe.excerpt}
-        image="/images/textures/counter.avif"
+        image="/images/heroes/recetas.avif"
         focal="center 45%"
+        veil={0.68}
       >
         <ul className="flex flex-wrap justify-center gap-3">
           {[
@@ -108,7 +110,8 @@ export default async function RecetaPage({
       </PageHero>
 
       <Section surface="raised">
-        <Container size="prose">
+        <SectionTexture src="/images/textures/papel.avif" />
+        <Container className="relative" size="prose">
           <Reveal>
             <p className="text-lead text-muted">{recipe.intro}</p>
           </Reveal>

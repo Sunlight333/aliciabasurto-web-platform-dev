@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { PageHero } from '@/components/layout/page-hero';
 import { Section } from '@/components/layout/section';
+import { SectionTexture } from '@/components/layout/section-texture';
 import { Container } from '@/components/layout/container';
 import { Reveal } from '@/components/motion/reveal';
 import { CtaBand } from '@/components/marketing/cta-band';
@@ -24,12 +25,14 @@ export default function VideosPage() {
         title="Verlo una vez"
         accent="y ya saber hacerlo"
         lead="Recetas en video cortas y explicaciones sobre tu ciclo, sin tecnicismos."
-        image="/images/textures/calma.avif"
-        focal="center 35%"
+        image="/images/heroes/videos.avif"
+        focal="center 50%"
+        veil={0.45}
       />
 
       <Section surface="raised">
-        <Container>
+        <SectionTexture src="/images/textures/luz.avif" />
+        <Container className="relative">
           {videos.length === 0 ? (
             <Reveal>
               <EmptyState

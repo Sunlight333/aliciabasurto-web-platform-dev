@@ -3,6 +3,7 @@ import { Mail, HelpCircle, ShieldCheck, Store, ArrowRight } from 'lucide-react';
 import { SITE } from '@nutricycle/shared';
 import { PageHero } from '@/components/layout/page-hero';
 import { Section } from '@/components/layout/section';
+import { SectionTexture } from '@/components/layout/section-texture';
 import { Container } from '@/components/layout/container';
 import { Eyebrow } from '@/components/ui/eyebrow';
 import { Reveal } from '@/components/motion/reveal';
@@ -59,10 +60,14 @@ export default function ContactoPage() {
         title="Escribinos y"
         accent="te respondemos"
         lead="Somos un equipo pequeño, así que respondemos por correo. Elegí el tema y te llega directo a quien corresponde."
+        image="/images/heroes/contacto.avif"
+        focal="center 50%"
+        veil={0.58}
       />
 
       <Section surface="raised">
-        <Container>
+        <SectionTexture src="/images/textures/arena.avif" scrim={0.9} />
+        <Container className="relative">
           <ul className="grid gap-7 md:grid-cols-3">
             {ROUTES.map((r, i) => (
               <Reveal as="li" key={r.title} delay={i * 100} className="h-full">

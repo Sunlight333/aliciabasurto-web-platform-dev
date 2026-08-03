@@ -3,6 +3,7 @@ import { Smartphone, ShieldCheck, CreditCard, Wrench, Mail } from 'lucide-react'
 import { SITE } from '@nutricycle/shared';
 import { PageHero } from '@/components/layout/page-hero';
 import { Section } from '@/components/layout/section';
+import { SectionTexture } from '@/components/layout/section-texture';
 import { Container } from '@/components/layout/container';
 import { Eyebrow } from '@/components/ui/eyebrow';
 import { Reveal } from '@/components/motion/reveal';
@@ -50,6 +51,9 @@ export default function FaqPage() {
         title="Lo que suelen"
         accent="preguntarnos"
         lead="Sobre la app, tus datos de salud, la suscripción y qué hacer si algo no funciona."
+        image="/images/heroes/faq.avif"
+        focal="center 45%"
+        veil={0.56}
       >
         <ul className="flex flex-wrap justify-center gap-3">
           {FAQ_GROUPS.map((g) => (
@@ -73,7 +77,11 @@ export default function FaqPage() {
             id={group.id}
             surface={i % 2 === 0 ? 'raised' : 'base'}
           >
-            <Container size="prose">
+            {/* Alternating with the surface, so the texture lands on every
+                other group rather than every one — the same rhythm the
+                tints already carry, not a second competing one. */}
+            {i % 2 === 0 && <SectionTexture src="/images/textures/luz.avif" />}
+            <Container className="relative" size="prose">
               <Reveal>
                 <div className="flex items-center gap-5">
                   <span className={`icon-chip shrink-0 ${group.tint}`}>

@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { Leaf, CircleDashed, HeartHandshake, MessageCircleHeart, ArrowRight, AlertTriangle } from 'lucide-react';
 import { PageHero } from '@/components/layout/page-hero';
 import { Section } from '@/components/layout/section';
+import { SectionTexture } from '@/components/layout/section-texture';
 import { Container } from '@/components/layout/container';
 import { Eyebrow } from '@/components/ui/eyebrow';
 import { Reveal } from '@/components/motion/reveal';
@@ -126,7 +127,8 @@ export default function SobrePage() {
 
       {/* Credentials — deliberately incomplete, see file header */}
       <Section surface="base" size="tight">
-        <Container size="prose">
+        <SectionTexture src="/images/textures/papel.avif" />
+        <Container className="relative" size="prose">
           <Reveal>
             <Eyebrow>Formación</Eyebrow>
             <h2 className="mt-5 text-h2 text-ink">

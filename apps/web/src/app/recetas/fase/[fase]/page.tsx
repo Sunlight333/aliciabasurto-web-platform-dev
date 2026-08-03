@@ -5,11 +5,13 @@ import { ArrowRight } from 'lucide-react';
 import { PHASES, getPhase, phaseDays, type PhaseSlug } from '@nutricycle/shared';
 import { PageHero } from '@/components/layout/page-hero';
 import { Section } from '@/components/layout/section';
+import { SectionTexture } from '@/components/layout/section-texture';
 import { Container } from '@/components/layout/container';
 import { Reveal } from '@/components/motion/reveal';
 import { CtaBand } from '@/components/marketing/cta-band';
 import { EmptyState, RecipeCard, PhaseFilter } from '@/components/content/content-pieces';
 import { getRecipesByPhase } from '@/lib/content';
+import { PHASE_HERO } from '@/lib/phase-hero';
 
 export function generateStaticParams() {
   return PHASES.map((p) => ({ fase: p.slug }));
@@ -48,14 +50,16 @@ export default async function RecetasFasePage({
         title={`Fase ${phase.name.toLowerCase()},`}
         accent="qué cocinar"
         lead={phase.nutrition}
-        image="/images/textures/counter.avif"
-        focal="center 40%"
+        image={PHASE_HERO[phase.slug].image}
+        focal="center 50%"
+        veil={PHASE_HERO[phase.slug].veil}
       >
         <PhaseFilter active={phase.slug} />
       </PageHero>
 
       <Section surface="raised">
-        <Container>
+        <SectionTexture src="/images/textures/counter.avif" />
+        <Container className="relative">
           {recipes.length === 0 ? (
             <Reveal>
               <EmptyState

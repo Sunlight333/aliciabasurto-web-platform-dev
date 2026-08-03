@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Check, Minus, Crown, Sparkles, Store, ArrowRight } from 'lucide-react';
 import { PageHero } from '@/components/layout/page-hero';
 import { Section } from '@/components/layout/section';
+import { SectionTexture } from '@/components/layout/section-texture';
 import { Container } from '@/components/layout/container';
 import { Eyebrow } from '@/components/ui/eyebrow';
 import { Reveal } from '@/components/motion/reveal';
@@ -68,8 +69,9 @@ export default function MembresiaPage() {
         title="Gratis para empezar,"
         accent="completo cuando lo necesites"
         lead="Todo lo esencial está en el plan gratuito. El Plan Hormonal es para cuando quieras preguntarle a la IA sin contar los mensajes."
-        image="/images/textures/hero-funciones.avif"
-        focal="center 20%"
+        image="/images/heroes/membresia.avif"
+        focal="center 50%"
+        veil={0.5}
       >
         <StoreButtons source="membresia-hero" className="justify-center" />
       </PageHero>
@@ -125,7 +127,8 @@ export default function MembresiaPage() {
 
       {/* Comparison */}
       <Section surface="base">
-        <Container>
+        <SectionTexture src="/images/textures/papel.avif" />
+        <Container className="relative">
           <Reveal className="mx-auto max-w-2xl text-center">
             <Eyebrow>Comparación</Eyebrow>
             <h2 className="mt-5 text-h2 text-ink">

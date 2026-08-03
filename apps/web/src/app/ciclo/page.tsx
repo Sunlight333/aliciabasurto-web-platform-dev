@@ -4,6 +4,7 @@ import { Droplet, Sprout, Sun, Moon, ArrowRight, Info, type LucideIcon } from 'l
 import { PHASES, phaseDays, type PhaseSlug } from '@nutricycle/shared';
 import { PageHero } from '@/components/layout/page-hero';
 import { Section } from '@/components/layout/section';
+import { SectionTexture } from '@/components/layout/section-texture';
 import { Container } from '@/components/layout/container';
 import { Eyebrow } from '@/components/ui/eyebrow';
 import { Reveal } from '@/components/motion/reveal';
@@ -55,8 +56,9 @@ export default function CicloPage() {
         title="Cuatro fases,"
         accent="cuatro cuerpos distintos"
         lead="Tus hormonas suben y bajan en un patrón que se repite cada mes. Entenderlo cambia lo que esperás de vos misma cada semana."
-        image="/images/textures/calma.avif"
-        focal="center 45%"
+        image="/images/heroes/ciclo.avif"
+        focal="center 50%"
+        veil={0.4}
       />
 
       <Section surface="raised">
@@ -124,7 +126,8 @@ export default function CicloPage() {
       </Section>
 
       <Section surface="base" size="tight">
-        <Container size="prose">
+        <SectionTexture src="/images/textures/calma.avif" />
+        <Container className="relative" size="prose">
           <Reveal>
             <div className="card flex items-start gap-5 p-8">
               <span className="icon-chip shrink-0 bg-luteal-soft text-luteal-ink">

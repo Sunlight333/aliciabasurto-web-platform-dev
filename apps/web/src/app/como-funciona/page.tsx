@@ -12,6 +12,7 @@ import {
 import { PHASES, phaseDays } from '@nutricycle/shared';
 import { PageHero } from '@/components/layout/page-hero';
 import { Section } from '@/components/layout/section';
+import { SectionTexture } from '@/components/layout/section-texture';
 import { Container } from '@/components/layout/container';
 import { Eyebrow } from '@/components/ui/eyebrow';
 import { Reveal } from '@/components/motion/reveal';
@@ -83,8 +84,9 @@ export default function ComoFuncionaPage() {
         title="De una fecha"
         accent="a un plan diario"
         lead="No hay que aprender nada nuevo ni llevar cuentas. Registrás una fecha y la app hace el resto, todos los días."
-        image="/images/textures/hero-funciones.avif"
-        focal="center 55%"
+        image="/images/heroes/metodo.avif"
+        focal="center 50%"
+        veil={0.5}
       />
 
       {/* The journey */}
@@ -129,7 +131,8 @@ export default function ComoFuncionaPage() {
 
       {/* What the phases actually are */}
       <Section surface="base">
-        <Container>
+        <SectionTexture src="/images/textures/counter.avif" />
+        <Container className="relative">
           <Reveal className="mx-auto max-w-2xl text-center">
             <Eyebrow>Por qué funciona</Eyebrow>
             <h2 className="mt-5 text-h2 text-ink">

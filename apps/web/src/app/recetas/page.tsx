@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { PageHero } from '@/components/layout/page-hero';
 import { Section } from '@/components/layout/section';
+import { SectionTexture } from '@/components/layout/section-texture';
 import { Container } from '@/components/layout/container';
 import { Reveal } from '@/components/motion/reveal';
 import { CtaBand } from '@/components/marketing/cta-band';
@@ -24,14 +25,16 @@ export default function RecetasPage() {
         title="Cocina según"
         accent="la fase en la que estás"
         lead="Una selección abierta de recetas por fase. La biblioteca completa, con más de 40, vive dentro de la app."
-        image="/images/textures/counter.avif"
-        focal="center 40%"
+        image="/images/heroes/recetas.avif"
+        focal="center 45%"
+        veil={0.68}
       >
         <PhaseFilter />
       </PageHero>
 
       <Section surface="raised">
-        <Container>
+        <SectionTexture src="/images/textures/counter.avif" />
+        <Container className="relative">
           {recipes.length === 0 ? (
             <Reveal>
               <EmptyState
