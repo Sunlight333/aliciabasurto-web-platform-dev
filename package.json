@@ -12,7 +12,8 @@
     "build": "npm run build --workspace @nutricycle/web",
     "start": "npm run start --workspace @nutricycle/web",
     "lint": "npm run lint --workspace @nutricycle/web",
-    "typecheck": "npm run typecheck --workspace @nutricycle/web"
+    "typecheck": "npm run typecheck --workspace @nutricycle/web",
+    "test:i18n-routes": "node --experimental-strip-types scripts/i18n-routes.test.ts"
   },
   "engines": {
     "node": ">=20"

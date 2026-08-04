@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Cormorant_Garamond, Outfit } from 'next/font/google';
-import { SITE } from '@nutricycle/shared';
+import { SITE, siteTagline, DEFAULT_LOCALE } from '@nutricycle/shared';
 import { SiteHeader } from '@/components/layout/site-header';
 import { SiteFooter } from '@/components/layout/site-footer';
 import { StickyAppBar } from '@/components/marketing/sticky-app-bar';
@@ -24,7 +24,7 @@ const outfit = Outfit({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    default: `${SITE.name} — ${SITE.tagline}`,
+    default: `${SITE.name} — ${siteTagline(DEFAULT_LOCALE)}`,
     template: `%s | ${SITE.name}`,
   },
   description:
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'es_ES',
     siteName: SITE.name,
-    title: `${SITE.name} — ${SITE.tagline}`,
+    title: `${SITE.name} — ${siteTagline(DEFAULT_LOCALE)}`,
     description:
       'Aprende a comer según tu ciclo. Recetas, alimentos clave y educación hormonal para cada fase.',
   },

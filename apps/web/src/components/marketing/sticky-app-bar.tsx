@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { X, Star } from 'lucide-react';
-import { STORE } from '@nutricycle/shared';
+import { STORE, storePrice, DEFAULT_LOCALE } from '@nutricycle/shared';
 
 const DISMISSED_KEY = 'nc.appbar.dismissed';
 
@@ -56,7 +56,7 @@ export function StickyAppBar() {
           </p>
           <p className="mt-0.5 flex items-center gap-1 text-caption whitespace-nowrap text-muted">
             <Star strokeWidth={2.4} className="h-3.5 w-3.5 shrink-0 text-ovulation-ink" />
-            {STORE.rating} · {STORE.price}
+            {STORE.rating} · {storePrice(DEFAULT_LOCALE)}
           </p>
         </div>
 
