@@ -10,10 +10,15 @@
  * replaced with a real review plus the reviewer's consent to publish —
  * tracked as item 5 in doc/04-content/about-page.md §4.
  *
- * The avatars are licensed placeholder portraits from pravatar.cc, not
- * photographs of these (non-existent) people. Real client photos need
- * separate consent; if none is given, drop `avatar` and the card falls
- * back to a monogram.
+ * The avatars are Pexels stock portraits cropped in
+ * doc/assets/candidates/cta-band-latam-avatars — real people who are not
+ * clients and never said any of this. That combination is the risky one:
+ * the Pexels licence permits commercial use but forbids implying that an
+ * identifiable person endorses a product, which is exactly what a face
+ * beside an invented quote does. They are here to build the layout.
+ * Before launch, either pair each portrait with a real reviewer who has
+ * consented to both the quote and the photo, or drop `avatar` and let the
+ * card fall back to a monogram.
  */
 
 export interface Review {
@@ -44,7 +49,7 @@ export const REVIEWS: readonly Review[] = [
       'Llevaba años culpándome por no tener disciplina. Resulta que solo necesitaba comer distinto cada semana.',
     phase: 'lutea',
     rating: 5,
-    avatar: '/images/reviews/avatar-1.jpg',
+    avatar: '/images/reviews/01-camisa-rosa.webp',
   },
   {
     id: 'r2',
@@ -54,7 +59,7 @@ export const REVIEWS: readonly Review[] = [
       'La app me dice qué cocinar según el día de mi ciclo. Dejé de improvisar y mi energía por las mañanas cambió.',
     phase: 'folicular',
     rating: 5,
-    avatar: '/images/reviews/avatar-2.jpg',
+    avatar: '/images/reviews/02-cocina-marmol.webp',
   },
   {
     id: 'r3',
@@ -64,7 +69,7 @@ export const REVIEWS: readonly Review[] = [
       'El acné hormonal era mi mayor inseguridad. Cuatro meses siguiendo las recetas por fase y mi piel es otra.',
     phase: 'menstrual',
     rating: 5,
-    avatar: '/images/reviews/avatar-3.jpg',
+    avatar: '/images/reviews/03-jersey-gris.webp',
   },
   {
     id: 'r4',
@@ -74,7 +79,7 @@ export const REVIEWS: readonly Review[] = [
       'Lo que más valoro es que no me prohíbe nada. Me enseña cuándo mi cuerpo aprovecha mejor cada alimento.',
     phase: 'ovulatoria',
     rating: 5,
-    avatar: '/images/reviews/avatar-4.jpg',
+    avatar: '/images/reviews/04-sofa-crema.webp',
   },
   {
     id: 'r5',
@@ -84,7 +89,7 @@ export const REVIEWS: readonly Review[] = [
       'Entender por qué me sentía distinta cada semana me quitó un peso enorme. Ya no peleo con mi cuerpo.',
     phase: 'lutea',
     rating: 5,
-    avatar: '/images/reviews/avatar-5.jpg',
+    avatar: '/images/reviews/05-jersey-verde.webp',
   },
   {
     id: 'r6',
@@ -94,6 +99,56 @@ export const REVIEWS: readonly Review[] = [
       'La lista de compras me ahorra la peor parte. Llego al súper y ya sé exactamente qué necesita mi fase.',
     phase: 'folicular',
     rating: 5,
-    avatar: '/images/reviews/avatar-6.jpg',
+    avatar: '/images/reviews/06-retrato-calido.webp',
+  },
+  {
+    id: 'r7',
+    name: 'Regina Salazar',
+    location: 'Guadalajara',
+    quote:
+      'Antes cenaba lo mismo todo el mes. Ahora ajusto la cena a la fase y duermo de un tirón desde la tercera semana.',
+    phase: 'ovulatoria',
+    rating: 5,
+    avatar: '/images/reviews/07-camisa-azul.webp',
+  },
+  {
+    id: 'r8',
+    name: 'Paulina Navarro',
+    location: 'Ciudad de México',
+    quote:
+      'Los primeros días ya no me tumban. Como lo que toca, me caliento con caldos y sigo con mi semana normal.',
+    phase: 'menstrual',
+    rating: 5,
+    avatar: '/images/reviews/08-cocina-tulipanes.webp',
+  },
+  {
+    id: 'r9',
+    name: 'Fernanda Cruz',
+    location: 'Monterrey',
+    quote:
+      'Los antojos de la semana previa dejaron de ganarme. No es fuerza de voluntad, es comer lo que esa fase pide.',
+    phase: 'lutea',
+    rating: 5,
+    avatar: '/images/reviews/09-encimera-verduras.webp',
+  },
+  {
+    id: 'r10',
+    name: 'Andrea Molina',
+    location: 'Quito',
+    quote:
+      'Empecé por curiosidad y me quedé por la energía. Cocino en veinte minutos con lo que la app me propone.',
+    phase: 'folicular',
+    rating: 5,
+    avatar: '/images/reviews/10-sofa-plantas.webp',
+  },
+  {
+    id: 'r11',
+    name: 'Ximena Duarte',
+    location: 'Puebla',
+    quote:
+      'Es la primera vez que una app de comida no me hace sentir culpable. Explica el porqué y una entiende su cuerpo.',
+    phase: 'ovulatoria',
+    rating: 5,
+    avatar: '/images/reviews/11-mexico-exterior.webp',
   },
 ] as const;

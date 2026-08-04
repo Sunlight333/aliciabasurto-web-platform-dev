@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
-import { Leaf, CircleDashed, HeartHandshake, MessageCircleHeart, ArrowRight, AlertTriangle } from 'lucide-react';
+import { Leaf, CircleDashed, HeartHandshake, ArrowRight, AlertTriangle } from 'lucide-react';
 import { PageHero } from '@/components/layout/page-hero';
 import { Section } from '@/components/layout/section';
 import { SectionTexture } from '@/components/layout/section-texture';
@@ -9,6 +9,7 @@ import { Eyebrow } from '@/components/ui/eyebrow';
 import { Reveal } from '@/components/motion/reveal';
 import { CtaBand } from '@/components/marketing/cta-band';
 import { FullBleedQuote } from '@/components/marketing/full-bleed-quote';
+import { ReviewsSection } from '@/components/content/reviews-section';
 
 export const metadata: Metadata = {
   title: 'Sobre Alicia Basurto — Nutrición Cíclica',
@@ -29,9 +30,10 @@ export const metadata: Metadata = {
  *   guidance, inventing "certified in X" is the one thing that must not
  *   happen, so the section states what is verifiable and asks for the
  *   rest.
- * - Proof. No testimonial has consent to publish yet, so it renders a
- *   real empty state — not the blank region the live /testimonials ships
- *   (site-audit.md §12.1).
+ * - Proof. The marquee is built and wired, but every quote, name and
+ *   portrait in `REVIEWS` is placeholder — no testimonial has consent to
+ *   publish yet. See the warning at the head of data/reviews.ts: this
+ *   section must not go live until real reviews replace them.
  */
 const PILLARS = [
   {
@@ -213,23 +215,16 @@ export default function SobrePage() {
         </Container>
       </Section>
 
-      {/* Proof — real empty state, never a blank region */}
-      <Section surface="mint" size="tight">
-        <Container>
-          <Reveal>
-            <div className="card mx-auto max-w-xl border-dashed p-11 text-center">
-              <span className="icon-chip mx-auto bg-follicular-soft text-follicular-ink">
-                <MessageCircleHeart strokeWidth={1.9} className="h-9 w-9" />
-              </span>
-              <Eyebrow className="mt-6">Testimonios</Eyebrow>
-              <p className="mt-4 text-body text-muted">
-                Estamos reuniendo las historias de quienes ya sincronizaron su
-                alimentación con su ciclo.
-              </p>
-            </div>
-          </Reveal>
-        </Container>
-      </Section>
+      {/* Proof — same marquee as the landing page, its own card design */}
+      <ReviewsSection
+        variant="ficha"
+        title={
+          <>
+            Historias de quienes ya{' '}
+            <span className="text-accent">comen por fases</span>
+          </>
+        }
+      />
 
       <CtaBand source="sobre" />
     </>

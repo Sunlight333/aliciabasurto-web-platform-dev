@@ -47,7 +47,29 @@ const SHAPES = [
   'rounded-t-[9999px] rounded-bl-[2rem] rounded-br-[5rem]',
 ];
 
-export function ReviewsSection() {
+/**
+ * `arch` is the landing page's domed card with the portrait breaking out
+ * of the top edge. `ficha` is the Sobre variant: a wider, quieter card
+ * that keeps its portrait inside the frame. Both ride the same marquee —
+ * only the card and the track's metrics change.
+ */
+type Variant = 'arch' | 'ficha';
+
+const TRACK: Record<Variant, string> = {
+  // The tall top padding is headroom for the portrait that overhangs the card.
+  arch: 'pt-20 pb-10 [--rc:19rem] sm:[--rc:20rem] lg:[--rc:21rem]',
+  ficha: 'pt-10 pb-12 [--rc:20rem] sm:[--rc:22rem] lg:[--rc:23.5rem]',
+};
+
+export function ReviewsSection({
+  variant = 'arch',
+  eyebrow = 'Testimonios',
+  title,
+}: {
+  variant?: Variant;
+  eyebrow?: string;
+  title?: React.ReactNode;
+} = {}) {
   const trackRef = useRef<HTMLUListElement>(null);
   const [dragging, setDragging] = useState(false);
 
@@ -197,10 +219,14 @@ export function ReviewsSection() {
     <Section surface="mint" className="isolate overflow-hidden">
       <Container>
         <Reveal className="mx-auto max-w-2xl text-center">
-          <Eyebrow>Testimonios</Eyebrow>
+          <Eyebrow>{eyebrow}</Eyebrow>
           <h2 className="mt-5 text-h2 text-ink">
-            Lo que cambia cuando{' '}
-            <span className="text-accent">escuchas tu ciclo</span>
+            {title ?? (
+              <>
+                Lo que cambia cuando{' '}
+                <span className="text-accent">escuchas tu ciclo</span>
+              </>
+            )}
           </h2>
         </Reveal>
       </Container>
@@ -216,7 +242,8 @@ export function ReviewsSection() {
         aria-label="Testimonios de clientas"
         className={cn(
           'no-scrollbar mt-4 flex items-start gap-6 overflow-x-auto overscroll-x-contain',
-          'px-6 pt-20 pb-10 [--rc:19rem] sm:[--rc:20rem] lg:[--rc:21rem]',
+          'px-6',
+          TRACK[variant],
           // Vertical panning stays native on touch; horizontal is ours.
           'touch-pan-y',
           dragging ? 'cursor-grabbing select-none' : 'cursor-grab',
@@ -228,7 +255,11 @@ export function ReviewsSection() {
             aria-hidden={i >= REVIEWS.length}
             className="w-[var(--rc)] shrink-0 will-change-transform"
           >
-            <ReviewCard review={review} shape={SHAPES[i % SHAPES.length]} />
+            {variant === 'ficha' ? (
+              <FichaCard review={review} />
+            ) : (
+              <ReviewCard review={review} shape={SHAPES[i % SHAPES.length]} />
+            )}
           </li>
         ))}
       </ul>
@@ -265,6 +296,95 @@ function NavButton({
     >
       {children}
     </button>
+  );
+}
+
+function Stars({ rating }: { rating: number }) {
+  return (
+    <div className="flex gap-1" role="img" aria-label={`${rating} de 5 estrellas`}>
+      {Array.from({ length: 5 }).map((_, i) => (
+        <Star
+          key={i}
+          aria-hidden
+          strokeWidth={2}
+          className={cn(
+            'h-4.5 w-4.5',
+            i < rating ? 'fill-ovulation text-ovulation-ink' : 'text-hairline-strong',
+          )}
+        />
+      ))}
+    </div>
+  );
+}
+
+/**
+ * The Sobre card. Where the landing card is a dome with the portrait
+ * lifted out of it, this one is a plain rectangle read top to bottom:
+ * the quote leads, the person signs it at the base. The phase lives in
+ * the coloured edge and a dot beside the location rather than a chip, so
+ * the two designs never look like the same card resized.
+ */
+function FichaCard({ review }: { review: Review }) {
+  const phase = PHASE[review.phase];
+
+  return (
+    <figure
+      className={cn(
+        // Fixed height for the same reason as the arch card: the marquee
+        // scales each card, and uneven heights break the row's rhythm.
+        'relative flex h-[23rem] flex-col overflow-hidden text-left sm:h-[22rem]',
+        'rounded-[2rem] border border-hairline bg-white px-7 pt-7 pb-6 shadow-md',
+      )}
+    >
+      <span aria-hidden className={cn('absolute inset-x-0 top-0 h-1.5', phase.halo)} />
+
+      <div className="flex items-start justify-between gap-4">
+        <Quote
+          strokeWidth={2}
+          className="h-6 w-6 shrink-0 text-accent-display"
+          aria-hidden
+        />
+        <Stars rating={review.rating} />
+      </div>
+
+      <blockquote className="mt-5 line-clamp-5 text-small leading-relaxed text-ink">
+        “{review.quote}”
+      </blockquote>
+
+      <figcaption className="mt-auto flex items-center gap-4 border-t border-hairline pt-5">
+        <div className="h-14 w-14 shrink-0 overflow-hidden rounded-2xl bg-surface-sunken">
+          {review.avatar ? (
+            <Image
+              src={review.avatar}
+              alt=""
+              width={512}
+              height={512}
+              draggable={false}
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <span className="grid h-full w-full place-items-center font-display text-h4 text-muted">
+              {review.name.charAt(0)}
+            </span>
+          )}
+        </div>
+
+        <div className="min-w-0">
+          <p className="line-clamp-1 font-display text-body font-semibold text-ink">
+            {review.name}
+          </p>
+          <p className="mt-1 flex items-center gap-2 text-caption text-muted">
+            <span
+              aria-hidden
+              className={cn('h-2 w-2 shrink-0 rounded-full', phase.halo)}
+            />
+            <span className="line-clamp-1">
+              {review.location} · {phase.label}
+            </span>
+          </p>
+        </div>
+      </figcaption>
+    </figure>
   );
 }
 
@@ -335,24 +455,8 @@ function ReviewCard({ review, shape }: { review: Review; shape: string }) {
           {phase.label}
         </span>
 
-        <div
-          className="mt-5 flex gap-1"
-          aria-label={`${review.rating} de 5 estrellas`}
-          role="img"
-        >
-          {Array.from({ length: 5 }).map((_, i) => (
-            <Star
-              key={i}
-              aria-hidden
-              strokeWidth={2}
-              className={cn(
-                'h-4.5 w-4.5',
-                i < review.rating
-                  ? 'fill-ovulation text-ovulation-ink'
-                  : 'text-hairline-strong',
-              )}
-            />
-          ))}
+        <div className="mt-5">
+          <Stars rating={review.rating} />
         </div>
       </figcaption>
     </figure>
