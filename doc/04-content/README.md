@@ -25,4 +25,4 @@ Content model, copy, and SEO. Pending.
 
 `copy-deck.md` must include the founder bio (long + short), credentials, and positioning statement specified in [about-page.md §4](about-page.md). None of it can be recovered from the existing site — the current `SOBRE MÍ` section contains no biographical detail.
 
-**Open housekeeping:** the 10 recipe clips in `apps/web/public/video/` are still named `#21.Taco de zanahoria y queso.mov`. The leading `#` is a URL fragment delimiter and will break any direct link; they need the same rename treatment as `public/images/`.
+~~**Open housekeeping:** the 10 recipe clips in `apps/web/public/video/` are still named `#21.Taco de zanahoria y queso.mov`.~~ **Done 2026-08-03** — transcoded off HEVC and renamed kebab-case by `scripts/transcode-videos.mjs`; `/videos` now ships the library. See [video-language.md §7](video-language.md). What remains is client input, not housekeeping: the ten videos have **no cycle phase assigned** (all `general`), and their descriptions are written from the footage rather than in Alicia's voice.

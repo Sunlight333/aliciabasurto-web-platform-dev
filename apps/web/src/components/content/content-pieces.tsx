@@ -1,7 +1,9 @@
 import Link from 'next/link';
-import { Clock, Users, ArrowRight, Inbox } from 'lucide-react';
+import Image from 'next/image';
+import { Clock, Users, ArrowRight, Inbox, Play } from 'lucide-react';
 import { PHASES, getPhase, type PhaseSlug } from '@nutricycle/shared';
-import type { Recipe } from '@/lib/content';
+import type { Recipe, Video } from '@/lib/content';
+import { formatDuration, videoPoster } from '@/lib/media';
 import { cn } from '@/lib/cn';
 
 export const PHASE_CHIP: Record<PhaseSlug, string> = {
@@ -80,6 +82,54 @@ export function RecipeCard({ recipe }: { recipe: Recipe }) {
           <Users strokeWidth={2} className="h-4.5 w-4.5 text-accent" />
           {recipe.servings} porciones
         </span>
+      </div>
+    </Link>
+  );
+}
+
+/**
+ * Video listing card — poster, duration, title, one line of description.
+ *
+ * The poster is the whole point of the card, so it goes edge to edge and the
+ * text sits under it. That makes this the first component on the site to
+ * carry client food photography; `RecipeCard` above is still text-only,
+ * because no recipe has an image yet (video-language.md §6).
+ */
+export function VideoCard({ video }: { video: Video }) {
+  return (
+    <Link
+      href={`/videos/${video.slug}`}
+      className="card card-hover group flex h-full flex-col overflow-hidden"
+    >
+      <div className="relative aspect-video bg-surface-sunken">
+        <Image
+          src={videoPoster(video.slug)}
+          // Decorative here: the title sits directly below in the same link,
+          // so describing the frame again would only make the link name longer
+          // to listen to.
+          alt=""
+          fill
+          sizes="(min-width: 1024px) 24rem, (min-width: 640px) 50vw, 100vw"
+          className="object-cover"
+        />
+
+        <span
+          aria-hidden
+          className="absolute inset-0 grid place-items-center bg-ink/0 transition-colors duration-300 group-hover:bg-ink/15"
+        >
+          <span className="grid h-16 w-16 place-items-center rounded-full bg-white/85 shadow-md backdrop-blur-sm transition-transform duration-300 group-hover:scale-110">
+            <Play strokeWidth={2} className="ml-1 h-7 w-7 fill-action text-action" />
+          </span>
+        </span>
+
+        <span className="absolute right-3 bottom-3 rounded-full bg-ink/70 px-3 py-1 font-sans text-caption font-semibold text-white tabular-nums backdrop-blur-sm">
+          {formatDuration(video.duration)}
+        </span>
+      </div>
+
+      <div className="flex flex-1 flex-col p-7">
+        <h3 className="text-h4 text-ink">{video.title}</h3>
+        <p className="mt-2.5 flex-1 text-small text-muted">{video.excerpt}</p>
       </div>
     </Link>
   );

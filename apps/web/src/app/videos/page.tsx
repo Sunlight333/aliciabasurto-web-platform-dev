@@ -5,13 +5,13 @@ import { SectionTexture } from '@/components/layout/section-texture';
 import { Container } from '@/components/layout/container';
 import { Reveal } from '@/components/motion/reveal';
 import { CtaBand } from '@/components/marketing/cta-band';
-import { EmptyState } from '@/components/content/content-pieces';
+import { EmptyState, VideoCard } from '@/components/content/content-pieces';
 import { getVideos } from '@/lib/content';
 
 export const metadata: Metadata = {
-  title: 'Videos — recetas y educación hormonal',
+  title: 'Videos — recetas paso a paso',
   description:
-    'Recetas en video de 30 a 90 segundos y videos educativos sobre el ciclo menstrual y las hormonas.',
+    'Diez recetas en video de 6 a 25 segundos: cámara cenital, manos a la obra y el plato terminado. Sin locución y sin vueltas.',
   alternates: { canonical: '/videos' },
 };
 
@@ -24,7 +24,7 @@ export default function VideosPage() {
         eyebrow="Videos"
         title="Verlo una vez"
         accent="y ya saber hacerlo"
-        lead="Recetas en video cortas y explicaciones sobre tu ciclo, sin tecnicismos."
+        lead="Diez recetas filmadas desde arriba. Ninguna pasa de veinticinco segundos."
         image="/images/heroes/videos.avif"
         focal="center 50%"
         veil={0.45}
@@ -44,11 +44,11 @@ export default function VideosPage() {
           ) : (
             <ul className="grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
               {videos.map((v, i) => (
-                <Reveal as="li" key={v.slug} delay={i * 90} className="h-full">
-                  <article className="card card-hover h-full p-8">
-                    <h2 className="text-h3 text-ink">{v.title}</h2>
-                    <p className="mt-3 text-small text-muted">{v.excerpt}</p>
-                  </article>
+                // Stagger is capped: at 90ms a step the tenth card would wait
+                // most of a second after the first, which reads as lag rather
+                // than choreography once the grid is this long.
+                <Reveal as="li" key={v.slug} delay={Math.min(i, 5) * 90} className="h-full">
+                  <VideoCard video={v} />
                 </Reveal>
               ))}
             </ul>

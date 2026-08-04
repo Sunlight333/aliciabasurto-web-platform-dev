@@ -1,6 +1,7 @@
 import type { PhaseSlug } from '@nutricycle/shared';
 import type { Article, Recipe, Video } from './index';
 import cremaDeZapallo from '@/content/recipes/crema-de-zapallo.json';
+import videos from '@/content/videos.json';
 
 /**
  * File-backed implementation of the content interface.
@@ -17,14 +18,24 @@ const RECIPES: Recipe[] = [cremaDeZapallo as Recipe];
 /**
  * ⚠️ Empty by design, not by oversight.
  *
- * Articles and videos have no content yet. Titles are proposed in
- * app-content-strategy.md §5 and six `<video>` elements exist on the
- * live site, but neither has been supplied. Every listing renders a real
- * empty state rather than a blank region — the bug the live
+ * Articles have no content yet. Titles are proposed in
+ * app-content-strategy.md §5, but nothing has been supplied. The listing
+ * renders a real empty state rather than a blank region — the bug the live
  * /testimonials page ships (site-audit.md §12.1).
  */
 const ARTICLES: Article[] = [];
-const VIDEOS: Video[] = [];
+
+/**
+ * The ten recipe videos the client supplied, transcoded and named by
+ * `scripts/transcode-videos.mjs`. Unlike the recipes these are one file
+ * rather than one-file-per-item: a video entry is five fields of metadata,
+ * not a document, and keeping them in a single array makes the running
+ * order — which is the client's own #21…#31 sequence — visible at a glance.
+ *
+ * The media itself is not in the repo; see `lib/media.ts` for how it is
+ * addressed.
+ */
+const VIDEOS: Video[] = videos as Video[];
 
 const published = <T extends { publishedToWeb: boolean }>(items: T[]) =>
   items.filter((i) => i.publishedToWeb);

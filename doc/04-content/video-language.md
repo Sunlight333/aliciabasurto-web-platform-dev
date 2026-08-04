@@ -168,3 +168,66 @@ Steps 3 and 4 need recipe content that does not exist yet: only
 `crema-de-zapallo` is published, and none of the ten videos matches it.
 Publishing the videos means writing ten recipes to go with them — client
 copy, not a build task.
+
+---
+
+## 7. What was built from this — 2026-08-03
+
+Steps 1, 2 and 4 of §6 are done. `/videos` no longer renders an empty
+state: it lists all ten with poster, duration and description, and each
+has a detail page at `/videos/{slug}` with a working player.
+
+### The two blockers are closed
+
+**HEVC.** `scripts/transcode-videos.mjs` produces an H.264/AAC MP4 and a
+VP9/Opus WebM per video at 1280×720. Verified by driving headless Chromium
+at the real pages: all ten play in both formats, `currentTime` advances,
+no console errors. 132 MB of masters → 42.6 MB MP4 + 22.8 MB WebM.
+
+**The `#`.** Gone — every output is kebab-case (`taco-de-zanahoria-y-queso`).
+`#24` also drops "sin ensalada", which was a shoot note rather than part of
+the dish, and `#26` drops its " (1)" download suffix.
+
+One defect surfaced that §1 missed: `#30` has 10px of black baked into the
+bottom of the frame. Both the transcode and the poster crop it to
+`1262:710:9:0` and rescale, so the output is a true 16:9 with no letterbox.
+
+### Poster frames
+
+`scripts/extract-posters.mjs` holds the hand-picked timestamp per video and
+writes `public/images/videos/{slug}.jpg`. **These are committed**, unlike
+the video files — the grid, the cards and the OG images have to render even
+if the media host is unreachable.
+
+§5 estimated four usable stills. Sampling the head and tail at 0.25s rather
+than only 82/90/97% found six: the *opening* frame is often a clean plated
+hero, which the original tail-only sweep could not see. The remaining four
+(`#21`, `#22`, `#24`, `#28`) have no hands-free frame anywhere in their
+duration, so they use the best-composed frame with a hand in shot — which
+is on-brand regardless, per §3.
+
+### Design decisions this doc drove
+
+- `VideoPlayer` puts the video on `surface-sunken` with the card's rounding
+  and a soft shadow — the "stage, not a slot" call in §4. No edge-to-edge
+  video bands on cream anywhere.
+- Every video slot and poster is 16:9, reserved before load so the page
+  never reflows under the reader.
+- No phase tint touches any client frame. `VideoCard` shows a duration
+  badge, not a phase chip.
+- Audio is real ambient kitchen sound (mean ≈ −23 dB, peaks near 0), not
+  silence — so the player ships with controls and no autoplay.
+
+### Still open — client input, not build work
+
+1. **Phase assignment.** All ten are `"phase": "general"` in
+   `src/content/videos.json`. Inferring a cycle phase from the ingredients
+   would be inventing a nutrition claim; Alicia has to assign these.
+2. **Descriptions.** The `excerpt` copy describes what each video visibly
+   shows. It is accurate but it is not the client's voice — worth a review pass.
+3. **`uploadDate`.** Omitted from the `VideoObject` structured data because
+   no real publication date was supplied, and a fabricated one is worse than
+   an absent one. Google wants it for video rich results.
+4. **§6 step 3 — recipe imagery.** Still open, and still blocked on the same
+   thing: `RecipeCard` has no image slot because no recipe has an image.
+   The ten videos have no matching recipe, so nothing pairs up yet.

@@ -98,11 +98,21 @@ SA=apps/web/.next-build/standalone
 mkdir -p "$SA/apps/web/.next-build"
 cp -r apps/web/.next-build/static "$SA/apps/web/.next-build/static"
 cp -r apps/web/public            "$SA/apps/web/public"
-rm -rf "$SA/apps/web/public/video"   # 132 MB of .mov masters — never ship these
+rm -f "$SA/apps/web/public/video"/*.mov   # 132 MB of masters — never ship these
 cd "$SA" && tar -czf ../nutricycle.tar.gz .
 ```
 
-Result: **~18 MB**.
+Result: **~18 MB**, or **~83 MB** with the transcoded videos included.
+
+> Delete the `.mov` masters only — **not** the whole `video/` directory. It
+> also holds the H.264/VP9 derivatives that `/videos` actually plays
+> (65 MB, produced by `scripts/transcode-videos.mjs`). Dropping the
+> directory wholesale ships a video library where every player 404s.
+>
+> To keep the bundle at 18 MB, upload those derivatives to a CDN or bucket
+> instead, set `NEXT_PUBLIC_MEDIA_BASE_URL` to its origin, and then the
+> whole directory can go. Poster frames live in `public/images/videos/`
+> and ship either way — see [`lib/media.ts`](../../apps/web/src/lib/media.ts).
 
 ### Release
 
@@ -152,4 +162,4 @@ systemctl restart nutricycle
 | 2 | **No TLS.** Plain HTTP. | Comes with the domain; certbot is already used on this box for 443. |
 | 3 | **Root password SSH.** | Credentials were shared in chat. Worth rotating, and moving to a key-only deploy user. |
 | 4 | Store URLs still empty | `/ir/app` correctly falls back to `/descargar` |
-| 5 | Recipe videos not deployed | 132 MB of `.mov`; transcode to MP4/WebM and serve from a CDN |
+| 5 | Recipe videos not on a CDN | Transcoding is **done** (`scripts/transcode-videos.mjs`, 65 MB of MP4/WebM). They currently ride along in the bundle; move them to a bucket and set `NEXT_PUBLIC_MEDIA_BASE_URL` |

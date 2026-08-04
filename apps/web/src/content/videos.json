@@ -1,0 +1,92 @@
+[
+  {
+    "slug": "taco-de-zanahoria-y-queso",
+    "title": "Taco de zanahoria y queso",
+    "excerpt": "La tortilla se arma con zanahoria rallada y queso, se hornea hasta dorar y se rellena con carne, palta y pico de gallo.",
+    "phase": "general",
+    "duration": 25.2,
+    "publishedToWeb": true,
+    "source": "Video del cliente #21"
+  },
+  {
+    "slug": "pan-de-psyllium",
+    "title": "Pan de psyllium",
+    "excerpt": "Claras montadas, yemas, harina de almendras y psyllium. Al molde, al horno, y sale un pan de miga húmeda que se corta en rebanadas.",
+    "phase": "general",
+    "duration": 14.57,
+    "publishedToWeb": true,
+    "source": "Video del cliente #22"
+  },
+  {
+    "slug": "tortilla-de-col-y-zanahoria",
+    "title": "Tortilla de col y zanahoria",
+    "excerpt": "Col morada y zanahoria en hebras, ligadas y doradas en la sartén. Se termina con una crema clara por encima y cebollín picado.",
+    "phase": "general",
+    "duration": 16.57,
+    "publishedToWeb": true,
+    "source": "Video del cliente #24"
+  },
+  {
+    "slug": "pan-con-huevo-y-ensalada-verde",
+    "title": "Pan con huevo y ensalada verde",
+    "excerpt": "Huevos revueltos al punto, tomates y espinaca pasados un minuto por la sartén, y pan de masa madre con crema de frutos secos.",
+    "phase": "general",
+    "duration": 12.63,
+    "publishedToWeb": true,
+    "source": "Video del cliente #25"
+  },
+  {
+    "slug": "wrap-de-arroz-con-atun",
+    "title": "Wrap de arroz con atún",
+    "excerpt": "Base de arroz y huevo dorada en la sartén, palta pisada encima, atún, cebolla morada y una cucharada de crema.",
+    "phase": "general",
+    "duration": 9.27,
+    "publishedToWeb": true,
+    "source": "Video del cliente #26"
+  },
+  {
+    "slug": "fideos-con-sardinas",
+    "title": "Fideos con sardinas",
+    "excerpt": "Cebolla morada, ajo, morrón, aceitunas y sardinas hacen la salsa. Se suman los fideos y se termina con perejil fresco.",
+    "phase": "general",
+    "duration": 19.5,
+    "publishedToWeb": true,
+    "source": "Video del cliente #27"
+  },
+  {
+    "slug": "granola-de-tiramisu",
+    "title": "Granola de tiramisú",
+    "excerpt": "Avena, nueces y semillas se mezclan con cacao y un ligante dulce, se extienden en placa y se hornean hasta quedar crocantes.",
+    "phase": "general",
+    "duration": 23.47,
+    "publishedToWeb": true,
+    "source": "Video del cliente #28"
+  },
+  {
+    "slug": "lentejas-rojas-al-curry",
+    "title": "Lentejas rojas al curry",
+    "excerpt": "Cebolla morada al fondo de la olla, lentejas rojas, tomate y leche de coco. Se cocina hasta espesar y se termina con cilantro.",
+    "phase": "general",
+    "duration": 8.37,
+    "publishedToWeb": true,
+    "source": "Video del cliente #29"
+  },
+  {
+    "slug": "granola-con-yogurt-y-kiwi",
+    "title": "Granola con yogurt y kiwi",
+    "excerpt": "Yogur, granola de cacao y kiwi en láminas. Seis segundos y tres ingredientes: el desayuno más rápido de la serie.",
+    "phase": "general",
+    "duration": 6,
+    "publishedToWeb": true,
+    "source": "Video del cliente #30"
+  },
+  {
+    "slug": "quinoa-de-chocolate",
+    "title": "Quinoa de chocolate",
+    "excerpt": "Quinoa cocida con banana pisada y cacao, servida en bol y terminada con banana en rodajas, coco en escamas y frambuesas.",
+    "phase": "general",
+    "duration": 14.07,
+    "publishedToWeb": true,
+    "source": "Video del cliente #31"
+  }
+]

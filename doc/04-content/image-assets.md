@@ -285,4 +285,31 @@ Original filenames were camera roll numbers, Wix CDN hashes, and a WhatsApp expo
 | `9-DSC01773.avif` | `alicia/kitchen-chopping-alt.avif` |
 | `fe4292_0fb2b998d5e54326acb820167815c13a~mv2.avif` | `alicia/kitchen-wide.avif` |
 
-> `public/video/` holds 10 recipe `.mov` files still named `#21.Taco de zanahoria…`. The leading `#` is a URL fragment delimiter and **will break any direct link**. They need the same treatment — out of scope here, tracked in [content README](README.md).
+> **Resolved 2026-08-03.** `public/video/` held 10 recipe `.mov` files named
+> `#21.Taco de zanahoria…`, whose leading `#` — a URL fragment delimiter —
+> broke any direct link. They are now transcoded and renamed kebab-case by
+> `scripts/transcode-videos.mjs`; the masters stay gitignored. See
+> [video-language.md §7](video-language.md).
+
+### Video posters
+
+One frame per recipe video, hand-picked (`scripts/extract-posters.mjs`) and
+committed, because the `/videos` grid and the OG images must render whether
+or not the media host is reachable. All 1280×720 — the native shape of the
+footage.
+
+| File | Source | Poster frame | Size |
+| --- | --- | --- | --- |
+| `videos/taco-de-zanahoria-y-queso.jpg` | client `#21` | 24.90s | 91 KB |
+| `videos/pan-de-psyllium.jpg` | client `#22` | 14.50s | 81 KB |
+| `videos/tortilla-de-col-y-zanahoria.jpg` | client `#24` | 14.07s | 56 KB |
+| `videos/pan-con-huevo-y-ensalada-verde.jpg` | client `#25` | 0.00s | 86 KB |
+| `videos/wrap-de-arroz-con-atun.jpg` | client `#26` | 0.00s | 81 KB |
+| `videos/fideos-con-sardinas.jpg` | client `#27` | 19.00s | 79 KB |
+| `videos/granola-de-tiramisu.jpg` | client `#28` | 1.40s | 148 KB |
+| `videos/lentejas-rojas-al-curry.jpg` | client `#29` | 5.87s | 98 KB |
+| `videos/granola-con-yogurt-y-kiwi.jpg` | client `#30` | 5.25s | 119 KB |
+| `videos/quinoa-de-chocolate.jpg` | client `#31` | 1.00s | 65 KB |
+
+These are the first client food photographs used anywhere on the site, and
+the only images here not sourced from stock.

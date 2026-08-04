@@ -45,8 +45,18 @@ export interface Video {
   slug: string;
   title: string;
   excerpt: string;
+  /**
+   * `general` until the client assigns one. The ten supplied videos are
+   * recipes with no phase attached, and inferring one from the ingredients
+   * would be inventing a nutrition claim on the client's behalf — see
+   * doc/04-content/video-language.md §7.
+   */
   phase: PhaseSlug | 'general';
+  /** Seconds, measured from the master. Drives the badge and schema.org. */
+  duration: number;
   publishedToWeb: boolean;
+  /** Provenance, so client media is distinguishable from anything new */
+  source?: string;
 }
 
 export {
