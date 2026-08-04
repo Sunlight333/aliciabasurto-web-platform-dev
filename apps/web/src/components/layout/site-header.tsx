@@ -13,10 +13,10 @@ import { cn } from '@/lib/cn';
 /**
  * Symmetric around the centred logo:
  *
- *   [ ⇄A ES ]  Método  Tu ciclo  Recetas  ◯  Funciones  Membresía  [⌕] [ Descargar ]
+ *   [ ◍ ◍ ]  Método  Tu ciclo  Recetas  ◯  Funciones  Membresía  [⌕] [ Descargar ]
  *
- * A green pill bookends each side, and all three buttons share one height
- * (h-14) so neither end outweighs the other.
+ * A control bookends each side, and all three share one height (h-14) so
+ * neither end outweighs the other.
  *
  * Symmetry is structural, not hand-tuned. The `1fr auto 1fr` columns are
  * equal by construction, and each side is `justify-between` with exactly two
@@ -231,7 +231,10 @@ export function SiteHeader() {
 
           {/* The two controls the compact bar has no room for. */}
           <div className="mt-7 flex items-center gap-3">
-            <LocaleSwitch className="flex-1 justify-center" />
+            {/* Intrinsic width, not flex-1. Stretching it made sense when the
+                segments held ES · EN text; two 44px circles in a full-width
+                pill just read as an empty bar. Buscar takes the slack. */}
+            <LocaleSwitch />
 
             <Link
               href="/buscar"
