@@ -263,6 +263,31 @@
   }
 }
 
+/**
+ * CTA backdrop rotation — 7 frames, 6s each, 1.4s crossfade, 42s a loop.
+ *
+ * One keyframe for every layer; the stagger is `animation-delay` set per
+ * frame in cta-backdrop.tsx. The percentages are that timing expressed
+ * against the 42s cycle: 1.4s fade = 3.33%, 6s hold ends at 14.29%, fade
+ * out completes at 17.62%. Change HOLD or FADE there and these move too.
+ *
+ * Only `opacity` animates, so this stays on the compositor and never
+ * triggers layout or paint.
+ */
+@keyframes cta-cycle {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  3.33%,
+  14.29% {
+    opacity: 1;
+  }
+  17.62% {
+    opacity: 0;
+  }
+}
+
 @keyframes float-y {
   0%,
   100% {
@@ -280,6 +305,13 @@
 
   .animate-float {
     animation: float-y 7s ease-in-out infinite;
+  }
+
+  /* Base state is hidden: layers whose delay has not elapsed must not show,
+     and `backwards` holds the 0% keyframe through the delay. */
+  .cta-frame {
+    opacity: 0;
+    animation: cta-cycle 42s linear infinite backwards;
   }
 
   /* Progressive enhancement, two layers deep.
@@ -306,6 +338,17 @@
   .animate-drift,
   .animate-float {
     animation: none;
+  }
+
+  /* A backdrop that changes on its own is the exact thing this setting is
+     asking us not to do. Stop the loop and hold the first frame — the band
+     keeps its photograph, it simply stops moving. */
+  .cta-frame {
+    animation: none;
+  }
+
+  .cta-frame:first-child {
+    opacity: 1;
   }
 
   .tilt,

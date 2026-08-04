@@ -4,17 +4,34 @@ import { STORE } from '@nutricycle/shared';
 import { Container } from '@/components/layout/container';
 import { Eyebrow } from '@/components/ui/eyebrow';
 import { StoreButtons } from './store-buttons';
+import { CtaBackdrop } from './cta-backdrop';
 import { Reveal } from '@/components/motion/reveal';
 
 /**
  * Closing conversion band — light, per the no-dark-backgrounds rule.
- * A glass card floats on a soft blush/lilac gradient.
+ * A glass card floats over a rotating photographic backdrop.
+ *
+ * Layer order is load-bearing, back to front: photography, tint, orbs,
+ * top fade, card. The fade must stay after the orbs — the top orb is
+ * positioned above the band and clipped by `overflow-hidden`, so painting
+ * it over the fade turns its clipped edge into a hard line across the left
+ * gutter (see image-assets.md §Section seams).
  *
  * Reused verbatim at the foot of /ciclo/[fase] and /recetas/[slug].
  */
 export function CtaBand({ source = 'closing' }: { source?: string }) {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-surface-blush via-surface-raised to-surface-lilac py-24 lg:py-36">
+    <section className="relative overflow-hidden bg-surface-raised py-24 lg:py-36">
+      <CtaBackdrop />
+
+      {/* The band's blush→lilac identity, kept but demoted. At full strength
+          it fought the photography underneath; at this weight it tints the
+          frames rather than competing with them. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-gradient-to-br from-surface-blush/70 via-transparent to-surface-lilac/70"
+      />
+
       <div aria-hidden className="pointer-events-none absolute inset-0">
         <div
           className="orb animate-drift"

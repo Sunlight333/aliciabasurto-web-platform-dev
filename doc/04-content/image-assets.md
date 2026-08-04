@@ -237,6 +237,66 @@ when adding any decorative layer to a band that fades at its edges:
 
 ---
 
+## 3c. CTA band backdrop — rotating lifestyle set
+
+The closing CTA band carries a **seven-frame rotating photographic
+backdrop**. Chosen by the client from a 20-image candidate set in
+`doc/assets/candidates/cta-band-latam/`.
+
+**Source:** Pexels License. Encoded 1400×933, AVIF q38 — **166 KB for all
+seven**, lazy-loaded, since this band closes every page on the site.
+
+Order is the rotation order, not the candidate numbering: no two
+consecutive frames repeat a setting, and the two pink-linen shots are kept
+apart in the loop.
+
+| # | File | Pexels ID | Subject | Size | Mean L |
+| --- | --- | --- | --- | --- | --- |
+| 1 | `cta/bright-kitchen-tulips.avif` | 4173298 | White-tiled kitchen, tulips, phone | 19 KB | 73% |
+| 2 | `cta/marble-kitchen-gesture.avif` | 7605215 | Marble kitchen, glasses, on a call | 19 KB | 67% |
+| 3 | `cta/sofa-plants-phone.avif` | 5902792 | Sofa and plants, phone held close | 15 KB | 57% |
+| 4 | `cta/pink-linen-standing.avif` | 8530066 | Pink linen shirt, plant, wide room | 34 KB | 73% |
+| 5 | `cta/counter-vegetables.avif` | 8939258 | Counter of vegetables, phone in hand | 29 KB | 62% |
+| 6 | `cta/kitchen-wide-cup.avif` | 7014584 | Kitchen, cup in hand, on a call | 17 KB | 68% |
+| 7 | `cta/pink-linen-close.avif` | 8530070 | Same set as 4, closer crop | 33 KB | 67% |
+
+### How it rotates
+
+**Pure CSS.** One `@keyframes cta-cycle` shared by all seven layers,
+staggered by `animation-delay` (`i × 6s − 1.4s`). 6s hold, 1.4s crossfade,
+42s a loop. Only `opacity` animates, so it stays on the compositor.
+
+No `use client`, no timer, no state. This band closes every page — a client
+component here would ship JavaScript and a hydration boundary sitewide for
+something the compositor does for free. The negative delay on the first
+layer is what stops the band opening on a blank wash.
+
+Frames are `<img loading="lazy">`, not CSS `background-image`: the band
+sits at the foot of the page, and lazy loading is *guaranteed* by the
+attribute where deferring a background image is left to the browser.
+
+⚠️ **`prefers-reduced-motion` stops the loop** and holds frame 1. A
+backdrop that changes on its own is exactly what that setting is asking us
+not to do.
+
+### Legibility
+
+These frames run 57–73% lightness against a 97.5% page, so they sit under
+a **0.74 cream scrim** with the blush→lilac tint demoted to 70% — at full
+strength the tint fought the photography rather than sitting over it.
+
+Measured from rendered pixels with the card's contents hidden, sampled
+across the full 42-second loop: **worst case 15.56:1** for ink on the
+glass card. The card is 88% white with a blur, so it is effectively opaque
+to whatever passes behind it.
+
+> ⚠️ Measure the *surface*, not the copy. Sampling raw pixels inside a card
+> that contains text includes the glyphs, which are ink — that reads 1.00:1
+> and means nothing. Hide the contents first. The same trap caught the hero
+> measurement in §3b.
+
+---
+
 ## 4. Format policy
 
 | Source | Delivery |

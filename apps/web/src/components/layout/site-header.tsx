@@ -4,8 +4,7 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, Download, Search } from 'lucide-react';
-import { STORE } from '@nutricycle/shared';
+import { Menu, X } from 'lucide-react';
 import { Container } from './container';
 import { LocaleSwitch } from '@/components/ui/locale-switch';
 import { cn } from '@/lib/cn';
@@ -160,13 +159,10 @@ export function SiteHeader() {
             <LocaleSwitch />
           </div>
 
-          <a
-            href={`${STORE.smart}?src=header-mobile`}
-            aria-label="Descargar la app"
-            className="justify-self-end rounded-full bg-action p-3.5 text-white shadow-md xl:hidden"
-          >
-            <Download strokeWidth={2.2} className="h-6 w-6" />
-          </a>
+          {/* Balances the burger on the left so the logo stays centred on
+              compact widths, where the grid's third column would otherwise
+              collapse and drag the logo off centre. */}
+          <div aria-hidden className="h-13 w-13 justify-self-end xl:hidden" />
         </div>
       </Container>
 
@@ -223,33 +219,14 @@ export function SiteHeader() {
             </ul>
           </nav>
 
-          {/* The two controls the compact bar has no room for. */}
-          <div className="mt-7 flex items-center gap-3">
-            {/* Intrinsic width, not flex-1. Stretching it made sense when the
-                segments held ES · EN text; two 44px circles in a full-width
-                pill just read as an empty bar. Buscar takes the slack. */}
+          {/* The language control is the only thing the compact bar has no
+              room for. Search and the download CTA were removed from the
+              header at every width — the store buttons live in the closing
+              CTA band and on /descargar, which is where the decision is
+              actually made. */}
+          <div className="mt-7 flex items-center">
             <LocaleSwitch />
-
-            <Link
-              href="/buscar"
-              className={cn(
-                'inline-flex h-14 flex-1 items-center justify-center gap-2.5 rounded-full',
-                'border border-hairline-strong bg-white/70 font-sans text-nav font-medium text-ink shadow-sm',
-                'transition-colors hover:bg-white',
-              )}
-            >
-              <Search strokeWidth={2.1} className="h-5.5 w-5.5" />
-              Buscar
-            </Link>
           </div>
-
-          <a
-            href={`${STORE.smart}?src=nav-mobile`}
-            className="mt-3 inline-flex h-14 w-full items-center justify-center gap-2.5 rounded-full bg-action px-6 font-sans text-nav font-semibold text-white shadow-md"
-          >
-            <Download strokeWidth={2.2} className="h-6 w-6" />
-            Descargar gratis
-          </a>
         </div>
       </div>
     </header>
