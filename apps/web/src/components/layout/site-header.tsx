@@ -36,10 +36,20 @@ import { cn } from '@/lib/cn';
  * fit beside the nav at 1024 without shrinking the type below its token size.
  * 1024–1279 gets the compact bar and the sheet, which carry the same controls.
  */
+/**
+ * `Sobre Alicia` sits on the left, not the right, and that is the balance:
+ * the language pill weights the right end, so a fourth link opposite it is
+ * what makes the two sides carry comparable width. Moving it to the right
+ * would push that side further out and widen the gap it is meant to close.
+ *
+ * The label matches the footer and /enlaces. The route already existed and
+ * was reachable only from the footer and a mid-page link on /como-funciona.
+ */
 const LEFT = [
   { label: 'Método', href: '/como-funciona' },
   { label: 'Tu ciclo', href: '/ciclo' },
   { label: 'Recetas', href: '/recetas' },
+  { label: 'Sobre Alicia', href: '/sobre' },
 ];
 
 const RIGHT = [
