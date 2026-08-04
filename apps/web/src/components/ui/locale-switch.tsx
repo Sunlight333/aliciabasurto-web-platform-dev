@@ -7,13 +7,11 @@ import { cn } from '@/lib/cn';
 /**
  * Spanish at the root, English under /en — doc/00-overview/revised-direction.md §3.
  *
- * ⚠️ The English locale is Phase 6 work and no /en route exists yet. While this
- * is false the EN segment renders inert instead of linking to a 404. Flip it
- * when the locale ships; nothing else in this file changes.
+ * Both locales now exist: every page is generated twice from `app/[locale]`,
+ * and Spanish keeps its bare URLs through a rewrite in next.config.mjs.
  */
-const EN_ENABLED = false;
-
-type Locale = 'es' | 'en';
+import type { Locale } from '@/lib/i18n';
+import { localizePath } from '@/lib/i18n';
 
 /**
  * The flag is the *market*, not the language's country of origin — the same
@@ -30,16 +28,12 @@ const LOCALES: readonly { code: Locale; name: string; flag: string }[] = [
 ] as const;
 
 /**
- * ⚠️ Prefix swap only. §3 also specifies *localised slugs* — /recetas pairs
- * with /en/recipes, not /en/recetas. This rule is correct for `/` and for any
- * route whose slug is identical in both languages; everything else needs a
- * slug map once the English locale is built.
+ * Path translation lives in lib/i18n/routes.ts, which is covered by
+ * `npm run test:i18n-routes` — 55 cases over both directions, every route,
+ * phase segments, idempotence and full round trips. The hand-rolled prefix
+ * swap that used to live here had no test and no slug awareness.
  */
-export function localePath(pathname: string, to: Locale): string {
-  const base = pathname.replace(/^\/en(?=\/|$)/, '') || '/';
-  if (to === 'es') return base;
-  return base === '/' ? '/en' : `/en${base}`;
-}
+export { localizePath as localePath };
 
 /**
  * Segmented language control — two circular flags, no text.
@@ -71,14 +65,12 @@ export function LocaleSwitch({ className }: { className?: string }) {
     >
       {LOCALES.map(({ code, name, flag }) => {
         const active = code === current;
-        const inert = code === 'en' && !EN_ENABLED;
 
         const segment = cn(
           'grid h-11 w-11 shrink-0 place-items-center rounded-full',
           'transition-all duration-300',
           active && 'bg-action shadow-sm',
-          !active && !inert && 'hover:bg-ink/5',
-          inert && 'cursor-not-allowed opacity-40',
+          !active && 'hover:bg-ink/5',
         );
 
         // 24px inside a 44px segment. At 28px the flag filled the segment and
@@ -97,24 +89,10 @@ export function LocaleSwitch({ className }: { className?: string }) {
           />
         );
 
-        if (inert) {
-          return (
-            <span
-              key={code}
-              aria-label={name}
-              aria-disabled="true"
-              title="Versión en inglés próximamente"
-              className={segment}
-            >
-              {icon}
-            </span>
-          );
-        }
-
         return (
           <Link
             key={code}
-            href={localePath(pathname, code)}
+            href={localizePath(pathname, code)}
             hrefLang={code}
             lang={code}
             aria-label={name}

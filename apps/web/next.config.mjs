@@ -32,6 +32,32 @@ const nextConfig = {
   output: 'standalone',
   outputFileTracingRoot: path.join(here, '..', '..'),
 
+  /**
+   * Spanish keeps the bare URLs.
+   *
+   * Every page lives under `app/[locale]`, so the real path for Spanish is
+   * `/es/recetas` — but revised-direction.md §3 requires `/recetas`, because
+   * those URLs already exist on the live site and carry their search equity.
+   * This rewrites the bare paths onto the `es` segment without redirecting,
+   * so the address bar keeps showing `/recetas`.
+   *
+   * `beforeFiles` is required: without it the rewrite runs only after Next
+   * fails to match a file, and `/recetas` would 404 before ever reaching it.
+   * `/en/...` is left alone — it already carries its own locale segment —
+   * and so are `_next`, `images`, `video` and the `/ir` redirect handlers.
+   */
+  async rewrites() {
+    return {
+      beforeFiles: [
+        {
+          source: '/:path((?!en$|en/|_next/|images/|video/|ir/|favicon).*)',
+          destination: '/es/:path',
+        },
+        { source: '/', destination: '/es' },
+      ],
+    };
+  },
+
   webpack: (config) => {
     // On this Windows volume webpack's filesystem cache repeatedly fails to
     // rename its pack files (EBUSY — an antivirus or sync client holds the

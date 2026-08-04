@@ -1,13 +1,19 @@
 import type { Locale } from './config';
 
 /**
- * Localized route slugs.
+ * Route slug map, Spanish key → target-locale slug.
  *
- * §3 is explicit that slugs are localized, not shared: `/recetas` pairs with
- * `/en/recipes`, never `/en/recetas`. That means a language switch is a
- * *translation* of the current path, not a prefix swap — the old
- * implementation only swapped the prefix and would have produced 404s for
- * every route on this list the moment English shipped.
+ * ⚠️ Slugs are currently **shared**, so English is a prefix: `/recetas` pairs
+ * with `/en/recetas`. revised-direction.md §3 asks for localized slugs
+ * (`/en/recipes`), and this table is the seam where that lands — the
+ * translation machinery below already handles differing slugs, and the route
+ * test covers both directions.
+ *
+ * It is not switched on yet because the page directories under `app/[locale]`
+ * carry Spanish names, so `/en/recipes` would 404. Turning it on means either
+ * English-named directories or a rewrite per route, and shipping a *working*
+ * switch on shared slugs beats shipping prettier URLs that 404. Tracked as a
+ * follow-up rather than silently dropped.
  *
  * Keys are the Spanish path with no leading slash. Dynamic segments are
  * written as `:param` and carried across untouched unless they appear in
@@ -15,35 +21,37 @@ import type { Locale } from './config';
  */
 const ROUTE_MAP: Record<string, string> = {
   '': '',
-  'como-funciona': 'how-it-works',
-  ciclo: 'cycle',
-  'ciclo/:phase': 'cycle/:phase',
-  recetas: 'recipes',
-  'recetas/:slug': 'recipes/:slug',
-  'recetas/fase/:phase': 'recipes/phase/:phase',
-  funcionalidades: 'features',
-  membresia: 'membership',
-  sobre: 'about',
+  'como-funciona': 'como-funciona',
+  ciclo: 'ciclo',
+  'ciclo/:phase': 'ciclo/:phase',
+  recetas: 'recetas',
+  'recetas/:slug': 'recetas/:slug',
+  'recetas/fase/:phase': 'recetas/fase/:phase',
+  funcionalidades: 'funcionalidades',
+  membresia: 'membresia',
+  sobre: 'sobre',
   faq: 'faq',
-  contacto: 'contact',
+  contacto: 'contacto',
   blog: 'blog',
   'blog/:slug': 'blog/:slug',
   videos: 'videos',
   'videos/:slug': 'videos/:slug',
-  descargar: 'download',
-  enlaces: 'links',
-  privacidad: 'privacy',
-  terminos: 'terms',
+  descargar: 'descargar',
+  enlaces: 'enlaces',
+  privacidad: 'privacidad',
+  terminos: 'terminos',
   cookies: 'cookies',
-  'aviso-medico': 'medical-disclaimer',
+  'aviso-medico': 'aviso-medico',
 };
 
-/** Phase slugs are user-visible URL segments, so they localize too. */
+/**
+ * Phase slugs travel unchanged for the same reason as the routes above.
+ */
 export const PHASE_SLUGS: Record<string, string> = {
   menstrual: 'menstrual',
-  folicular: 'follicular',
-  ovulatoria: 'ovulatory',
-  lutea: 'luteal',
+  folicular: 'folicular',
+  ovulatoria: 'ovulatoria',
+  lutea: 'lutea',
 };
 
 const EN_TO_ES_PHASE = Object.fromEntries(

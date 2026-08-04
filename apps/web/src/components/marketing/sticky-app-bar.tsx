@@ -3,11 +3,12 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { X, Star } from 'lucide-react';
-import { STORE, storePrice, DEFAULT_LOCALE } from '@nutricycle/shared';
+import { STORE, storePrice } from '@nutricycle/shared';
+import type { Locale } from '@/lib/i18n';
 
 const DISMISSED_KEY = 'nc.appbar.dismissed';
 
-export function StickyAppBar() {
+export function StickyAppBar({ locale }: { locale: Locale }) {
   const [shown, setShown] = useState(false);
   const [dismissed, setDismissed] = useState(true);
 
@@ -56,7 +57,7 @@ export function StickyAppBar() {
           </p>
           <p className="mt-0.5 flex items-center gap-1 text-caption whitespace-nowrap text-muted">
             <Star strokeWidth={2.4} className="h-3.5 w-3.5 shrink-0 text-ovulation-ink" />
-            {STORE.rating} · {storePrice(DEFAULT_LOCALE)}
+            {STORE.rating} · {storePrice(locale)}
           </p>
         </div>
 

@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Mail } from 'lucide-react';
 import { SITE, LEGAL, SOCIAL } from '@nutricycle/shared';
+import type { Locale } from '@/lib/i18n';
 import { Container } from './container';
 
 const EXPLORE = [
@@ -18,7 +19,7 @@ const ABOUT = [
   { label: 'Contacto', href: '/contacto' },
 ];
 
-export function SiteFooter() {
+export function SiteFooter({ locale }: { locale: Locale }) {
   return (
     <footer className="border-t border-hairline bg-surface-raised">
       <Container>

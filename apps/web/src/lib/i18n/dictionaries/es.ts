@@ -10,6 +10,10 @@
  * localized there. This file is chrome, labels, and page furniture.
  */
 export const es = {
+  a11y: {
+    skipToContent: 'Saltar al contenido',
+  },
+
   nav: {
     method: 'Método',
     cycle: 'Tu ciclo',

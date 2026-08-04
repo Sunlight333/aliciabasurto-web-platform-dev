@@ -8,6 +8,10 @@ import type { Dictionary } from './es';
  * an English page.
  */
 export const en: Dictionary = {
+  a11y: {
+    skipToContent: 'Skip to content',
+  },
+
   nav: {
     method: 'Method',
     cycle: 'Your cycle',

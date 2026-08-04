@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 import { Container } from './container';
 import { LocaleSwitch } from '@/components/ui/locale-switch';
+import type { Locale } from '@/lib/i18n';
 import { cn } from '@/lib/cn';
 
 /**
@@ -69,7 +70,7 @@ const RIGHT = [
 
 const ALL = [...LEFT, ...RIGHT];
 
-export function SiteHeader() {
+export function SiteHeader({ locale }: { locale: Locale }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
