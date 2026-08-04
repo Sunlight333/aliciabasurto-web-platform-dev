@@ -32,6 +32,7 @@ export const es = {
   },
 
   footer: {
+    blurb: 'Nutrición cíclica para tu salud hormonal. Aprende a comer según tu fase.',
     explore: 'Explora',
     company: 'Nutricycle',
     legal: 'Legal',

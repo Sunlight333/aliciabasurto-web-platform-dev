@@ -10,8 +10,12 @@ import { cn } from '@/lib/cn';
  * Both locales now exist: every page is generated twice from `app/[locale]`,
  * and Spanish keeps its bare URLs through a rewrite in next.config.mjs.
  */
-import type { Locale } from '@/lib/i18n';
-import { localizePath } from '@/lib/i18n';
+import {
+  localizePath,
+  localeFromPath,
+  getDictionary,
+  type Locale,
+} from '@/lib/i18n';
 
 /**
  * The flag is the *market*, not the language's country of origin — the same
@@ -50,13 +54,16 @@ export { localizePath as localePath };
  */
 export function LocaleSwitch({ className }: { className?: string }) {
   const pathname = usePathname();
-  const current: Locale =
-    pathname === '/en' || pathname.startsWith('/en/') ? 'en' : 'es';
+  // Derived from the path rather than passed in: this is a client component
+  // rendered inside the header, and the path is the single source of truth
+  // for which locale the reader is actually on.
+  const current: Locale = localeFromPath(pathname);
+  const t = getDictionary(current);
 
   return (
     <div
       role="group"
-      aria-label="Idioma"
+      aria-label={t.nav.language}
       className={cn(
         'inline-flex h-14 shrink-0 items-center gap-1 rounded-full border border-hairline-strong',
         'bg-white/70 px-1.5 shadow-sm backdrop-blur-md',

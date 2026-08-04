@@ -1,25 +1,30 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Mail } from 'lucide-react';
-import { SITE, LEGAL, SOCIAL } from '@nutricycle/shared';
-import type { Locale } from '@/lib/i18n';
+import { SITE, SOCIAL, getLegal } from '@nutricycle/shared';
+import { getDictionary, localizePath, type Locale } from '@/lib/i18n';
 import { Container } from './container';
 
-const EXPLORE = [
-  { label: 'Recetas', href: '/recetas' },
-  { label: 'Las 4 fases', href: '/ciclo' },
-  { label: 'Videos', href: '/videos' },
-  { label: 'Blog', href: '/blog' },
-];
-
-const ABOUT = [
-  { label: 'Sobre Alicia', href: '/sobre' },
-  { label: 'Cómo funciona', href: '/como-funciona' },
-  { label: 'Preguntas frecuentes', href: '/faq' },
-  { label: 'Contacto', href: '/contacto' },
-];
-
 export function SiteFooter({ locale }: { locale: Locale }) {
+  const t = getDictionary(locale);
+  const to = (href: string) => localizePath(href, locale);
+
+  const EXPLORE = [
+    { label: t.nav.recipes, href: to('/recetas') },
+    { label: t.footer.phases, href: to('/ciclo') },
+    { label: t.footer.videos, href: to('/videos') },
+    { label: t.footer.blog, href: to('/blog') },
+  ];
+
+  const ABOUT = [
+    { label: t.footer.aboutAlicia, href: to('/sobre') },
+    { label: t.footer.howItWorks, href: to('/como-funciona') },
+    { label: t.footer.faq, href: to('/faq') },
+    { label: t.footer.contact, href: to('/contacto') },
+  ];
+
+  const LEGAL_LINKS = getLegal(locale).map((l) => ({ ...l, href: to(l.href) }));
+
   return (
     <footer className="border-t border-hairline bg-surface-raised">
       <Container>
@@ -32,10 +37,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
               height={179}
               className="h-24 w-auto"
             />
-            <p className="mt-6 max-w-xs text-small text-muted">
-              Nutrición cíclica para tu salud hormonal. Aprende a comer según tu
-              fase.
-            </p>
+            <p className="mt-6 max-w-xs text-small text-muted">{t.footer.blurb}</p>
             <a
               href={`mailto:${SITE.email}`}
               className="mt-6 inline-flex items-center gap-2.5 rounded-full border border-hairline bg-white px-5 py-3 text-caption font-semibold text-ink shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md"
@@ -45,9 +47,9 @@ export function SiteFooter({ locale }: { locale: Locale }) {
             </a>
           </div>
 
-          <FooterColumn title="Explora" items={EXPLORE} />
-          <FooterColumn title="Nutricycle" items={ABOUT} />
-          <FooterColumn title="Legal" items={LEGAL} />
+          <FooterColumn title={t.footer.explore} items={EXPLORE} />
+          <FooterColumn title={t.footer.company} items={ABOUT} />
+          <FooterColumn title={t.footer.legal} items={LEGAL_LINKS} />
         </div>
 
         <div className="flex flex-col gap-5 border-t border-hairline py-9 sm:flex-row sm:items-center sm:justify-between">

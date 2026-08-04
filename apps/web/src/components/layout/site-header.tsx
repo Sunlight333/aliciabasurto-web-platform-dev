@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 import { Container } from './container';
 import { LocaleSwitch } from '@/components/ui/locale-switch';
-import type { Locale } from '@/lib/i18n';
+import { getDictionary, localizePath, type Locale } from '@/lib/i18n';
 import { cn } from '@/lib/cn';
 
 /**
@@ -56,24 +56,37 @@ import { cn } from '@/lib/cn';
  * ⚠️ Re-measure if a label changes. The balance is a property of the text,
  * so a longer word silently un-balances the row.
  */
-const LEFT = [
-  { label: 'Método', href: '/como-funciona' },
-  { label: 'Tu ciclo', href: '/ciclo' },
-  { label: 'Sobre Alicia', href: '/sobre' },
-];
-
-const RIGHT = [
-  { label: 'Recetas', href: '/recetas' },
-  { label: 'Funciones', href: '/funcionalidades' },
-  { label: 'Membresía', href: '/membresia' },
-];
-
-const ALL = [...LEFT, ...RIGHT];
+/**
+ * Hrefs are Spanish-canonical and translated at render time by
+ * localizePath(), so a nav link never sends an English reader back to the
+ * Spanish tree — the single most visible way a language switch breaks.
+ */
+const LEFT_HREFS = ['/como-funciona', '/ciclo', '/sobre'] as const;
+const RIGHT_HREFS = ['/recetas', '/funcionalidades', '/membresia'] as const;
 
 export function SiteHeader({ locale }: { locale: Locale }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+  const t = getDictionary(locale);
+
+  const LABELS: Record<string, string> = {
+    '/como-funciona': t.nav.method,
+    '/ciclo': t.nav.cycle,
+    '/sobre': t.nav.about,
+    '/recetas': t.nav.recipes,
+    '/funcionalidades': t.nav.features,
+    '/membresia': t.nav.membership,
+  };
+
+  const item = (href: string) => ({
+    label: LABELS[href],
+    href: localizePath(href, locale),
+  });
+
+  const LEFT = LEFT_HREFS.map(item);
+  const RIGHT = RIGHT_HREFS.map(item);
+  const ALL = [...LEFT, ...RIGHT];
 
   useEffect(() => setOpen(false), [pathname]);
 
@@ -104,7 +117,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
         <div className="grid h-32 grid-cols-[1fr_auto_1fr] items-center gap-10">
           {/* ---------- Left: primary links ---------- */}
           <div className="hidden items-center justify-end xl:flex">
-            <nav aria-label="Principal izquierda">
+            <nav aria-label={t.nav.primaryLeft}>
               <ul className="flex items-center gap-7 2xl:gap-9">
                 {LEFT.map((item) => (
                   <NavLink
@@ -120,7 +133,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
           <button
             type="button"
             onClick={() => setOpen(true)}
-            aria-label="Abrir menú"
+            aria-label={t.nav.openMenu}
             aria-expanded={open}
             className="justify-self-start rounded-full p-2.5 text-ink transition-colors hover:bg-ink/5 xl:hidden"
           >
@@ -129,8 +142,8 @@ export function SiteHeader({ locale }: { locale: Locale }) {
 
           {/* ---------- Centre: logo ---------- */}
           <Link
-            href="/"
-            aria-label="Nutricycle — inicio"
+            href={localizePath("/", locale)}
+            aria-label={t.nav.home}
             className="group justify-self-center"
           >
             <Image
@@ -145,7 +158,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
 
           {/* ---------- Right: links + language ---------- */}
           <div className="hidden items-center justify-between gap-8 xl:flex">
-            <nav aria-label="Principal derecha">
+            <nav aria-label={t.nav.primaryRight}>
               <ul className="flex items-center gap-7 2xl:gap-9">
                 {RIGHT.map((item) => (
                   <NavLink
@@ -176,7 +189,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
       >
         <button
           type="button"
-          aria-label="Cerrar menú"
+          aria-label={t.nav.closeMenu}
           onClick={() => setOpen(false)}
           className="absolute inset-0 h-full w-full cursor-default bg-ink/20 backdrop-blur-sm"
         />
@@ -198,14 +211,14 @@ export function SiteHeader({ locale }: { locale: Locale }) {
             <button
               type="button"
               onClick={() => setOpen(false)}
-              aria-label="Cerrar menú"
+              aria-label={t.nav.closeMenu}
               className="rounded-full p-2.5 text-ink transition-colors hover:bg-ink/5"
             >
               <X strokeWidth={2} className="h-8 w-8" />
             </button>
           </div>
 
-          <nav aria-label="Principal móvil" className="mt-8">
+          <nav aria-label={t.nav.primaryMobile} className="mt-8">
             <ul className="flex flex-col">
               {ALL.map((item) => (
                 <li key={item.href}>

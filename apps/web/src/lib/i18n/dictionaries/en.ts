@@ -30,6 +30,7 @@ export const en: Dictionary = {
   },
 
   footer: {
+    blurb: 'Cyclical nutrition for your hormonal health. Learn to eat with your phase.',
     explore: 'Explore',
     company: 'Nutricycle',
     legal: 'Legal',
