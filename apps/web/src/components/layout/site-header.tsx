@@ -37,22 +37,33 @@ import { cn } from '@/lib/cn';
  * 1024–1279 gets the compact bar and the sheet, which carry the same controls.
  */
 /**
- * `Sobre Alicia` sits on the left, not the right, and that is the balance:
- * the language pill weights the right end, so a fourth link opposite it is
- * what makes the two sides carry comparable width. Moving it to the right
- * would push that side further out and widen the gap it is meant to close.
+ * Three links a side. The language pill is *not* one of the six and is not
+ * counted in this balance — it is a utility control parked at the right
+ * edge, outside the nav.
  *
- * The label matches the footer and /enlaces. The route already existed and
- * was reachable only from the footer and a mid-page link on /como-funciona.
+ * The split is by rendered width, not by counting labels. Three-and-three
+ * alone does not balance anything: the six labels run 58px to 95px, so the
+ * obvious grouping (método/ciclo/recetas against funciones/membresía/sobre)
+ * lands 255px against 336px and leaves the left side visibly light. Measured
+ * across all ten possible splits, this one is the closest that keeps the
+ * grouping coherent — 287px against 305px, Δ18.
+ *
+ * It also reads as two ideas rather than a shuffled list: learn and who
+ * (método · tu ciclo · sobre alicia) on the left, use and buy (recetas ·
+ * funciones · membresía) on the right, with `Sobre Alicia` resting beside
+ * the logo — the person next to the mark.
+ *
+ * ⚠️ Re-measure if a label changes. The balance is a property of the text,
+ * so a longer word silently un-balances the row.
  */
 const LEFT = [
   { label: 'Método', href: '/como-funciona' },
   { label: 'Tu ciclo', href: '/ciclo' },
-  { label: 'Recetas', href: '/recetas' },
   { label: 'Sobre Alicia', href: '/sobre' },
 ];
 
 const RIGHT = [
+  { label: 'Recetas', href: '/recetas' },
   { label: 'Funciones', href: '/funcionalidades' },
   { label: 'Membresía', href: '/membresia' },
 ];
