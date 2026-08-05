@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Avatares — 11 personas de cta-band-latam</title>
+<style>
+  :root { --cream:#FDFCF4; --ink:#221D1A; --muted:#6B625B; --accent:#7C6A8A; --hairline:rgba(34,29,26,.1); }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--cream); color:var(--ink);
+         font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif; }
+  header { max-width:1080px; margin:0 auto; padding:48px 32px 8px; }
+  h1 { font-size:29px; margin:0 0 8px; letter-spacing:-.01em; }
+  header p { color:var(--muted); max-width:66ch; margin:0 0 10px; }
+  code { background:rgba(34,29,26,.06); padding:1px 5px; border-radius:4px; font-size:.9em; }
+  main { max-width:1080px; margin:0 auto; padding:24px 32px 80px; }
+  .row { display:flex; gap:26px; align-items:center; padding:22px 0; border-top:1px solid var(--hairline); }
+  .sizes { display:flex; gap:18px; align-items:center; }
+  .sizes img { border-radius:50%; object-fit:cover; box-shadow:0 2px 10px -4px rgba(34,29,26,.4); }
+  .s120 { width:120px; height:120px; }
+  .s64 { width:64px; height:64px; }
+  .s40 { width:40px; height:40px; }
+  .s28 { width:28px; height:28px; }
+  .sq { width:120px; height:120px; border-radius:18px; object-fit:cover; }
+  .info { flex:1 1 260px; min-width:220px; }
+  .info h2 { font-size:17px; margin:0 0 4px; }
+  .info p { margin:0; color:var(--muted); font-size:14px; }
+  .info a { color:var(--accent); font-size:13px; }
+  .warn { color:#8a5a2b; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Avatares — 11 personas</h1>
+  <p>
+    Un avatar por persona. Las 20 fotos de <code>cta-band-latam</code> repiten modelo en varias
+    sesiones, así que 20 fotos = 11 personas distintas. La foto 15 es una nuca: no hay cara
+    utilizable y queda fuera.
+  </p>
+  <p>
+    Recortes cuadrados desde el master de 2400 px, centrados en la cara y con el ojo a la altura
+    habitual de un retrato. Se muestran al tamaño real al que se suelen usar.
+  </p>
+</header>
+<main id="list"></main>
+<script>
+const PEOPLE = [
+  { f:'01-camisa-rosa', t:'Camisa rosa', src:'03 · Pexels 8530070', id:8530070, note:'Rizos largos y camisa rosa empolvado. El más cercano al palette del sitio.' },
+  { f:'02-cocina-marmol', t:'Cocina de mármol', src:'05 · Pexels 7605215', id:7605215, note:'Rizos y gafas, luz de cocina blanca. Cara nítida y bien separada del fondo.' },
+  { f:'03-jersey-gris', t:'Jersey gris', src:'08 · Pexels 7014589', id:7014589, note:'Pelo muy corto, cuello vuelto gris. El recorte más limpio de los once.' },
+  { f:'04-sofa-crema', t:'Sofá crema', src:'11 · Pexels 7283492', id:7283492, note:'Perfil de tres cuartos sobre sofá claro. Fondo casi del color del sitio.' },
+  { f:'05-jersey-verde', t:'Jersey verde', src:'12 · Pexels 6382618', id:6382618, note:'Melena corta y plantas detrás. Mirada baja, expresión seria.' },
+  { f:'06-retrato-calido', t:'Retrato cálido', src:'14 · Pexels 32966525', id:32966525, note:'El primer plano más cerrado del origen: máxima resolución de cara.' },
+  { f:'07-camisa-azul', t:'Camisa azul', src:'16 · Pexels 6862859', id:6862859, note:'Rizos y camisa azul clara, luz cálida de madera.' },
+  { f:'08-cocina-tulipanes', t:'Cocina con tulipanes', src:'17 · Pexels 4173298', id:4173298, note:'Perfil bajando la mirada. Cara pequeña en el original: recorte de 460 px reescalado, el más blando del lote.', warn:true },
+  { f:'09-encimera-verduras', t:'Encimera con verduras', src:'18 · Pexels 8939258', id:8939258, note:'Perfil estricto: se ve el lateral de la cara, no la mirada de frente.' },
+  { f:'10-sofa-plantas', t:'Sofá con plantas', src:'19 · Pexels 5902792', id:5902792, note:'El enfoque del original está en el móvil, así que la cara queda algo blanda.', warn:true },
+  { f:'11-mexico-exterior', t:'México, exterior', src:'20 · Pexels 17797684', id:17797684, note:'Sonrisa abierta y gafas. La única persona con localización mexicana en metadatos.' },
+];
+document.getElementById('list').innerHTML = PEOPLE.map((p) => `
+  <div class="row">
+    <div class="sizes">
+      <img class="s120" src="512/${p.f}.jpg" alt="${p.t}">
+      <img class="s64" src="512/${p.f}.jpg" alt="">
+      <img class="s40" src="512/${p.f}.jpg" alt="">
+      <img class="s28" src="512/${p.f}.jpg" alt="">
+      <img class="sq" src="512/${p.f}.jpg" alt="">
+    </div>
+    <div class="info">
+      <h2>${p.t}</h2>
+      <p class="${p.warn ? 'warn' : ''}">${p.note}</p>
+      <p><a href="https://www.pexels.com/photo/${p.id}/" target="_blank" rel="noreferrer">${p.src} ↗</a></p>
+    </div>
+  </div>`).join('');
+</script>
+</body>
+</html>

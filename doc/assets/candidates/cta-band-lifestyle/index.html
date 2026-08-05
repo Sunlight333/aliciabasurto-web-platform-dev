@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CtaBand — 10 lifestyle candidates (person + phone)</title>
+<style>
+  :root {
+    --cream: #FDFCF4;
+    --ink: #221D1A;
+    --muted: #6B625B;
+    --accent: #7C6A8A;
+    --sage: #A3B3A5;
+    --hairline: rgba(34, 29, 26, 0.08);
+    --veil: 0.28;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--cream); color: var(--ink);
+    font: 16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  header { padding: 48px 32px 8px; max-width: 1100px; margin: 0 auto; }
+  h1 { font-size: 30px; margin: 0 0 8px; letter-spacing: -0.01em; }
+  header p { color: var(--muted); max-width: 66ch; margin: 0 0 10px; }
+  code { background: rgba(34,29,26,0.06); padding: 1px 5px; border-radius: 4px; font-size: 0.9em; }
+
+  .controls {
+    position: sticky; top: 0; z-index: 20;
+    display: flex; gap: 22px; align-items: center; flex-wrap: wrap;
+    padding: 14px 32px; margin-top: 24px;
+    background: rgba(253,252,244,0.94); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--hairline); font-size: 14px;
+  }
+  .controls label { display: flex; gap: 8px; align-items: center; color: var(--muted); }
+  .controls output { font-variant-numeric: tabular-nums; color: var(--ink); }
+  .seg { display: flex; border: 1px solid var(--hairline); border-radius: 999px; overflow: hidden; }
+  .seg button {
+    border: 0; background: transparent; padding: 7px 15px; font: inherit; font-size: 13px;
+    color: var(--muted); cursor: pointer;
+  }
+  .seg button[aria-pressed="true"] { background: var(--ink); color: var(--cream); }
+
+  .meta {
+    max-width: 1100px; margin: 0 auto; padding: 36px 32px 12px;
+    display: flex; gap: 16px; align-items: baseline; flex-wrap: wrap;
+  }
+  .num { font-size: 13px; font-weight: 700; letter-spacing: 0.08em;
+         background: var(--ink); color: var(--cream); border-radius: 999px; padding: 3px 11px; }
+  .meta h2 { font-size: 19px; margin: 0; }
+  .meta .note { color: var(--muted); font-size: 14px; flex: 1 1 340px; }
+  .meta a { color: var(--accent); font-size: 13px; }
+  .tag {
+    font-size: 11px; letter-spacing: .06em; text-transform: uppercase;
+    border: 1px solid var(--hairline); border-radius: 999px; padding: 2px 9px; color: var(--muted);
+  }
+
+  /* ---- The band ---- */
+  .band { position: relative; overflow: hidden; min-height: 560px; display: grid; }
+  .band .photo {
+    position: absolute; inset: 0; background-size: cover; background-position: var(--pos, center);
+  }
+  .band .photo::after { content: ""; position: absolute; inset: 0; background: var(--cream); opacity: var(--veil); }
+
+  /* mode: centred — the component as it exists today */
+  .band.centred { place-items: center; padding: 80px 24px; }
+  .band.centred .card { width: min(760px, 100%); }
+
+  /* mode: offset — photo keeps its left third, card pushed right */
+  .band.offset { align-items: center; padding: 80px 24px; }
+  .band.offset .inner { width: min(1180px, 100%); margin: 0 auto; display: flex; justify-content: flex-end; }
+  .band.offset .card { width: min(620px, 100%); text-align: left; }
+  .band.offset .card .stats, .band.offset .card .buttons { justify-content: flex-start; }
+  .band.offset .card p { margin-left: 0; }
+  .band.offset .icon { margin-left: 0; }
+
+  /* mode: split — photo is a panel beside the copy, nothing overlaps */
+  .band.split { grid-template-columns: 1fr 1fr; align-items: center; min-height: 620px; }
+  .band.split .photo { inset: 0 50% 0 0; }
+  .band.split .photo::after { opacity: 0; }
+  .band.split .pane { grid-column: 2; padding: 64px 56px; }
+  .band.split .card { background: none; border: 0; box-shadow: none; backdrop-filter: none; padding: 0; text-align: left; }
+  .band.split .card .stats, .band.split .card .buttons { justify-content: flex-start; }
+  .band.split .card p { margin-left: 0; }
+  .band.split .icon { margin-left: 0; }
+
+  .card {
+    position: relative; z-index: 2; text-align: center; padding: 44px 40px; border-radius: 40px;
+    background: rgba(255,255,255,0.68); border: 1px solid rgba(255,255,255,0.72);
+    backdrop-filter: blur(14px); box-shadow: 0 24px 60px -30px rgba(34,29,26,0.35);
+  }
+  .icon { width: 80px; height: 80px; margin: 0 auto 24px; border-radius: 22px; background: var(--sage);
+          display: grid; place-items: center; box-shadow: 0 12px 30px -14px rgba(34,29,26,0.5); }
+  .icon svg { width: 42px; height: 42px; }
+  .eyebrow { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent);
+             font-weight: 600; margin: 0 0 16px; }
+  .card h3 { font-size: 38px; line-height: 1.15; margin: 0 0 18px; font-weight: 600; letter-spacing: -0.02em; }
+  .card h3 span { color: var(--accent); }
+  .card > p { color: var(--muted); max-width: 44ch; margin: 0 auto 26px; }
+  .stats { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 26px; }
+  .stat { display: flex; gap: 10px; align-items: center; text-align: left; border: 1px solid var(--hairline);
+          border-radius: 16px; background: rgba(255,255,255,0.72); padding: 9px 16px; }
+  .stat b { display: block; font-size: 17px; }
+  .stat small { color: var(--muted); font-size: 12px; }
+  .buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .store { border-radius: 14px; padding: 11px 20px; font-size: 15px; font-weight: 600; background: #1B1B1B; color: #fff; }
+  .store.light { background: #fff; color: var(--ink); border: 1px solid var(--hairline); }
+  .caption { margin-top: 20px; font-size: 12px; color: var(--muted); }
+
+  footer { padding: 48px 32px 80px; max-width: 1100px; margin: 0 auto; color: var(--muted); font-size: 14px; }
+  footer h3 { color: var(--ink); font-size: 16px; margin: 24px 0 6px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>CtaBand — 10 lifestyle candidates</h1>
+  <p>
+    Real scenes: someone with a phone. Each one is rendered as the actual closing band, so you
+    can see where the subject lands relative to the copy.
+  </p>
+  <p>
+    <strong>Layout matters more than the photograph here.</strong> The band today centres a wide
+    glass card, which sits exactly where a person's face is. Switch between the three layouts in
+    the bar below before judging any frame — several of these are wrong centred and right split.
+  </p>
+</header>
+
+<div class="controls">
+  <span class="seg" id="modes">
+    <button data-mode="centred" aria-pressed="true">Centred card (today)</button>
+    <button data-mode="offset" aria-pressed="false">Card pushed right</button>
+    <button data-mode="split" aria-pressed="false">Split 50 / 50</button>
+  </span>
+  <label>Veil <input id="veil" type="range" min="0" max="100" value="28" /> <output id="veilOut">0.28</output></label>
+  <label>Focus <input id="pos" type="range" min="0" max="100" value="50" /> <output id="posOut">50%</output></label>
+</div>
+
+<main id="list"></main>
+
+<footer>
+  <h3>Files</h3>
+  <code>jpg/</code> 2400 px masters · <code>webp/</code> and <code>avif/</code> at 1600 px ·
+  <code>preview-crop/</code> flattened 21:9 stills. All Pexels, free for commercial use.
+  <h3>Two things to weigh</h3>
+  <p>
+    <strong>Faces imply endorsement.</strong> The Pexels licence allows commercial use but not
+    using an identifiable person in a way that suggests they endorse a product — which is exactly
+    what a stock face beside a health claim can read as. Frames 07–10 are hands only and carry
+    none of that risk.
+  </p>
+  <p>
+    <strong>Blank screens are an opportunity.</strong> 08 and 09 hold a phone with an empty
+    screen — the app UI can be composited in, so the band shows the real product instead of a
+    generic phone. That is the version that actually sells a download.
+  </p>
+</footer>
+
+<script>
+const PICKS = [
+  { n: 1, id: 8939262, slug: 'kitchen-counter-phone', title: 'Kitchen counter, cream shirt',
+    tags: ['face', 'food'],
+    note: 'Cream overshirt, phone in hand, vegetables laid out on the counter. The closest of the ten to the founder photography already on the site — same palette, same room type.' },
+  { n: 2, id: 8939309, slug: 'kitchen-banana-phone', title: 'Groceries and phone',
+    tags: ['face', 'food'],
+    note: 'Same shoot, brighter and more animated — checking the phone while unpacking food. Reads as "what should I eat today", which is the product.' },
+  { n: 3, id: 6707452, slug: 'green-smoothie-phone', title: 'Green smoothie, phone in hand',
+    tags: ['face', 'food'],
+    note: 'Drinking a green smoothie with the phone still in hand. The most literal nutrition-app frame here; the orange top fights the palette a little.' },
+  { n: 4, id: 12673803, slug: 'cooking-phone-plants', title: 'Cooking from the phone',
+    tags: ['face', 'kitchen'],
+    note: 'Cooking at the hob, reading from the phone, plants and open shelving behind. Warmest scene of the ten and the best argument for the recipe library.' },
+  { n: 5, id: 27176011, slug: 'sofa-window-smiling', title: 'By the window, smiling',
+    tags: ['face', 'home'],
+    note: 'Relaxed, natural light, plants. No food cue at all — this one sells calm rather than nutrition.' },
+  { n: 6, id: 3807633, slug: 'morning-bed-linen', title: 'Morning, white linen',
+    tags: ['face', 'morning'],
+    note: 'The lightest frame of the ten and the easiest to put text over. Morning check-in — fits a daily-phase app; watch that it does not read as scrolling in bed.' },
+  { n: 7, id: 9788052, slug: 'overhead-coffee-phone', title: 'Overhead: coffee and phone',
+    tags: ['hands'],
+    note: 'Top-down, hands only, coffee in the other hand. No face, so no endorsement question, and the phone sits neatly off-centre.' },
+  { n: 8, id: 9787782, slug: 'hands-blank-screen-linen', title: 'Hands on white linen — blank screen',
+    tags: ['hands', 'mockup'],
+    note: 'Hands and a phone on white bedding, screen empty. Composite the app UI into it and the band shows the real product.' },
+  { n: 9, id: 24709142, slug: 'hand-blank-screen-cream', title: 'Hand, blank screen, cream backdrop',
+    tags: ['hands', 'mockup'],
+    note: 'Studio-clean on a warm cream backdrop — nearly the site background already. The most product-page of the ten, and the best mockup base.' },
+  { n: 10, id: 17757178, slug: 'closeup-watching-video', title: 'Watching a video, close up',
+    tags: ['hands', 'video'],
+    note: 'Over-the-shoulder on a phone playing video — the recipe-video library made literal. Darkest and busiest frame here; needs the heaviest veil.' },
+];
+
+const RINGS = `<svg viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="2.2">
+  <circle cx="19" cy="24" r="11"/><circle cx="29" cy="24" r="11"/></svg>`;
+
+const name = (p) => String(p.n).padStart(2, '0') + '-' + p.slug + '-' + p.id;
+
+const CARD = `
+  <div class="card">
+    <div class="icon">${RINGS}</div>
+    <p class="eyebrow">Disponible en iOS y Android</p>
+    <h3>Tu ciclo, tu guía — <span>en tu bolsillo</span></h3>
+    <p>Cada día, los alimentos y recetas que tu cuerpo necesita según tu fase. Sin dietas, sin restricciones.</p>
+    <div class="stats">
+      <div class="stat"><b>4.8</b><small>Valoración</small></div>
+      <div class="stat"><b>40+</b><small>Recetas</small></div>
+      <div class="stat"><b>4</b><small>Fases</small></div>
+    </div>
+    <div class="buttons"><span class="store">App Store</span><span class="store light">Google Play</span></div>
+    <p class="caption">Descarga gratis · Plan Hormonal desde la app</p>
+  </div>`;
+
+document.getElementById('list').innerHTML = PICKS.map((p) => {
+  const f = name(p);
+  return `
+  <section>
+    <div class="meta">
+      <span class="num">${String(p.n).padStart(2, '0')}</span>
+      <h2>${p.title}</h2>
+      ${p.tags.map((t) => `<span class="tag">${t}</span>`).join('')}
+      <span class="note">${p.note}</span>
+      <a href="https://www.pexels.com/photo/${p.id}/" target="_blank" rel="noreferrer">Pexels ${p.id} ↗</a>
+    </div>
+    <div class="band centred">
+      <div class="photo" style="background-image:url('jpg/${f}.jpg')"></div>
+      <div class="inner">${CARD}</div>
+      <div class="pane">${CARD}</div>
+    </div>
+  </section>`;
+}).join('');
+
+// The three layouts share one DOM; each mode shows the wrapper it needs.
+function applyMode(mode) {
+  document.querySelectorAll('.band').forEach((b) => {
+    b.className = 'band ' + mode;
+    const [, inner, pane] = b.children;
+    inner.style.display = mode === 'offset' ? 'flex' : (mode === 'centred' ? 'contents' : 'none');
+    pane.style.display = mode === 'split' ? 'block' : 'none';
+  });
+  document.querySelectorAll('#modes button').forEach((btn) => {
+    btn.setAttribute('aria-pressed', String(btn.dataset.mode === mode));
+  });
+}
+document.getElementById('modes').addEventListener('click', (e) => {
+  const btn = e.target.closest('button');
+  if (btn) applyMode(btn.dataset.mode);
+});
+applyMode('centred');
+
+const veil = document.getElementById('veil'), veilOut = document.getElementById('veilOut');
+veil.addEventListener('input', () => {
+  const v = (veil.value / 100).toFixed(2);
+  document.documentElement.style.setProperty('--veil', v);
+  veilOut.textContent = v;
+});
+const pos = document.getElementById('pos'), posOut = document.getElementById('posOut');
+pos.addEventListener('input', () => {
+  document.documentElement.style.setProperty('--pos', pos.value + '% center');
+  posOut.textContent = pos.value + '%';
+});
+</script>
+</body>
+</html>

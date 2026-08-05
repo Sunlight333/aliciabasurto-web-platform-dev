@@ -1,0 +1,79 @@
+[
+  {
+    "name": "01-camisa-rosa",
+    "source": "03-pink-linen-close-8530070",
+    "sourcePx": "1050×1050",
+    "upscaled": false,
+    "master": "2400×1600"
+  },
+  {
+    "name": "02-cocina-marmol",
+    "source": "05-marble-kitchen-gesture-7605215",
+    "sourcePx": "950×950",
+    "upscaled": false,
+    "master": "2400×1600"
+  },
+  {
+    "name": "03-jersey-gris",
+    "source": "08-kitchen-cup-and-phone-7014589",
+    "sourcePx": "1300×1300",
+    "upscaled": false,
+    "master": "2400×3600"
+  },
+  {
+    "name": "04-sofa-crema",
+    "source": "11-cream-sofa-bright-room-7283492",
+    "sourcePx": "850×850",
+    "upscaled": false,
+    "master": "2400×1600"
+  },
+  {
+    "name": "05-jersey-verde",
+    "source": "12-olive-sweater-plants-6382618",
+    "sourcePx": "750×750",
+    "upscaled": false,
+    "master": "2400×1600"
+  },
+  {
+    "name": "06-retrato-calido",
+    "source": "14-portrait-warm-bokeh-32966525",
+    "sourcePx": "1700×1700",
+    "upscaled": false,
+    "master": "2400×3600"
+  },
+  {
+    "name": "07-camisa-azul",
+    "source": "16-warm-doorway-blue-shirt-6862859",
+    "sourcePx": "520×520",
+    "upscaled": false,
+    "master": "2400×1600"
+  },
+  {
+    "name": "08-cocina-tulipanes",
+    "source": "17-bright-kitchen-tulips-4173298",
+    "sourcePx": "460×460",
+    "upscaled": true,
+    "master": "2400×1600"
+  },
+  {
+    "name": "09-encimera-verduras",
+    "source": "18-counter-vegetables-phone-8939258",
+    "sourcePx": "560×560",
+    "upscaled": false,
+    "master": "2400×1600"
+  },
+  {
+    "name": "10-sofa-plantas",
+    "source": "19-sofa-plants-phone-back-5902792",
+    "sourcePx": "870×870",
+    "upscaled": false,
+    "master": "2400×1600"
+  },
+  {
+    "name": "11-mexico-exterior",
+    "source": "20-mexico-outdoor-green-17797684",
+    "sourcePx": "1000×1000",
+    "upscaled": false,
+    "master": "2400×3600"
+  }
+]

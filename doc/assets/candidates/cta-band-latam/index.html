@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CtaBand — 20 candidatas (persona + móvil, pantalla oculta)</title>
+<style>
+  :root {
+    --cream: #FDFCF4;
+    --ink: #221D1A;
+    --muted: #6B625B;
+    --accent: #7C6A8A;
+    --sage: #A3B3A5;
+    --hairline: rgba(34, 29, 26, 0.08);
+    --veil: 0.28;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--cream); color: var(--ink);
+    font: 16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  header { padding: 48px 32px 8px; max-width: 1100px; margin: 0 auto; }
+  h1 { font-size: 30px; margin: 0 0 8px; letter-spacing: -0.01em; }
+  header p { color: var(--muted); max-width: 68ch; margin: 0 0 10px; }
+  code { background: rgba(34,29,26,0.06); padding: 1px 5px; border-radius: 4px; font-size: 0.9em; }
+
+  .controls {
+    position: sticky; top: 0; z-index: 20;
+    display: flex; gap: 22px; align-items: center; flex-wrap: wrap;
+    padding: 14px 32px; margin-top: 24px;
+    background: rgba(253,252,244,0.94); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--hairline); font-size: 14px;
+  }
+  .controls label { display: flex; gap: 8px; align-items: center; color: var(--muted); }
+  .controls output { font-variant-numeric: tabular-nums; color: var(--ink); }
+  .seg { display: flex; border: 1px solid var(--hairline); border-radius: 999px; overflow: hidden; }
+  .seg button {
+    border: 0; background: transparent; padding: 7px 15px; font: inherit; font-size: 13px;
+    color: var(--muted); cursor: pointer;
+  }
+  .seg button[aria-pressed="true"] { background: var(--ink); color: var(--cream); }
+
+  .meta {
+    max-width: 1100px; margin: 0 auto; padding: 36px 32px 12px;
+    display: flex; gap: 16px; align-items: baseline; flex-wrap: wrap;
+  }
+  .num { font-size: 13px; font-weight: 700; letter-spacing: 0.08em;
+         background: var(--ink); color: var(--cream); border-radius: 999px; padding: 3px 11px; }
+  .meta h2 { font-size: 19px; margin: 0; }
+  .meta .note { color: var(--muted); font-size: 14px; flex: 1 1 340px; }
+  .meta a { color: var(--accent); font-size: 13px; }
+  .tag {
+    font-size: 11px; letter-spacing: .06em; text-transform: uppercase;
+    border: 1px solid var(--hairline); border-radius: 999px; padding: 2px 9px; color: var(--muted);
+  }
+  .tag.mx { border-color: rgba(124,106,138,.45); color: var(--accent); }
+  .tag.unv { border-style: dashed; }
+
+  .band { position: relative; overflow: hidden; min-height: 560px; display: grid; }
+  .band .photo {
+    position: absolute; inset: 0; background-size: cover; background-position: var(--pos, center);
+  }
+  .band .photo::after { content: ""; position: absolute; inset: 0; background: var(--cream); opacity: var(--veil); }
+
+  .band.centred { place-items: center; padding: 80px 24px; }
+  .band.centred .card { width: min(760px, 100%); }
+
+  .band.offset { align-items: center; padding: 80px 24px; }
+  .band.offset .inner { width: min(1180px, 100%); margin: 0 auto; display: flex; justify-content: flex-end; }
+  .band.offset .card { width: min(620px, 100%); text-align: left; }
+  .band.offset .card .stats, .band.offset .card .buttons { justify-content: flex-start; }
+  .band.offset .card p { margin-left: 0; }
+  .band.offset .icon { margin-left: 0; }
+
+  .band.split { grid-template-columns: 1fr 1fr; align-items: center; min-height: 620px; }
+  .band.split .photo { inset: 0 50% 0 0; }
+  .band.split .photo::after { opacity: 0; }
+  .band.split .pane { grid-column: 2; padding: 64px 56px; }
+  .band.split .card { background: none; border: 0; box-shadow: none; backdrop-filter: none; padding: 0; text-align: left; }
+  .band.split .card .stats, .band.split .card .buttons { justify-content: flex-start; }
+  .band.split .card p { margin-left: 0; }
+  .band.split .icon { margin-left: 0; }
+
+  .card {
+    position: relative; z-index: 2; text-align: center; padding: 44px 40px; border-radius: 40px;
+    background: rgba(255,255,255,0.68); border: 1px solid rgba(255,255,255,0.72);
+    backdrop-filter: blur(14px); box-shadow: 0 24px 60px -30px rgba(34,29,26,0.35);
+  }
+  .icon { width: 80px; height: 80px; margin: 0 auto 24px; border-radius: 22px; background: var(--sage);
+          display: grid; place-items: center; box-shadow: 0 12px 30px -14px rgba(34,29,26,0.5); }
+  .icon svg { width: 42px; height: 42px; }
+  .eyebrow { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent);
+             font-weight: 600; margin: 0 0 16px; }
+  .card h3 { font-size: 38px; line-height: 1.15; margin: 0 0 18px; font-weight: 600; letter-spacing: -0.02em; }
+  .card h3 span { color: var(--accent); }
+  .card > p { color: var(--muted); max-width: 44ch; margin: 0 auto 26px; }
+  .stats { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 26px; }
+  .stat { display: flex; gap: 10px; align-items: center; text-align: left; border: 1px solid var(--hairline);
+          border-radius: 16px; background: rgba(255,255,255,0.72); padding: 9px 16px; }
+  .stat b { display: block; font-size: 17px; }
+  .stat small { color: var(--muted); font-size: 12px; }
+  .buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .store { border-radius: 14px; padding: 11px 20px; font-size: 15px; font-weight: 600; background: #1B1B1B; color: #fff; }
+  .store.light { background: #fff; color: var(--ink); border: 1px solid var(--hairline); }
+  .caption { margin-top: 20px; font-size: 12px; color: var(--muted); }
+
+  footer { padding: 48px 32px 80px; max-width: 1100px; margin: 0 auto; color: var(--muted); font-size: 14px; }
+  footer h3 { color: var(--ink); font-size: 16px; margin: 24px 0 6px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>CtaBand — 20 candidatas</h1>
+  <p>
+    Escenas reales con móvil, todas con <strong>la pantalla fuera de plano</strong>: el teléfono va
+    al oído o de espaldas a la cámara. Verificado a resolución completa en las 20; ninguna muestra
+    interfaz ajena.
+  </p>
+  <p>
+    <strong>Sobre el origen de las personas:</strong> la nacionalidad no se puede verificar en una
+    foto. Lo que sí consta es cómo las etiqueta Pexels. La ficha 20 lleva localización real de
+    México en los metadatos; las marcadas <span class="tag mx">latina/hispanic</span> salieron de
+    búsquedas que Pexels responde con esa etiqueta; las marcadas
+    <span class="tag unv">sin etiqueta</span> entran solo por encaje de escena y palette — decide
+    si te valen o las descarto.
+  </p>
+  <p>
+    <strong>El layout pesa más que la foto.</strong> La banda de hoy centra la tarjeta justo donde
+    está la cara. Cambia de modo abajo antes de juzgar ningún fotograma.
+  </p>
+</header>
+
+<div class="controls">
+  <span class="seg" id="modes">
+    <button data-mode="centred" aria-pressed="true">Tarjeta centrada (hoy)</button>
+    <button data-mode="offset" aria-pressed="false">Tarjeta a la derecha</button>
+    <button data-mode="split" aria-pressed="false">Split 50 / 50</button>
+  </span>
+  <label>Velo <input id="veil" type="range" min="0" max="100" value="28" /> <output id="veilOut">0.28</output></label>
+  <label>Foco <input id="pos" type="range" min="0" max="100" value="50" /> <output id="posOut">50%</output></label>
+</div>
+
+<main id="list"></main>
+
+<footer>
+  <h3>Archivos</h3>
+  <code>jpg/</code> masters 2400 px · <code>webp/</code> y <code>avif/</code> a 1600 px ·
+  <code>preview-crop/</code> recortes 21:9 · <code>manifest.json</code> con pesos por formato.
+  Todo Pexels, uso comercial libre.
+  <h3>Dos avisos</h3>
+  <p>
+    <strong>Una cara implica respaldo.</strong> La licencia de Pexels permite uso comercial pero no
+    presentar a una persona identificable como si avalara el producto — que es justo lo que puede
+    parecer una cara de stock junto a una promesa de salud. 15 y 19 son el plano más neutro en ese
+    sentido.
+  </p>
+  <p>
+    <strong>Teléfono al oído ≠ usar la app.</strong> Ocultar la pantalla se resuelve fácil con una
+    llamada, pero una llamada no cuenta la historia de "consulto mi fase". Las fichas 11, 17, 18,
+    19 y 20 sostienen el móvil mirándolo, con el dorso hacia cámara: misma regla cumplida y mejor
+    relato.
+  </p>
+</footer>
+
+<script>
+const PICKS = [
+  { n: 1, file: '01-pink-linen-standing-wide-8530066', id: 8530066, title: 'Camisa rosa, de pie',
+    origin: 'latina/hispanic', hide: 'al oído',
+    note: 'Plano abierto, pared blanca y planta. Muchísimo aire a la izquierda: la única de la serie que aguanta la tarjeta centrada sin taparla.' },
+  { n: 2, file: '02-pink-linen-plant-mid-8530069', id: 8530069, title: 'Camisa rosa, plano medio',
+    origin: 'latina/hispanic', hide: 'al oído',
+    note: 'Vertical, la planta enmarca la cabeza. Mejor para móvil que para la banda ancha.' },
+  { n: 3, file: '03-pink-linen-close-8530070', id: 8530070, title: 'Camisa rosa, plano corto',
+    origin: 'latina/hispanic', hide: 'al oído',
+    note: 'Rizos, rosa empolvado y verde: el fotograma más cercano al palette del sitio de las veinte.' },
+  { n: 4, file: '04-pink-linen-plants-behind-8530072', id: 8530072, title: 'Camisa rosa, plantas detrás',
+    origin: 'latina/hispanic', hide: 'al oído',
+    note: 'Misma sesión, más vegetación. Vertical; funciona en split.' },
+  { n: 5, file: '05-marble-kitchen-gesture-7605215', id: 7605215, title: 'Cocina de mármol, gesto',
+    origin: 'latina/hispanic', hide: 'al oído',
+    note: 'Cocina blanca moderna, mármol veteado. Escena de casa real y luz limpia; el negro de la camiseta es lo único que pelea con el fondo crema.' },
+  { n: 6, file: '06-marble-kitchen-wide-7605216', id: 7605216, title: 'Cocina de mármol, abierta',
+    origin: 'latina/hispanic', hide: 'al oído',
+    note: 'La misma cocina con cuerpo entero: se lee el espacio, no solo la persona.' },
+  { n: 7, file: '07-marble-kitchen-white-blazer-7605217', id: 7605217, title: 'Cocina de mármol, blazer',
+    origin: 'latina/hispanic', hide: 'al oído',
+    note: 'Variante más arreglada. Menos "casa" y más "oficina" que las dos anteriores.' },
+  { n: 8, file: '08-kitchen-cup-and-phone-7014589', id: 7014589, title: 'Taza y móvil en la cocina',
+    origin: 'sin etiqueta', hide: 'al oído',
+    note: 'Taza en una mano, móvil en la otra, cocina cálida de madera y blanco. El gesto exacto de un desayuno con la app al lado.' },
+  { n: 9, file: '09-kitchen-wide-cup-7014584', id: 7014584, title: 'Cocina abierta con taza',
+    origin: 'sin etiqueta', hide: 'al oído',
+    note: 'Plano general de la misma cocina: plantas, microondas menta, mucho aire a la izquierda para la tarjeta.' },
+  { n: 10, file: '10-kitchen-sipping-on-call-7015076', id: 7015076, title: 'Bebiendo mientras habla',
+    origin: 'sin etiqueta', hide: 'al oído',
+    note: 'Perfil bebiendo con el móvil al oído. Vertical y muy cerrada; se cae en la banda ancha.' },
+  { n: 11, file: '11-cream-sofa-bright-room-7283492', id: 7283492, title: 'Sofá crema, sala luminosa',
+    origin: 'latina/hispanic', hide: 'al oído',
+    note: 'Habitación crema, sofá claro, luz plana. Es la que menos trabajo de velo necesita: el fondo ya es casi el color del sitio.' },
+  { n: 12, file: '12-olive-sweater-plants-6382618', id: 6382618, title: 'Jersey verde y plantas',
+    origin: 'latina/hispanic', hide: 'al oído',
+    note: 'Verde oliva sobre pared clara con plantas y ladrillo. El fotograma más sereno del lote; encaja con el tono "sin dietas".' },
+  { n: 13, file: '13-olive-sweater-close-6382621', id: 6382621, title: 'Jersey verde, sentada',
+    origin: 'latina/hispanic', hide: 'al oído',
+    note: 'Misma sesión, sentada con las piernas cruzadas. Vertical.' },
+  { n: 14, file: '14-portrait-warm-bokeh-32966525', id: 32966525, title: 'Retrato, fondo cálido',
+    origin: 'latina/hispanic', hide: 'al oído',
+    note: 'Retrato corto, piel cálida y fondo desenfocado. Bonito, pero sin ninguna pista de cocina ni comida.' },
+  { n: 15, file: '15-over-shoulder-kitchen-4968555', id: 4968555, title: 'Desde el hombro, cocina',
+    origin: 'sin etiqueta', hide: 'al oído',
+    note: 'Nuca y mano: no hay cara reconocible, así que no hay lectura de aval publicitario. Fondo de cocina desenfocado y muy claro.' },
+  { n: 16, file: '16-warm-doorway-blue-shirt-6862859', id: 6862859, title: 'Puerta, camisa azul',
+    origin: 'latina/hispanic', hide: 'al oído',
+    note: 'Madera cálida y rizos. El fondo es dormitorio, no cocina: la lectura es "mañana", no "nutrición".' },
+  { n: 17, file: '17-bright-kitchen-tulips-4173298', id: 4173298, title: 'Cocina blanca con tulipanes',
+    origin: 'sin etiqueta', hide: 'dorso a cámara',
+    note: 'Mira el móvil de verdad, con el dorso hacia nosotros. Cocina blanca con baldas, plantas y tulipanes: la escena más "casa cuidada" del lote y muchísimo espacio libre a la izquierda.' },
+  { n: 18, file: '18-counter-vegetables-phone-8939258', id: 8939258, title: 'Encimera con verduras',
+    origin: 'sin etiqueta', hide: 'dorso a cámara',
+    note: 'Huevos, brócoli, calabacín y maíz en primer plano; el móvil en la mano. La única que enseña comida real y app a la vez.' },
+  { n: 19, file: '19-sofa-plants-phone-back-5902792', id: 5902792, title: 'Sofá con plantas, dorso del móvil',
+    origin: 'sin etiqueta', hide: 'dorso a cámara',
+    note: 'El teléfono ocupa el primer plano de espaldas: el hueco perfecto si algún día quieres componer ahí la UI de la app.' },
+  { n: 20, file: '20-mexico-outdoor-green-17797684', id: 17797684, title: 'México, exterior verde',
+    origin: 'México (metadatos)', hide: 'dorso a cámara',
+    note: 'La única con localización real en los metadatos de Pexels: Lerma de Villada, Estado de México. Es exterior, así que cumple el origen pero no el ambiente de cocina.' },
+];
+
+const RINGS = `<svg viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="2.2">
+  <circle cx="19" cy="24" r="11"/><circle cx="29" cy="24" r="11"/></svg>`;
+
+const CARD = `
+  <div class="card">
+    <div class="icon">${RINGS}</div>
+    <p class="eyebrow">Disponible en iOS y Android</p>
+    <h3>Tu ciclo, tu guía — <span>en tu bolsillo</span></h3>
+    <p>Cada día, los alimentos y recetas que tu cuerpo necesita según tu fase. Sin dietas, sin restricciones.</p>
+    <div class="stats">
+      <div class="stat"><b>4.8</b><small>Valoración</small></div>
+      <div class="stat"><b>40+</b><small>Recetas</small></div>
+      <div class="stat"><b>4</b><small>Fases</small></div>
+    </div>
+    <div class="buttons"><span class="store">App Store</span><span class="store light">Google Play</span></div>
+    <p class="caption">Descarga gratis · Plan Hormonal desde la app</p>
+  </div>`;
+
+document.getElementById('list').innerHTML = PICKS.map((p) => {
+  const cls = p.origin.startsWith('México') ? 'tag mx' : (p.origin === 'sin etiqueta' ? 'tag unv' : 'tag mx');
+  return `
+  <section>
+    <div class="meta">
+      <span class="num">${String(p.n).padStart(2, '0')}</span>
+      <h2>${p.title}</h2>
+      <span class="${cls}">${p.origin}</span>
+      <span class="tag">pantalla: ${p.hide}</span>
+      <span class="note">${p.note}</span>
+      <a href="https://www.pexels.com/photo/${p.id}/" target="_blank" rel="noreferrer">Pexels ${p.id} ↗</a>
+    </div>
+    <div class="band centred">
+      <div class="photo" style="background-image:url('jpg/${p.file}.jpg')"></div>
+      <div class="inner">${CARD}</div>
+      <div class="pane">${CARD}</div>
+    </div>
+  </section>`;
+}).join('');
+
+function applyMode(mode) {
+  document.querySelectorAll('.band').forEach((b) => {
+    b.className = 'band ' + mode;
+    const [, inner, pane] = b.children;
+    inner.style.display = mode === 'offset' ? 'flex' : (mode === 'centred' ? 'contents' : 'none');
+    pane.style.display = mode === 'split' ? 'block' : 'none';
+  });
+  document.querySelectorAll('#modes button').forEach((btn) => {
+    btn.setAttribute('aria-pressed', String(btn.dataset.mode === mode));
+  });
+}
+document.getElementById('modes').addEventListener('click', (e) => {
+  const btn = e.target.closest('button');
+  if (btn) applyMode(btn.dataset.mode);
+});
+applyMode('centred');
+
+const veil = document.getElementById('veil'), veilOut = document.getElementById('veilOut');
+veil.addEventListener('input', () => {
+  const v = (veil.value / 100).toFixed(2);
+  document.documentElement.style.setProperty('--veil', v);
+  veilOut.textContent = v;
+});
+const pos = document.getElementById('pos'), posOut = document.getElementById('posOut');
+pos.addEventListener('input', () => {
+  document.documentElement.style.setProperty('--pos', pos.value + '% center');
+  posOut.textContent = pos.value + '%';
+});
+</script>
+</body>
+</html>
