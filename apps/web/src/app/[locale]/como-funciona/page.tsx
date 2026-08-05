@@ -157,7 +157,7 @@ export default async function ComoFuncionaPage({
               <Reveal as="li" key={phase.slug} delay={i * 90} className="h-full">
                 <article className="card card-hover flex h-full flex-col p-7">
                   <span className="font-sans text-caption font-bold text-accent-display">
-                    {phaseDays(phase)}
+                    {phaseDays(phase, locale)}
                   </span>
                   <h3 className="mt-3 text-h3 text-ink">{phase.name}</h3>
                   <p className="mt-1 font-sans text-caption font-semibold text-muted">

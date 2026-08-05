@@ -61,13 +61,14 @@ function recipeJsonLd(recipe: NonNullable<ReturnType<typeof getRecipe>>) {
 export default async function RecetaPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }) {
-  const { slug } = await params;
+  const { locale: rawLocale, slug } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
   const recipe = getRecipe(slug);
   if (!recipe) notFound();
 
-  const phase = getPhase(recipe.phase);
+  const phase = getPhase(recipe.phase, locale);
   const others = getRecipes().filter((r) => r.slug !== recipe.slug);
 
   return (
@@ -105,7 +106,7 @@ export default async function RecetaPage({
                 PHASE_CHIP[phase.slug],
               )}
             >
-              {phaseDays(phase)}
+              {phaseDays(phase, locale)}
             </li>
           )}
         </ul>

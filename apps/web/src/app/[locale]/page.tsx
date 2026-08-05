@@ -36,7 +36,7 @@ export default async function HomePage({
       <Hero />
       <ProblemSection />
       <HowItWorks />
-      <PhasesSection />
+      <PhasesSection locale={locale} />
       <FeaturesSection />
       <FounderSection />
       <ReviewsSection />

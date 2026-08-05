@@ -102,7 +102,7 @@ export default async function CicloPage({
                         <span
                           className={`inline-flex rounded-full px-3.5 py-1.5 font-sans text-caption font-bold ${s.chip}`}
                         >
-                          {phaseDays(phase)}
+                          {phaseDays(phase, locale)}
                         </span>
                         <h3 className="mt-4 text-h2 text-ink">{phase.name}</h3>
                         <p className={`mt-1 font-sans text-body font-semibold ${s.ink}`}>

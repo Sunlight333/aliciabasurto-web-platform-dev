@@ -52,7 +52,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale: rawLocale, fase } = await params;
   const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
-  const phase = getPhase(fase as PhaseSlug);
+  const phase = getPhase(fase as PhaseSlug, locale);
   if (!phase) return {};
   return {
     title: `Fase ${phase.name} — qué comer y cómo te sentís`,
@@ -68,7 +68,7 @@ export default async function FasePage({
 }) {
   const { locale: rawLocale, fase } = await params;
   const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
-  const phase = getPhase(fase as PhaseSlug);
+  const phase = getPhase(fase as PhaseSlug, locale);
   if (!phase) notFound();
 
   const detail = getPhaseDetail(locale)[phase.slug];
@@ -83,7 +83,7 @@ export default async function FasePage({
   return (
     <>
       <PageHero
-        eyebrow={`Fase ${phase.name} · ${phaseDays(phase)}`}
+        eyebrow={`Fase ${phase.name} · ${phaseDays(phase, locale)}`}
         title={phase.name}
         accent={phase.tagline}
         lead={detail.summary}

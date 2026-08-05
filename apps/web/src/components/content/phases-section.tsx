@@ -1,4 +1,5 @@
 import { PHASES, phaseDays, type Phase } from '@nutricycle/shared';
+import type { Locale } from '@/lib/i18n';
 import { Droplet, Sprout, Sun, Moon, ArrowRight } from 'lucide-react';
 import { Section } from '@/components/layout/section';
 import { Container } from '@/components/layout/container';
@@ -39,7 +40,7 @@ const STYLES: Record<
   },
 };
 
-export function PhasesSection() {
+export function PhasesSection({ locale }: { locale: Locale }) {
   return (
     <Section surface="sunken">
       <Container>
@@ -54,7 +55,7 @@ export function PhasesSection() {
         <ul className="mt-14 grid gap-7 sm:grid-cols-2 xl:grid-cols-4">
           {PHASES.map((phase, i) => (
             <Reveal as="li" key={phase.slug} delay={i * 100} className="h-full">
-              <PhaseCard phase={phase} />
+              <PhaseCard phase={phase} locale={locale} />
             </Reveal>
           ))}
         </ul>
@@ -76,7 +77,7 @@ export function PhasesSection() {
   );
 }
 
-function PhaseCard({ phase }: { phase: Phase }) {
+function PhaseCard({ phase, locale }: { phase: Phase; locale: Locale }) {
   const s = STYLES[phase.slug];
   const Icon = s.icon;
 
@@ -92,7 +93,7 @@ function PhaseCard({ phase }: { phase: Phase }) {
         <span
           className={`inline-flex w-fit rounded-full px-3.5 py-1.5 font-sans text-caption font-bold tracking-wide ${s.chip}`}
         >
-          {phaseDays(phase)}
+          {phaseDays(phase, locale)}
         </span>
 
         <h3 className="mt-4 text-h3 text-ink">{phase.name}</h3>

@@ -25,11 +25,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale: rawLocale, fase } = await params;
   const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
-  const phase = getPhase(fase as PhaseSlug);
+  const phase = getPhase(fase as PhaseSlug, locale);
   if (!phase) return {};
   return {
     title: `Recetas para la fase ${phase.name.toLowerCase()}`,
-    description: `${phase.nutrition} Recetas pensadas para los días ${phaseDays(phase).toLowerCase()} de tu ciclo.`,
+    description: `${phase.nutrition} Recetas pensadas para los días ${phaseDays(phase, locale).toLowerCase()} de tu ciclo.`,
     alternates: { canonical: `/recetas/fase/${phase.slug}` },
   };
 }
@@ -37,10 +37,11 @@ export async function generateMetadata({
 export default async function RecetasFasePage({
   params,
 }: {
-  params: Promise<{ fase: string }>;
+  params: Promise<{ locale: string; fase: string }>;
 }) {
-  const { fase } = await params;
-  const phase = getPhase(fase as PhaseSlug);
+  const { locale: rawLocale, fase } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  const phase = getPhase(fase as PhaseSlug, locale);
   if (!phase) notFound();
 
   const recipes = getRecipesByPhase(phase.slug);
@@ -48,7 +49,7 @@ export default async function RecetasFasePage({
   return (
     <>
       <PageHero
-        eyebrow={`Recetas · ${phaseDays(phase)}`}
+        eyebrow={`Recetas · ${phaseDays(phase, locale)}`}
         title={`Fase ${phase.name.toLowerCase()},`}
         accent="qué cocinar"
         lead={phase.nutrition}
@@ -74,7 +75,7 @@ export default async function RecetasFasePage({
             <ul className="grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
               {recipes.map((r, i) => (
                 <Reveal as="li" key={r.slug} delay={i * 90} className="h-full">
-                  <RecipeCard recipe={r} />
+                  <RecipeCard recipe={r} locale={locale} />
                 </Reveal>
               ))}
             </ul>

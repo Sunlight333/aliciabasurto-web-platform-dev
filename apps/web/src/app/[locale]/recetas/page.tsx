@@ -54,7 +54,7 @@ export default async function RecetasPage({
             <ul className="grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
               {recipes.map((r, i) => (
                 <Reveal as="li" key={r.slug} delay={i * 90} className="h-full">
-                  <RecipeCard recipe={r} />
+                  <RecipeCard recipe={r} locale={locale} />
                 </Reveal>
               ))}
             </ul>

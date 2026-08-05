@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import type { Locale } from '@/lib/i18n';
 import Image from 'next/image';
 import { Clock, Users, ArrowRight, Inbox, Play } from 'lucide-react';
 import { PHASES, getPhase, type PhaseSlug } from '@nutricycle/shared';
@@ -52,8 +53,8 @@ export function EmptyState({
   );
 }
 
-export function RecipeCard({ recipe }: { recipe: Recipe }) {
-  const phase = getPhase(recipe.phase);
+export function RecipeCard({ recipe, locale }: { recipe: Recipe; locale: Locale }) {
+  const phase = getPhase(recipe.phase, locale);
   return (
     <Link href={`/recetas/${recipe.slug}`} className="card card-hover flex h-full flex-col p-8">
       <div className="flex flex-wrap items-center gap-2.5">

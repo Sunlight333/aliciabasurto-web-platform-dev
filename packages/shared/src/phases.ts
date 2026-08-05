@@ -134,12 +134,12 @@ export function getPhases(locale: Locale): readonly Phase[] {
  * omitted locale renders Spanish, which is exactly what the leak detector
  * is there to catch.
  */
-export function getPhase(slug: PhaseSlug, locale: Locale = 'es'): Phase | undefined {
+export function getPhase(slug: PhaseSlug, locale: Locale): Phase | undefined {
   return getPhases(locale).find((p) => p.slug === slug);
 }
 
 /** Day range as a display string, e.g. "Días 6–13" / "Days 6–13" */
-export function phaseDays(phase: Phase, locale: Locale = 'es'): string {
+export function phaseDays(phase: Phase, locale: Locale): string {
   return `${locale === 'en' ? 'Days' : 'Días'} ${phase.dayStart}–${phase.dayEnd}`;
 }
 
