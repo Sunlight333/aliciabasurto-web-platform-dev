@@ -1,0 +1,142 @@
+[
+  {
+    "family": "CormorantGaramond",
+    "file": "CormorantGaramond-300-italic-latin-ext.woff2",
+    "weight": "300",
+    "style": "italic",
+    "subset": "latin-ext"
+  },
+  {
+    "family": "CormorantGaramond",
+    "file": "CormorantGaramond-300-italic-latin.woff2",
+    "weight": "300",
+    "style": "italic",
+    "subset": "latin"
+  },
+  {
+    "family": "CormorantGaramond",
+    "file": "CormorantGaramond-400-italic-latin-ext.woff2",
+    "weight": "400",
+    "style": "italic",
+    "subset": "latin-ext"
+  },
+  {
+    "family": "CormorantGaramond",
+    "file": "CormorantGaramond-400-italic-latin.woff2",
+    "weight": "400",
+    "style": "italic",
+    "subset": "latin"
+  },
+  {
+    "family": "CormorantGaramond",
+    "file": "CormorantGaramond-500-italic-latin-ext.woff2",
+    "weight": "500",
+    "style": "italic",
+    "subset": "latin-ext"
+  },
+  {
+    "family": "CormorantGaramond",
+    "file": "CormorantGaramond-500-italic-latin.woff2",
+    "weight": "500",
+    "style": "italic",
+    "subset": "latin"
+  },
+  {
+    "family": "CormorantGaramond",
+    "file": "CormorantGaramond-300-latin-ext.woff2",
+    "weight": "300",
+    "style": "normal",
+    "subset": "latin-ext"
+  },
+  {
+    "family": "CormorantGaramond",
+    "file": "CormorantGaramond-300-latin.woff2",
+    "weight": "300",
+    "style": "normal",
+    "subset": "latin"
+  },
+  {
+    "family": "CormorantGaramond",
+    "file": "CormorantGaramond-400-latin-ext.woff2",
+    "weight": "400",
+    "style": "normal",
+    "subset": "latin-ext"
+  },
+  {
+    "family": "CormorantGaramond",
+    "file": "CormorantGaramond-400-latin.woff2",
+    "weight": "400",
+    "style": "normal",
+    "subset": "latin"
+  },
+  {
+    "family": "CormorantGaramond",
+    "file": "CormorantGaramond-500-latin-ext.woff2",
+    "weight": "500",
+    "style": "normal",
+    "subset": "latin-ext"
+  },
+  {
+    "family": "CormorantGaramond",
+    "file": "CormorantGaramond-500-latin.woff2",
+    "weight": "500",
+    "style": "normal",
+    "subset": "latin"
+  },
+  {
+    "family": "Outfit",
+    "file": "Outfit-300-latin-ext.woff2",
+    "weight": "300",
+    "style": "normal",
+    "subset": "latin-ext"
+  },
+  {
+    "family": "Outfit",
+    "file": "Outfit-300-latin.woff2",
+    "weight": "300",
+    "style": "normal",
+    "subset": "latin"
+  },
+  {
+    "family": "Outfit",
+    "file": "Outfit-400-latin-ext.woff2",
+    "weight": "400",
+    "style": "normal",
+    "subset": "latin-ext"
+  },
+  {
+    "family": "Outfit",
+    "file": "Outfit-400-latin.woff2",
+    "weight": "400",
+    "style": "normal",
+    "subset": "latin"
+  },
+  {
+    "family": "Outfit",
+    "file": "Outfit-500-latin-ext.woff2",
+    "weight": "500",
+    "style": "normal",
+    "subset": "latin-ext"
+  },
+  {
+    "family": "Outfit",
+    "file": "Outfit-500-latin.woff2",
+    "weight": "500",
+    "style": "normal",
+    "subset": "latin"
+  },
+  {
+    "family": "Outfit",
+    "file": "Outfit-600-latin-ext.woff2",
+    "weight": "600",
+    "style": "normal",
+    "subset": "latin-ext"
+  },
+  {
+    "family": "Outfit",
+    "file": "Outfit-600-latin.woff2",
+    "weight": "600",
+    "style": "normal",
+    "subset": "latin"
+  }
+]

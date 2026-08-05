@@ -50,7 +50,10 @@ const nextConfig = {
     return {
       beforeFiles: [
         {
-          source: '/:path((?!en$|en/|_next/|images/|video/|ir/|favicon).*)',
+          // `es` must be excluded as well as `en`. Without it the rewrite
+          // matches its own destination — /es/recetas becomes /es/es/recetas
+          // and recurses until Next gives up.
+          source: '/:path((?!en$|en/|es$|es/|_next/|images/|video/|ir/|favicon).*)',
           destination: '/es/:path',
         },
         { source: '/', destination: '/es' },

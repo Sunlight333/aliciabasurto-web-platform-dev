@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { notFound } from 'next/navigation';
-import { Cormorant_Garamond, Outfit } from 'next/font/google';
+import localFont from 'next/font/local';
 import { SITE, siteTagline } from '@nutricycle/shared';
 import { SiteHeader } from '@/components/layout/site-header';
 import { SiteFooter } from '@/components/layout/site-footer';
@@ -20,17 +20,39 @@ import '@/styles/globals.css';
  * in next.config.mjs. See revised-direction.md §3.
  */
 
-const cormorant = Cormorant_Garamond({
-  subsets: ['latin'],
-  weight: ['300', '400', '500'],
-  style: ['normal', 'italic'],
+/**
+ * Fonts are self-hosted, not fetched from Google at build time.
+ *
+ * `next/font/google` downloads on every build. That is invisible until the
+ * network is slow, at which point `next build` hangs on retries and the
+ * project cannot be built or deployed at all — which is what happened here
+ * for over an hour. Self-hosting makes the build hermetic, and removes a
+ * third-party request from every page load as a bonus.
+ *
+ * Files come from scripts/fetch-fonts.mjs and are committed. Latin and
+ * latin-ext only: the other subsets Google ships are Cyrillic, Greek and
+ * Vietnamese, and neither locale needs them.
+ */
+const cormorant = localFont({
+  src: [
+    { path: '../fonts/CormorantGaramond-300-latin.woff2', weight: '300', style: 'normal' },
+    { path: '../fonts/CormorantGaramond-400-latin.woff2', weight: '400', style: 'normal' },
+    { path: '../fonts/CormorantGaramond-500-latin.woff2', weight: '500', style: 'normal' },
+    { path: '../fonts/CormorantGaramond-300-italic-latin.woff2', weight: '300', style: 'italic' },
+    { path: '../fonts/CormorantGaramond-400-italic-latin.woff2', weight: '400', style: 'italic' },
+    { path: '../fonts/CormorantGaramond-500-italic-latin.woff2', weight: '500', style: 'italic' },
+  ],
   variable: '--font-cormorant',
   display: 'swap',
 });
 
-const outfit = Outfit({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600'],
+const outfit = localFont({
+  src: [
+    { path: '../fonts/Outfit-300-latin.woff2', weight: '300', style: 'normal' },
+    { path: '../fonts/Outfit-400-latin.woff2', weight: '400', style: 'normal' },
+    { path: '../fonts/Outfit-500-latin.woff2', weight: '500', style: 'normal' },
+    { path: '../fonts/Outfit-600-latin.woff2', weight: '600', style: 'normal' },
+  ],
   variable: '--font-outfit',
   display: 'swap',
 });
