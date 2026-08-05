@@ -8,6 +8,77 @@ import type { Dictionary } from './es';
  * an English page.
  */
 export const en: Dictionary = {
+  home: {
+    hero: {
+      badge: 'Cyclical nutrition with AI',
+      title: 'Eat with your cycle.',
+      accent: 'Feel like yourself again.',
+      lead: 'Nutricycle adapts your food, your recipes and your routines to each phase of your menstrual cycle — automatically.',
+      note: 'Free · iOS and Android · No card',
+    },
+    problem: {
+      eyebrow: 'Why it is so hard',
+      title: 'It is not a lack of discipline.',
+      accent: 'It is a lack of context.',
+    },
+    steps: {
+      eyebrow: 'How it works',
+      titleBefore: 'Nutrition that syncs',
+      accent: 'to your body',
+      titleAfter: '',
+      lead: 'Three steps. The app works out the rest for you, every day.',
+    },
+    features: {
+      eyebrow: 'What is included',
+      title: 'Everything your body',
+      accent: 'already knew to ask for',
+      aiBadge: 'With AI',
+      seeAll: 'See all the features',
+    },
+    reviews: {
+      previous: 'Previous',
+      next: 'Next',
+      listLabel: 'Customer testimonials',
+      starsOf: 'out of 5 stars',
+      eyebrow: 'Testimonials',
+      titleBefore: 'What changes when',
+      accent: 'you listen to your cycle',
+    },
+    founder: {
+      eyebrow: 'About me',
+      name: 'Alicia Basurto',
+      role: 'Hormonal nutrition health coach',
+      titleBefore: 'Alicia Basurto:',
+      accent: 'Cyclical Nutrition',
+      quote: 'The right food at the right moment.',
+      pillars: {
+        medicine: {
+          title: 'Food as medicine',
+          body: 'Every food chosen for what it does to your hormones.',
+        },
+        synced: {
+          title: 'Synced to your cycle',
+          body: 'What your body needs changes every week. So does your plan.',
+        },
+        noDiets: {
+          title: 'No restrictive diets',
+          body: 'No counting calories, no forbidding yourself food.',
+        },
+      },
+      alt: {
+        smiling: 'Alicia Basurto, hormonal nutrition health coach, in her kitchen',
+        tea: 'Alicia Basurto holding a herbal tea in her kitchen',
+        chopping: 'Alicia Basurto chopping fresh vegetables in her kitchen',
+      },
+    },
+    phaseLabel: {
+      menstrual: 'Menstrual phase',
+      folicular: 'Follicular phase',
+      ovulatoria: 'Ovulatory phase',
+      lutea: 'Luteal phase',
+    },
+  },
+
   pages: {
     blog: {
       eyebrow: 'Hormonal education',
@@ -27,6 +98,12 @@ export const en: Dictionary = {
       title: 'From one date',
       accent: 'to a daily plan',
       lead: 'There is nothing new to learn and nothing to keep count of. You log one date and the app does the rest, every day.',
+    },
+    cursos: {
+      eyebrow: 'Courses',
+      title: 'Learn the method once.',
+      accent: 'Apply it for the rest of your life.',
+      lead: 'These are not generic nutrition courses. They are programmes built on the same method behind the app — so you understand why it works and can apply it without depending on anyone.',
     },
     contacto: {
       eyebrow: 'Contact',
@@ -63,6 +140,8 @@ export const en: Dictionary = {
     sobre: {
       eyebrow: 'About me',
       title: 'Hi, I am Alicia',
+      reviewsTitle: 'Stories from women who already',
+      reviewsAccent: 'eat by phase',
       lead: 'Hormonal nutrition health coach. I teach women to sync their eating with the intelligence of their menstrual cycle.',
     },
     videos: {
@@ -79,10 +158,23 @@ export const en: Dictionary = {
     skipToContent: 'Skip to content',
   },
 
+  courses: {
+    willLearn: 'What you will learn',
+    includes: 'What it includes',
+    askAbout: 'Ask about this programme',
+    enrolEyebrow: 'Enrolment',
+    enrolTitle: 'Write to Alicia and',
+    enrolAccent: 'hold your place',
+    enrolLead: 'Tell her where you are right now and which programme interests you. She replies with the dates of the next group and how to enrol.',
+    pendingLabel: 'Pending from the client:',
+    pendingBody: 'price, duration, start dates and a payment link for each programme. The brochure supplied does not include them, so enrolment runs by email for now — none of it is invented on the page.',
+  },
+
   nav: {
     method: 'Method',
     cycle: 'Your cycle',
     recipes: 'Recipes',
+    courses: 'Courses',
     about: 'About Alicia',
     features: 'Features',
     membership: 'Membership',

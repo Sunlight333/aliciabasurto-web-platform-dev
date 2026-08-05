@@ -17,6 +17,79 @@ export const es = {
    * headlines after the data files were localized: the `<h1>` never came
    * from src/data at all.
    */
+  /** Landing page sections. Copy that lives in the JSX, not in src/data. */
+  home: {
+    hero: {
+      badge: 'Nutrición cíclica con IA',
+      title: 'Come con tu ciclo.',
+      accent: 'Vuelve a sentirte tú.',
+      lead: 'Nutricycle adapta tu alimentación, tus recetas y tus rutinas a cada fase de tu ciclo menstrual — automáticamente.',
+      note: 'Gratis · iOS y Android · Sin tarjeta',
+    },
+    problem: {
+      eyebrow: 'Por qué cuesta tanto',
+      title: 'No es falta de disciplina.',
+      accent: 'Es falta de contexto.',
+    },
+    steps: {
+      eyebrow: 'Cómo funciona',
+      titleBefore: 'Nutrición que se',
+      accent: 'sincroniza',
+      titleAfter: 'a tu cuerpo',
+      lead: 'Tres pasos. El resto lo calcula la app cada día por ti.',
+    },
+    features: {
+      eyebrow: 'Lo que incluye',
+      title: 'Todo lo que tu cuerpo',
+      accent: 'ya sabía pedirte',
+      aiBadge: 'Con IA',
+      seeAll: 'Ver todas las funciones',
+    },
+    reviews: {
+      previous: 'Anterior',
+      next: 'Siguiente',
+      listLabel: 'Testimonios de clientas',
+      /** Screen-reader text after the rating: "5 de 5 estrellas". */
+      starsOf: 'de 5 estrellas',
+      eyebrow: 'Testimonios',
+      titleBefore: 'Lo que cambia cuando',
+      accent: 'escuchas tu ciclo',
+    },
+    founder: {
+      eyebrow: 'Sobre mí',
+      name: 'Alicia Basurto',
+      role: 'Health coach de nutrición hormonal',
+      titleBefore: 'Alicia Basurto:',
+      accent: 'Nutrición Cíclica',
+      quote: 'La comida correcta en el momento correcto.',
+      pillars: {
+        medicine: {
+          title: 'La comida como medicina',
+          body: 'Cada alimento elegido por lo que le hace a tus hormonas.',
+        },
+        synced: {
+          title: 'Sincronizada a tu ciclo',
+          body: 'Lo que tu cuerpo necesita cambia cada semana. Tu plan también.',
+        },
+        noDiets: {
+          title: 'Sin dietas restrictivas',
+          body: 'Nada de contar calorías ni prohibirte comida.',
+        },
+      },
+      alt: {
+        smiling: 'Alicia Basurto, health coach de nutrición hormonal, en su cocina',
+        tea: 'Alicia Basurto sosteniendo una infusión en su cocina',
+        chopping: 'Alicia Basurto cortando verduras frescas en su cocina',
+      },
+    },
+    phaseLabel: {
+      menstrual: 'Fase menstrual',
+      folicular: 'Fase folicular',
+      ovulatoria: 'Fase ovulatoria',
+      lutea: 'Fase lútea',
+    },
+  },
+
   pages: {
     blog: {
       eyebrow: 'Educación hormonal',
@@ -36,6 +109,12 @@ export const es = {
       title: 'De una fecha',
       accent: 'a un plan diario',
       lead: 'No hay que aprender nada nuevo ni llevar cuentas. Registrás una fecha y la app hace el resto, todos los días.',
+    },
+    cursos: {
+      eyebrow: 'Cursos',
+      title: 'Aprendé el método, una vez.',
+      accent: 'Aplicalo el resto de tu vida.',
+      lead: 'No son cursos genéricos de nutrición. Son programas diseñados con el mismo método que está detrás de la app — para que entiendas por qué funciona y puedas aplicarlo sin depender de nadie.',
     },
     contacto: {
       eyebrow: 'Contacto',
@@ -72,6 +151,9 @@ export const es = {
     sobre: {
       eyebrow: 'Sobre mí',
       title: 'Hola, soy Alicia',
+      /** Heading over the testimonial marquee at the foot of the page. */
+      reviewsTitle: 'Historias de quienes ya',
+      reviewsAccent: 'comen por fases',
       lead: 'Health coach de nutrición hormonal. Enseño a mujeres a sincronizar su alimentación con la inteligencia de su ciclo menstrual.',
     },
     videos: {
@@ -88,10 +170,24 @@ export const es = {
     skipToContent: 'Saltar al contenido',
   },
 
+  /** /cursos — the furniture around the client's brochure copy. */
+  courses: {
+    willLearn: 'Lo que vas a aprender',
+    includes: 'Lo que incluye',
+    askAbout: 'Preguntar por este programa',
+    enrolEyebrow: 'Inscripción',
+    enrolTitle: 'Escribile a Alicia y',
+    enrolAccent: 'reservá tu lugar',
+    enrolLead: 'Contale en qué momento estás y qué programa te interesa. Te responde con las fechas del próximo grupo y cómo inscribirte.',
+    pendingLabel: 'Pendiente del cliente:',
+    pendingBody: 'precio, duración, fechas de inicio y enlace de pago de cada programa. El folleto entregado no los incluye, así que la inscripción se resuelve hoy por correo — nada de esto está inventado en la página.',
+  },
+
   nav: {
     method: 'Método',
     cycle: 'Tu ciclo',
     recipes: 'Recetas',
+    courses: 'Cursos',
     about: 'Sobre Alicia',
     features: 'Funciones',
     membership: 'Membresía',

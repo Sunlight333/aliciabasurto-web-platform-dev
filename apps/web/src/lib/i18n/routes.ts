@@ -28,6 +28,7 @@ const ROUTE_MAP: Record<string, string> = {
   'recetas/:slug': 'recetas/:slug',
   'recetas/fase/:phase': 'recetas/fase/:phase',
   funcionalidades: 'funcionalidades',
+  cursos: 'cursos',
   membresia: 'membresia',
   sobre: 'sobre',
   faq: 'faq',

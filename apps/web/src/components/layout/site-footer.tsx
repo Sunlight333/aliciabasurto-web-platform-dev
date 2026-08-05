@@ -11,6 +11,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
 
   const EXPLORE = [
     { label: t.nav.recipes, href: to('/recetas') },
+    { label: t.nav.courses, href: to('/cursos') },
     { label: t.footer.phases, href: to('/ciclo') },
     { label: t.footer.videos, href: to('/videos') },
     { label: t.footer.blog, href: to('/blog') },

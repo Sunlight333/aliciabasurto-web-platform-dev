@@ -2,6 +2,7 @@ import { Sparkles, Star, ChefHat, CircleDashed } from 'lucide-react';
 import { STORE } from '@nutricycle/shared';
 import { Container } from '@/components/layout/container';
 import { StoreButtons } from './store-buttons';
+import { getDictionary, type Locale } from '@/lib/i18n';
 
 /**
  * Hero — kitchen-wide.avif, sharp throughout. No blur anywhere.
@@ -15,7 +16,8 @@ import { StoreButtons } from './store-buttons';
  * Small screens cannot hold two columns from a landscape frame, so mobile
  * becomes a photo band with the copy centred beneath it.
  */
-export function Hero() {
+export function Hero({ locale }: { locale: Locale }) {
+  const t = getDictionary(locale);
   return (
     // Mobile flows: the copy starts directly beneath the photo band, so the
     // section is only as tall as its contents. Forcing a min-height with
@@ -47,20 +49,19 @@ export function Hero() {
           <span className="glass-strong inline-flex items-center gap-2.5 rounded-full px-6 py-3 shadow-md">
             <Sparkles strokeWidth={2} className="h-5.5 w-5.5 text-accent" />
             <span className="font-sans text-caption font-semibold tracking-wide text-ink">
-              Nutrición cíclica con IA
+              {t.home.hero.badge}
             </span>
           </span>
 
           {/* Sized to the column, not the viewport — at full display scale
               the headline would run straight across Alicia. */}
           <h1 className="mt-8 font-display text-[clamp(2rem,2.7vw,2.875rem)] leading-[1.06] font-semibold tracking-[-0.02em] text-ink">
-            Come con tu ciclo.{' '}
-            <span className="text-accent">Vuelve a sentirte tú.</span>
+            {t.home.hero.title}{' '}
+            <span className="text-accent">{t.home.hero.accent}</span>
           </h1>
 
           <p className="mt-6 max-w-md text-body font-medium text-muted lg:text-lead">
-            Nutricycle adapta tu alimentación, tus recetas y tus rutinas a cada fase
-            de tu ciclo menstrual — automáticamente.
+            {t.home.hero.lead}
           </p>
 
           {/* Stacked in the narrow column — side by side the labels wrap. */}
@@ -70,7 +71,7 @@ export function Hero() {
           />
 
           <p className="mt-5 text-caption font-medium text-muted">
-            Gratis · iOS y Android · Sin tarjeta
+            {t.home.hero.note}
           </p>
 
           {/* One grouped card rather than three pills: three separate cards

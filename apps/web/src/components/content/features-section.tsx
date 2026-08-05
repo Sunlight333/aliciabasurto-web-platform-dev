@@ -7,6 +7,7 @@ import {
   Flower2,
   ArrowRight,
 } from 'lucide-react';
+import { getDictionary, type Locale } from '@/lib/i18n';
 import { Section } from '@/components/layout/section';
 import { Container } from '@/components/layout/container';
 import { Eyebrow } from '@/components/ui/eyebrow';
@@ -23,15 +24,16 @@ const ICONS = {
   Flower2,
 };
 
-export function FeaturesSection() {
+export function FeaturesSection({ locale }: { locale: Locale }) {
+  const t = getDictionary(locale);
   return (
     <Section surface="base">
       <Container>
         <Reveal className="mx-auto max-w-2xl text-center">
-          <Eyebrow>Lo que incluye</Eyebrow>
+          <Eyebrow>{t.home.features.eyebrow}</Eyebrow>
           <h2 className="mt-5 text-h2 text-ink">
-            Todo lo que tu cuerpo{' '}
-            <span className="text-accent">ya sabía pedirte</span>
+            {t.home.features.title}{' '}
+            <span className="text-accent">{t.home.features.accent}</span>
           </h2>
         </Reveal>
 
@@ -53,7 +55,7 @@ export function FeaturesSection() {
 
                     {feature.highlight && (
                       <span className="rounded-full bg-luteal px-3.5 py-1.5 font-sans text-caption font-bold text-luteal-ink">
-                        Con IA
+                        {t.home.features.aiBadge}
                       </span>
                     )}
                   </div>
@@ -71,7 +73,7 @@ export function FeaturesSection() {
             href="/funcionalidades"
             className="group inline-flex items-center gap-2.5 font-sans text-nav font-semibold text-action transition-colors hover:text-action-hover"
           >
-            Ver todas las funciones
+            {t.home.features.seeAll}
             <ArrowRight
               strokeWidth={2.2}
               className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1.5"

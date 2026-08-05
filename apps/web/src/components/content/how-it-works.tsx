@@ -5,6 +5,7 @@ import { Container } from '@/components/layout/container';
 import { Eyebrow } from '@/components/ui/eyebrow';
 import { Reveal } from '@/components/motion/reveal';
 import { STEPS } from '@/data/home';
+import { getDictionary, type Locale } from '@/lib/i18n';
 
 const ICONS = { CalendarHeart, Utensils, HeartPulse };
 
@@ -17,19 +18,19 @@ const ICONS = { CalendarHeart, Utensils, HeartPulse };
  * both columns stretched to equal height and the photograph filling
  * whatever space the copy above it leaves.
  */
-export function HowItWorks() {
+export function HowItWorks({ locale }: { locale: Locale }) {
+  const t = getDictionary(locale);
   return (
     <Section surface="base" id="como-funciona">
       <Container>
         <div className="grid items-stretch gap-8 lg:grid-cols-2 lg:gap-12">
           <Reveal className="flex flex-col">
-            <Eyebrow>Cómo funciona</Eyebrow>
+            <Eyebrow>{t.home.steps.eyebrow}</Eyebrow>
             <h2 className="mt-5 text-h2 text-ink">
-              Nutrición que se <span className="text-accent">sincroniza</span> a tu
-              cuerpo
+              {t.home.steps.titleBefore} <span className="text-accent">{t.home.steps.accent}</span>{t.home.steps.titleAfter ? ` ${t.home.steps.titleAfter}` : ''}
             </h2>
             <p className="mt-6 max-w-md text-body text-muted">
-              Tres pasos. El resto lo calcula la app cada día por ti.
+              {t.home.steps.lead}
             </p>
 
             <div className="scene mt-9 flex-1">

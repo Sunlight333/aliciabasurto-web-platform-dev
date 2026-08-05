@@ -225,11 +225,12 @@ export default async function SobrePage({
 
       {/* Proof — same marquee as the landing page, its own card design */}
       <ReviewsSection
+        locale={locale}
         variant="ficha"
         title={
           <>
-            Historias de quienes ya{' '}
-            <span className="text-accent">comen por fases</span>
+            {t.pages.sobre.reviewsTitle}{' '}
+            <span className="text-accent">{t.pages.sobre.reviewsAccent}</span>
           </>
         }
       />

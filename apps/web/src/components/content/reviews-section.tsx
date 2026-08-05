@@ -7,6 +7,7 @@ import { Section } from '@/components/layout/section';
 import { Container } from '@/components/layout/container';
 import { Eyebrow } from '@/components/ui/eyebrow';
 import { Reveal } from '@/components/motion/reveal';
+import { getDictionary, type Locale } from '@/lib/i18n';
 import { REVIEWS, type Review } from '@/data/reviews';
 import { cn } from '@/lib/cn';
 
@@ -17,26 +18,27 @@ const SPEED = 42;
  *  in either direction without ever reaching a rendered edge. */
 const SETS = 3;
 
+/**
+ * Colour only. The phase *label* comes from the dictionary
+ * (`home.phaseLabel`) rather than living here — it used to be four Spanish
+ * literals, which is how "Fase lútea" kept appearing on the English page.
+ */
 const PHASE = {
   menstrual: {
     chip: 'bg-menstrual-soft text-menstrual-ink',
     halo: 'bg-menstrual',
-    label: 'Fase menstrual',
   },
   folicular: {
     chip: 'bg-follicular-soft text-follicular-ink',
     halo: 'bg-follicular',
-    label: 'Fase folicular',
   },
   ovulatoria: {
     chip: 'bg-ovulation-soft text-ovulation-ink',
     halo: 'bg-ovulation',
-    label: 'Fase ovulatoria',
   },
   lutea: {
     chip: 'bg-luteal-soft text-luteal-ink',
     halo: 'bg-luteal',
-    label: 'Fase lútea',
   },
 } as const;
 
@@ -62,14 +64,17 @@ const TRACK: Record<Variant, string> = {
 };
 
 export function ReviewsSection({
+  locale,
   variant = 'arch',
-  eyebrow = 'Testimonios',
+  eyebrow,
   title,
 }: {
+  locale: Locale;
   variant?: Variant;
   eyebrow?: string;
   title?: React.ReactNode;
-} = {}) {
+}) {
+  const t = getDictionary(locale);
   const trackRef = useRef<HTMLUListElement>(null);
   const [dragging, setDragging] = useState(false);
 
@@ -219,12 +224,12 @@ export function ReviewsSection({
     <Section surface="mint" className="isolate overflow-hidden">
       <Container>
         <Reveal className="mx-auto max-w-2xl text-center">
-          <Eyebrow>{eyebrow}</Eyebrow>
+          <Eyebrow>{eyebrow ?? t.home.reviews.eyebrow}</Eyebrow>
           <h2 className="mt-5 text-h2 text-ink">
             {title ?? (
               <>
-                Lo que cambia cuando{' '}
-                <span className="text-accent">escuchas tu ciclo</span>
+                {t.home.reviews.titleBefore}{' '}
+                <span className="text-accent">{t.home.reviews.accent}</span>
               </>
             )}
           </h2>
@@ -239,7 +244,7 @@ export function ReviewsSection({
         onPointerCancel={endDrag}
         onMouseEnter={() => (paused.current = true)}
         onMouseLeave={() => (paused.current = false)}
-        aria-label="Testimonios de clientas"
+        aria-label={t.home.reviews.listLabel}
         className={cn(
           'no-scrollbar mt-4 flex items-start gap-6 overflow-x-auto overscroll-x-contain',
           'px-6',
@@ -256,9 +261,18 @@ export function ReviewsSection({
             className="w-[var(--rc)] shrink-0 will-change-transform"
           >
             {variant === 'ficha' ? (
-              <FichaCard review={review} />
+              <FichaCard
+                review={review}
+                phaseLabel={t.home.phaseLabel[review.phase]}
+                starsOf={t.home.reviews.starsOf}
+              />
             ) : (
-              <ReviewCard review={review} shape={SHAPES[i % SHAPES.length]} />
+              <ReviewCard
+                review={review}
+                phaseLabel={t.home.phaseLabel[review.phase]}
+                starsOf={t.home.reviews.starsOf}
+                shape={SHAPES[i % SHAPES.length]}
+              />
             )}
           </li>
         ))}
@@ -266,10 +280,10 @@ export function ReviewsSection({
 
       <Container>
         <div className="flex items-center justify-center gap-4">
-          <NavButton label="Anterior" onClick={() => step(-1)}>
+          <NavButton label={t.home.reviews.previous} onClick={() => step(-1)}>
             <ChevronLeft strokeWidth={2.2} className="h-6 w-6" />
           </NavButton>
-          <NavButton label="Siguiente" onClick={() => step(1)}>
+          <NavButton label={t.home.reviews.next} onClick={() => step(1)}>
             <ChevronRight strokeWidth={2.2} className="h-6 w-6" />
           </NavButton>
         </div>
@@ -299,9 +313,9 @@ function NavButton({
   );
 }
 
-function Stars({ rating }: { rating: number }) {
+function Stars({ rating, starsOf }: { rating: number; starsOf: string }) {
   return (
-    <div className="flex gap-1" role="img" aria-label={`${rating} de 5 estrellas`}>
+    <div className="flex gap-1" role="img" aria-label={`${rating} ${starsOf}`}>
       {Array.from({ length: 5 }).map((_, i) => (
         <Star
           key={i}
@@ -324,7 +338,15 @@ function Stars({ rating }: { rating: number }) {
  * the coloured edge and a dot beside the location rather than a chip, so
  * the two designs never look like the same card resized.
  */
-function FichaCard({ review }: { review: Review }) {
+function FichaCard({
+  review,
+  phaseLabel,
+  starsOf,
+}: {
+  review: Review;
+  phaseLabel: string;
+  starsOf: string;
+}) {
   const phase = PHASE[review.phase];
 
   return (
@@ -344,7 +366,7 @@ function FichaCard({ review }: { review: Review }) {
           className="h-6 w-6 shrink-0 text-accent-display"
           aria-hidden
         />
-        <Stars rating={review.rating} />
+        <Stars rating={review.rating} starsOf={starsOf} />
       </div>
 
       <blockquote className="mt-5 line-clamp-5 text-small leading-relaxed text-ink">
@@ -379,7 +401,7 @@ function FichaCard({ review }: { review: Review }) {
               className={cn('h-2 w-2 shrink-0 rounded-full', phase.halo)}
             />
             <span className="line-clamp-1">
-              {review.location} · {phase.label}
+              {review.location} · {phaseLabel}
             </span>
           </p>
         </div>
@@ -388,7 +410,17 @@ function FichaCard({ review }: { review: Review }) {
   );
 }
 
-function ReviewCard({ review, shape }: { review: Review; shape: string }) {
+function ReviewCard({
+  review,
+  phaseLabel,
+  starsOf,
+  shape,
+}: {
+  review: Review;
+  phaseLabel: string;
+  starsOf: string;
+  shape: string;
+}) {
   const phase = PHASE[review.phase];
 
   return (
@@ -452,11 +484,11 @@ function ReviewCard({ review, shape }: { review: Review; shape: string }) {
             phase.chip,
           )}
         >
-          {phase.label}
+          {phaseLabel}
         </span>
 
         <div className="mt-5">
-          <Stars rating={review.rating} />
+          <Stars rating={review.rating} starsOf={starsOf} />
         </div>
       </figcaption>
     </figure>

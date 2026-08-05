@@ -33,13 +33,13 @@ export default async function HomePage({
   const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
   return (
     <>
-      <Hero />
-      <ProblemSection />
-      <HowItWorks />
+      <Hero locale={locale} />
+      <ProblemSection locale={locale} />
+      <HowItWorks locale={locale} />
       <PhasesSection locale={locale} />
-      <FeaturesSection />
-      <FounderSection />
-      <ReviewsSection />
+      <FeaturesSection locale={locale} />
+      <FounderSection locale={locale} />
+      <ReviewsSection locale={locale} />
       <CtaBand source="home-closing" />
     </>
   );

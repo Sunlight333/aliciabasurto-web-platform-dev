@@ -4,18 +4,20 @@ import { Container } from '@/components/layout/container';
 import { Eyebrow } from '@/components/ui/eyebrow';
 import { Reveal } from '@/components/motion/reveal';
 import { PROBLEMS } from '@/data/home';
+import { getDictionary, type Locale } from '@/lib/i18n';
 
 const ICONS = { HelpCircle, Salad, BellRing };
 
-export function ProblemSection() {
+export function ProblemSection({ locale }: { locale: Locale }) {
+  const t = getDictionary(locale);
   return (
     <Section surface="raised">
       <Container>
         <Reveal className="mx-auto max-w-2xl text-center">
-          <Eyebrow>Por qué cuesta tanto</Eyebrow>
+          <Eyebrow>{t.home.problem.eyebrow}</Eyebrow>
           <h2 className="mt-5 text-h2 text-ink">
-            No es falta de disciplina.{' '}
-            <span className="text-accent">Es falta de contexto.</span>
+            {t.home.problem.title}{' '}
+            <span className="text-accent">{t.home.problem.accent}</span>
           </h2>
         </Reveal>
 

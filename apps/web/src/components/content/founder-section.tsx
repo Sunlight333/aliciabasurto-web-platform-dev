@@ -1,4 +1,5 @@
 import { ArrowRight, Leaf, CircleDashed, HeartHandshake } from 'lucide-react';
+import { getDictionary, type Locale } from '@/lib/i18n';
 import { Section } from '@/components/layout/section';
 import { Container } from '@/components/layout/container';
 import { Eyebrow } from '@/components/ui/eyebrow';
@@ -67,7 +68,8 @@ const PILLARS = [
   },
 ];
 
-export function FounderSection() {
+export function FounderSection({ locale }: { locale: Locale }) {
+  const t = getDictionary(locale);
   return (
     <Section surface="lilac" className="overflow-hidden">
       <div aria-hidden className="pointer-events-none absolute inset-0">

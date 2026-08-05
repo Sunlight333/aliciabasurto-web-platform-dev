@@ -61,7 +61,7 @@ import { cn } from '@/lib/cn';
  * localizePath(), so a nav link never sends an English reader back to the
  * Spanish tree — the single most visible way a language switch breaks.
  */
-const LEFT_HREFS = ['/como-funciona', '/ciclo', '/sobre'] as const;
+const LEFT_HREFS = ['/como-funciona', '/ciclo', '/cursos', '/sobre'] as const;
 const RIGHT_HREFS = ['/recetas', '/funcionalidades', '/membresia'] as const;
 
 export function SiteHeader({ locale }: { locale: Locale }) {
@@ -73,6 +73,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
   const LABELS: Record<string, string> = {
     '/como-funciona': t.nav.method,
     '/ciclo': t.nav.cycle,
+    '/cursos': t.nav.courses,
     '/sobre': t.nav.about,
     '/recetas': t.nav.recipes,
     '/funcionalidades': t.nav.features,
