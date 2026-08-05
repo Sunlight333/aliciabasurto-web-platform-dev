@@ -28,7 +28,7 @@ export const es = {
     primaryRight: 'Principal derecha',
     primaryMobile: 'Principal móvil',
     language: 'Idioma',
-    languageSoon: 'Versión en inglés próximamente',
+    switchLanguage: 'Cambiar idioma',
   },
 
   footer: {
