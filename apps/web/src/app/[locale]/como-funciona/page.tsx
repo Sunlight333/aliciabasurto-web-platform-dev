@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { isLocale, DEFAULT_LOCALE, type Locale } from '@/lib/i18n';
+import { isLocale, DEFAULT_LOCALE, getDictionary, type Locale } from '@/lib/i18n';
 import Image from 'next/image';
 import {
   UserPlus,
@@ -84,13 +84,14 @@ export default async function ComoFuncionaPage({
 }) {
   const { locale: rawLocale } = await params;
   const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  const t = getDictionary(locale);
   return (
     <>
       <PageHero
-        eyebrow="Cómo funciona"
-        title="De una fecha"
-        accent="a un plan diario"
-        lead="No hay que aprender nada nuevo ni llevar cuentas. Registrás una fecha y la app hace el resto, todos los días."
+        eyebrow={t.pages.comoFunciona.eyebrow}
+        title={t.pages.comoFunciona.title}
+        accent={t.pages.comoFunciona.accent}
+        lead={t.pages.comoFunciona.lead}
         image="/images/heroes/metodo.avif"
         focal="center 50%"
         veil={0.5}

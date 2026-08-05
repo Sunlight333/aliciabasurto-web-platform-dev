@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { isLocale, DEFAULT_LOCALE, type Locale } from '@/lib/i18n';
+import { isLocale, DEFAULT_LOCALE, getDictionary, type Locale } from '@/lib/i18n';
 import { Smartphone, ShieldCheck, CreditCard, Wrench, Mail } from 'lucide-react';
 import { SITE } from '@nutricycle/shared';
 import { PageHero } from '@/components/layout/page-hero';
@@ -46,6 +46,7 @@ export default async function FaqPage({
 }) {
   const { locale: rawLocale } = await params;
   const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  const t = getDictionary(locale);
   return (
     <>
       <script
@@ -54,10 +55,10 @@ export default async function FaqPage({
       />
 
       <PageHero
-        eyebrow="Preguntas frecuentes"
-        title="Lo que suelen"
-        accent="preguntarnos"
-        lead="Sobre la app, tus datos de salud, la suscripción y qué hacer si algo no funciona."
+        eyebrow={t.pages.faq.eyebrow}
+        title={t.pages.faq.title}
+        accent={t.pages.faq.accent}
+        lead={t.pages.faq.lead}
         image="/images/heroes/faq.avif"
         focal="center 45%"
         veil={0.56}

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { isLocale, DEFAULT_LOCALE, type Locale } from '@/lib/i18n';
+import { isLocale, DEFAULT_LOCALE, getDictionary, type Locale } from '@/lib/i18n';
 import { PageHero } from '@/components/layout/page-hero';
 import { Section } from '@/components/layout/section';
 import { SectionTexture } from '@/components/layout/section-texture';
@@ -23,15 +23,16 @@ export default async function VideosPage({
 }) {
   const { locale: rawLocale } = await params;
   const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  const t = getDictionary(locale);
   const videos = getVideos();
 
   return (
     <>
       <PageHero
-        eyebrow="Videos"
-        title="Verlo una vez"
-        accent="y ya saber hacerlo"
-        lead="Diez recetas filmadas desde arriba. Ninguna pasa de veinticinco segundos."
+        eyebrow={t.pages.videos.eyebrow}
+        title={t.pages.videos.title}
+        accent={t.pages.videos.accent}
+        lead={t.pages.videos.lead}
         image="/images/heroes/videos.avif"
         focal="center 50%"
         veil={0.45}
@@ -43,7 +44,7 @@ export default async function VideosPage({
           {videos.length === 0 ? (
             <Reveal>
               <EmptyState
-                title="La videoteca está en preparación"
+                title={t.pages.videos.emptyTitle}
                 body="Los videos por fase viven hoy dentro de la app, junto con las recetas y el plan semanal."
                 action={{ href: '/funcionalidades', label: 'Ver qué incluye la app' }}
               />

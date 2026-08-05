@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { isLocale, DEFAULT_LOCALE, type Locale } from '@/lib/i18n';
+import { isLocale, DEFAULT_LOCALE, getDictionary, type Locale } from '@/lib/i18n';
 import { Check, Minus, Crown, Sparkles, Store, ArrowRight } from 'lucide-react';
 import { PageHero } from '@/components/layout/page-hero';
 import { Section } from '@/components/layout/section';
@@ -69,13 +69,14 @@ export default async function MembresiaPage({
 }) {
   const { locale: rawLocale } = await params;
   const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  const t = getDictionary(locale);
   return (
     <>
       <PageHero
-        eyebrow="Membresía"
-        title="Gratis para empezar,"
-        accent="completo cuando lo necesites"
-        lead="Todo lo esencial está en el plan gratuito. El Plan Hormonal es para cuando quieras preguntarle a la IA sin contar los mensajes."
+        eyebrow={t.pages.membresia.eyebrow}
+        title={t.pages.membresia.title}
+        accent={t.pages.membresia.accent}
+        lead={t.pages.membresia.lead}
         image="/images/heroes/membresia.avif"
         focal="center 50%"
         veil={0.5}

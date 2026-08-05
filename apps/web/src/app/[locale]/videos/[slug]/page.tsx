@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { isLocale, DEFAULT_LOCALE, type Locale } from '@/lib/i18n';
+import { isLocale, DEFAULT_LOCALE, getDictionary, type Locale } from '@/lib/i18n';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, ArrowRight, Clock, Info } from 'lucide-react';
@@ -29,6 +29,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale: rawLocale, slug } = await params;
   const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  const t = getDictionary(locale);
   const video = getVideos().find((v) => v.slug === slug);
   if (!video) return {};
   return {
@@ -49,9 +50,11 @@ export async function generateMetadata({
 export default async function VideoPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }) {
-  const { slug } = await params;
+  const { locale: rawLocale, slug } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  const t = getDictionary(locale);
   const videos = getVideos();
   const video = videos.find((v) => v.slug === slug);
   if (!video) notFound();
@@ -88,7 +91,7 @@ export default async function VideoPage({
       />
 
       <PageHero
-        eyebrow="Video"
+        eyebrow={t.pages.videos.single}
         title={video.title}
         lead={video.excerpt}
         image="/images/heroes/videos.avif"

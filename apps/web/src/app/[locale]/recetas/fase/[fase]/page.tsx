@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { isLocale, DEFAULT_LOCALE, type Locale } from '@/lib/i18n';
+import { isLocale, DEFAULT_LOCALE, getDictionary, type Locale } from '@/lib/i18n';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
@@ -25,6 +25,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale: rawLocale, fase } = await params;
   const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  const t = getDictionary(locale);
   const phase = getPhase(fase as PhaseSlug, locale);
   if (!phase) return {};
   return {
@@ -41,6 +42,7 @@ export default async function RecetasFasePage({
 }) {
   const { locale: rawLocale, fase } = await params;
   const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  const t = getDictionary(locale);
   const phase = getPhase(fase as PhaseSlug, locale);
   if (!phase) notFound();
 
@@ -51,7 +53,7 @@ export default async function RecetasFasePage({
       <PageHero
         eyebrow={`Recetas · ${phaseDays(phase, locale)}`}
         title={`Fase ${phase.name.toLowerCase()},`}
-        accent="qué cocinar"
+        accent={t.pages.recetas.phaseAccent}
         lead={phase.nutrition}
         image={PHASE_HERO[phase.slug].image}
         focal="center 50%"

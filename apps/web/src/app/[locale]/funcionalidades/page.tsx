@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { isLocale, DEFAULT_LOCALE, type Locale } from '@/lib/i18n';
+import { isLocale, DEFAULT_LOCALE, getDictionary, type Locale } from '@/lib/i18n';
 import {
   Wand2,
   CalendarDays,
@@ -68,13 +68,14 @@ export default async function FuncionalidadesPage({
 }) {
   const { locale: rawLocale } = await params;
   const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  const t = getDictionary(locale);
   return (
     <>
       <PageHero
-        eyebrow="Funciones"
-        title="Todo lo que Nutricycle"
-        accent="hace por ti"
-        lead="Un rastreador de ciclo, un plan de alimentación y una asesora hormonal en la misma app. Esto es lo que encuentras dentro."
+        eyebrow={t.pages.funcionalidades.eyebrow}
+        title={t.pages.funcionalidades.title}
+        accent={t.pages.funcionalidades.accent}
+        lead={t.pages.funcionalidades.lead}
         image="/images/heroes/funciones.avif"
         focal="center 55%"
         veil={0.66}

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { isLocale, DEFAULT_LOCALE, type Locale } from '@/lib/i18n';
+import { isLocale, DEFAULT_LOCALE, getDictionary, type Locale } from '@/lib/i18n';
 import { Mail, HelpCircle, ShieldCheck, Store, ArrowRight } from 'lucide-react';
 import { SITE } from '@nutricycle/shared';
 import { PageHero } from '@/components/layout/page-hero';
@@ -60,13 +60,14 @@ export default async function ContactoPage({
 }) {
   const { locale: rawLocale } = await params;
   const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  const t = getDictionary(locale);
   return (
     <>
       <PageHero
-        eyebrow="Contacto"
-        title="Escribinos y"
-        accent="te respondemos"
-        lead="Somos un equipo pequeño, así que respondemos por correo. Elegí el tema y te llega directo a quien corresponde."
+        eyebrow={t.pages.contacto.eyebrow}
+        title={t.pages.contacto.title}
+        accent={t.pages.contacto.accent}
+        lead={t.pages.contacto.lead}
         image="/images/heroes/contacto.avif"
         focal="center 50%"
         veil={0.58}

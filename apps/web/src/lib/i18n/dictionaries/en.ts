@@ -8,6 +8,73 @@ import type { Dictionary } from './es';
  * an English page.
  */
 export const en: Dictionary = {
+  pages: {
+    blog: {
+      eyebrow: 'Hormonal education',
+      title: 'Understanding your cycle',
+      accent: 'changes how you treat yourself',
+      lead: 'Articles on what your hormones are doing, why you feel different each week, and what to do about it.',
+      emptyTitle: 'The first articles are on their way',
+    },
+    ciclo: {
+      eyebrow: 'Your cycle',
+      title: 'Four phases,',
+      accent: 'four different bodies',
+      lead: 'Your hormones rise and fall in a pattern that repeats every month. Understanding it changes what you expect of yourself each week.',
+    },
+    comoFunciona: {
+      eyebrow: 'How it works',
+      title: 'From one date',
+      accent: 'to a daily plan',
+      lead: 'There is nothing new to learn and nothing to keep count of. You log one date and the app does the rest, every day.',
+    },
+    contacto: {
+      eyebrow: 'Contact',
+      title: 'Write to us and',
+      accent: 'we will reply',
+      lead: 'We are a small team, so we reply by email. Pick the subject and it goes straight to the right person.',
+    },
+    faq: {
+      eyebrow: 'Frequently asked questions',
+      title: 'What people',
+      accent: 'usually ask us',
+      lead: 'About the app, your health data, the subscription, and what to do if something is not working.',
+    },
+    funcionalidades: {
+      eyebrow: 'Features',
+      title: 'Everything Nutricycle',
+      accent: 'does for you',
+      lead: 'A cycle tracker, a nutrition plan and a hormonal coach in the same app. This is what you will find inside.',
+    },
+    membresia: {
+      eyebrow: 'Membership',
+      title: 'Free to start,',
+      accent: 'complete when you need it',
+      lead: 'Everything essential is in the free plan. The Hormonal Plan is for when you want to ask the AI without counting messages.',
+    },
+    recetas: {
+      eyebrow: 'Recipes',
+      title: 'Cook for the phase',
+      accent: 'you are in',
+      lead: 'An open selection of recipes by phase. The full library, with more than 40 recipes, lives inside the app.',
+      emptyTitle: 'No recipes published yet',
+      phaseAccent: 'what to cook',
+    },
+    sobre: {
+      eyebrow: 'About me',
+      title: 'Hi, I am Alicia',
+      lead: 'Hormonal nutrition health coach. I teach women to sync their eating with the intelligence of their menstrual cycle.',
+    },
+    videos: {
+      eyebrow: 'Videos',
+      title: 'Watch it once',
+      accent: 'and you will know how',
+      lead: 'Ten recipes filmed from above. None of them runs past twenty-five seconds.',
+      emptyTitle: 'The video library is in preparation',
+      single: 'Video',
+    },
+  },
+
   a11y: {
     skipToContent: 'Skip to content',
   },

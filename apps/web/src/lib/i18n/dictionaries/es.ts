@@ -10,6 +10,80 @@
  * localized there. This file is chrome, labels, and page furniture.
  */
 export const es = {
+  /**
+   * Page furniture — the hero block at the top of each route.
+   *
+   * These were literals in the JSX, which is why /en kept rendering Spanish
+   * headlines after the data files were localized: the `<h1>` never came
+   * from src/data at all.
+   */
+  pages: {
+    blog: {
+      eyebrow: 'Educación hormonal',
+      title: 'Entender tu ciclo',
+      accent: 'cambia cómo te tratás',
+      lead: 'Artículos sobre lo que hacen tus hormonas, por qué te sentís distinta cada semana y qué hacer al respecto.',
+      emptyTitle: 'Los primeros artículos están en camino',
+    },
+    ciclo: {
+      eyebrow: 'Tu ciclo',
+      title: 'Cuatro fases,',
+      accent: 'cuatro cuerpos distintos',
+      lead: 'Tus hormonas suben y bajan en un patrón que se repite cada mes. Entenderlo cambia lo que esperás de vos misma cada semana.',
+    },
+    comoFunciona: {
+      eyebrow: 'Cómo funciona',
+      title: 'De una fecha',
+      accent: 'a un plan diario',
+      lead: 'No hay que aprender nada nuevo ni llevar cuentas. Registrás una fecha y la app hace el resto, todos los días.',
+    },
+    contacto: {
+      eyebrow: 'Contacto',
+      title: 'Escribinos y',
+      accent: 'te respondemos',
+      lead: 'Somos un equipo pequeño, así que respondemos por correo. Elegí el tema y te llega directo a quien corresponde.',
+    },
+    faq: {
+      eyebrow: 'Preguntas frecuentes',
+      title: 'Lo que suelen',
+      accent: 'preguntarnos',
+      lead: 'Sobre la app, tus datos de salud, la suscripción y qué hacer si algo no funciona.',
+    },
+    funcionalidades: {
+      eyebrow: 'Funciones',
+      title: 'Todo lo que Nutricycle',
+      accent: 'hace por ti',
+      lead: 'Un rastreador de ciclo, un plan de alimentación y una asesora hormonal en la misma app. Esto es lo que encuentras dentro.',
+    },
+    membresia: {
+      eyebrow: 'Membresía',
+      title: 'Gratis para empezar,',
+      accent: 'completo cuando lo necesites',
+      lead: 'Todo lo esencial está en el plan gratuito. El Plan Hormonal es para cuando quieras preguntarle a la IA sin contar los mensajes.',
+    },
+    recetas: {
+      eyebrow: 'Recetas',
+      title: 'Cocina según',
+      accent: 'la fase en la que estás',
+      lead: 'Una selección abierta de recetas por fase. La biblioteca completa, con más de 40, vive dentro de la app.',
+      emptyTitle: 'Todavía no hay recetas publicadas',
+      phaseAccent: 'qué cocinar',
+    },
+    sobre: {
+      eyebrow: 'Sobre mí',
+      title: 'Hola, soy Alicia',
+      lead: 'Health coach de nutrición hormonal. Enseño a mujeres a sincronizar su alimentación con la inteligencia de su ciclo menstrual.',
+    },
+    videos: {
+      eyebrow: 'Videos',
+      title: 'Verlo una vez',
+      accent: 'y ya saber hacerlo',
+      lead: 'Diez recetas filmadas desde arriba. Ninguna pasa de veinticinco segundos.',
+      emptyTitle: 'La videoteca está en preparación',
+      single: 'Video',
+    },
+  },
+
   a11y: {
     skipToContent: 'Saltar al contenido',
   },

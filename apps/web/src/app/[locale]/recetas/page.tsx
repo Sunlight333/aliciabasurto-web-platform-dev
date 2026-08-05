@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { isLocale, DEFAULT_LOCALE, type Locale } from '@/lib/i18n';
+import { isLocale, DEFAULT_LOCALE, getDictionary, type Locale } from '@/lib/i18n';
 import { PageHero } from '@/components/layout/page-hero';
 import { Section } from '@/components/layout/section';
 import { SectionTexture } from '@/components/layout/section-texture';
@@ -23,15 +23,16 @@ export default async function RecetasPage({
 }) {
   const { locale: rawLocale } = await params;
   const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  const t = getDictionary(locale);
   const recipes = getRecipes();
 
   return (
     <>
       <PageHero
-        eyebrow="Recetas"
-        title="Cocina según"
-        accent="la fase en la que estás"
-        lead="Una selección abierta de recetas por fase. La biblioteca completa, con más de 40, vive dentro de la app."
+        eyebrow={t.pages.recetas.eyebrow}
+        title={t.pages.recetas.title}
+        accent={t.pages.recetas.accent}
+        lead={t.pages.recetas.lead}
         image="/images/heroes/recetas.avif"
         focal="center 45%"
         veil={0.68}
@@ -45,7 +46,7 @@ export default async function RecetasPage({
           {recipes.length === 0 ? (
             <Reveal>
               <EmptyState
-                title="Todavía no hay recetas publicadas"
+                title={t.pages.recetas.emptyTitle}
                 body="Estamos preparando la selección abierta. Mientras tanto, la biblioteca completa está en la app."
                 action={{ href: '/funcionalidades', label: 'Ver qué incluye la app' }}
               />

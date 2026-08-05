@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { isLocale, DEFAULT_LOCALE, type Locale } from '@/lib/i18n';
+import { isLocale, DEFAULT_LOCALE, getDictionary, type Locale } from '@/lib/i18n';
 import Image from 'next/image';
 import { Leaf, CircleDashed, HeartHandshake, ArrowRight, AlertTriangle } from 'lucide-react';
 import { PageHero } from '@/components/layout/page-hero';
@@ -64,12 +64,13 @@ export default async function SobrePage({
 }) {
   const { locale: rawLocale } = await params;
   const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  const t = getDictionary(locale);
   return (
     <>
       <PageHero
-        eyebrow="Sobre mí"
-        title="Hola, soy Alicia"
-        lead="Health coach de nutrición hormonal. Enseño a mujeres a sincronizar su alimentación con la inteligencia de su ciclo menstrual."
+        eyebrow={t.pages.sobre.eyebrow}
+        title={t.pages.sobre.title}
+        lead={t.pages.sobre.lead}
         image="/images/alicia/kitchen-wide.avif"
         focal="center 22%"
       />

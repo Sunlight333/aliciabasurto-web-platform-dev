@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { isLocale, DEFAULT_LOCALE, type Locale } from '@/lib/i18n';
+import { isLocale, DEFAULT_LOCALE, getDictionary, type Locale } from '@/lib/i18n';
 import Link from 'next/link';
 import { PageHero } from '@/components/layout/page-hero';
 import { Section } from '@/components/layout/section';
@@ -24,15 +24,16 @@ export default async function BlogPage({
 }) {
   const { locale: rawLocale } = await params;
   const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  const t = getDictionary(locale);
   const articles = getArticles();
 
   return (
     <>
       <PageHero
-        eyebrow="Educación hormonal"
-        title="Entender tu ciclo"
-        accent="cambia cómo te tratás"
-        lead="Artículos sobre lo que hacen tus hormonas, por qué te sentís distinta cada semana y qué hacer al respecto."
+        eyebrow={t.pages.blog.eyebrow}
+        title={t.pages.blog.title}
+        accent={t.pages.blog.accent}
+        lead={t.pages.blog.lead}
         image="/images/heroes/blog.avif"
         focal="center 50%"
         veil={0.45}
@@ -44,7 +45,7 @@ export default async function BlogPage({
           {articles.length === 0 ? (
             <Reveal>
               <EmptyState
-                title="Los primeros artículos están en camino"
+                title={t.pages.blog.emptyTitle}
                 body="Mientras tanto, la guía de las cuatro fases explica lo esencial: qué pasa en tu cuerpo cada semana y qué comer en cada una."
                 action={{ href: '/ciclo', label: 'Ver las 4 fases' }}
               />

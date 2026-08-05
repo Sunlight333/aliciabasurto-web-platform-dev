@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { isLocale, DEFAULT_LOCALE, type Locale } from '@/lib/i18n';
+import { isLocale, DEFAULT_LOCALE, getDictionary, type Locale } from '@/lib/i18n';
 import Link from 'next/link';
 import { Droplet, Sprout, Sun, Moon, ArrowRight, Info, type LucideIcon } from 'lucide-react';
 import { PHASES, phaseDays, type PhaseSlug } from '@nutricycle/shared';
@@ -56,13 +56,14 @@ export default async function CicloPage({
 }) {
   const { locale: rawLocale } = await params;
   const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  const t = getDictionary(locale);
   return (
     <>
       <PageHero
-        eyebrow="Tu ciclo"
-        title="Cuatro fases,"
-        accent="cuatro cuerpos distintos"
-        lead="Tus hormonas suben y bajan en un patrón que se repite cada mes. Entenderlo cambia lo que esperás de vos misma cada semana."
+        eyebrow={t.pages.ciclo.eyebrow}
+        title={t.pages.ciclo.title}
+        accent={t.pages.ciclo.accent}
+        lead={t.pages.ciclo.lead}
         image="/images/heroes/ciclo.avif"
         focal="center 50%"
         veil={0.4}
