@@ -13,6 +13,8 @@
  * ($14.99/mo · $84.99/yr, billed in-store — project-brief.md).
  */
 
+import type { Locale } from '@nutricycle/shared';
+
 export type Surface = 'base' | 'raised' | 'sunken' | 'lilac' | 'mint' | 'blush';
 
 export interface Feature {
@@ -39,7 +41,7 @@ export interface FeatureGroup {
   features: Feature[];
 }
 
-export const FEATURE_GROUPS: readonly FeatureGroup[] = [
+const FEATURE_GROUPS_ES: readonly FeatureGroup[] = [
   {
     id: 'ciclo',
     eyebrow: 'Inteligencia del ciclo',
@@ -226,3 +228,190 @@ export const FEATURE_GROUPS: readonly FeatureGroup[] = [
     ],
   },
 ] as const;
+
+/**
+ * English text, parallel to the Spanish structure above.
+ *
+ * Text only — no icons, tints, surfaces or column counts. Those live once,
+ * in FEATURE_GROUPS_ES, because a tint duplicated per language is a tint
+ * that will eventually disagree with itself. The getter zips the two and
+ * asserts they line up, so a group or card added to one language and not
+ * the other fails the build instead of silently dropping a card from /en.
+ */
+interface FeatureTextEn {
+  eyebrow: string;
+  title: string;
+  accent: string;
+  lead: string;
+  features: { title: string; body: string; note?: string }[];
+}
+
+const FEATURE_TEXT_EN: readonly FeatureTextEn[] = [
+  {
+    eyebrow: 'Cycle intelligence',
+    title: 'Your cycle,',
+    accent: 'worked out for you',
+    lead: 'Log one date and Nutricycle handles the rest: which phase you are in, what comes next, and what your body is doing.',
+    features: [
+      {
+        title: 'Set up in 2 minutes',
+        body: 'Enter the date of your last period, how long your cycle runs and your health goal. Nothing else.',
+      },
+      {
+        title: 'Cycle calendar',
+        body: 'Colour-coded phases, fertile window, period days and a dot for every daily log.',
+      },
+      {
+        title: 'Period calculator',
+        body: 'Predicts your next period and your fertile window at any moment, without waiting for the cycle to end.',
+      },
+      {
+        title: 'Hormone chart',
+        body: 'Your oestrogen and progesterone curve across the month, with today marked.',
+      },
+    ],
+  },
+  {
+    eyebrow: 'Nutrition and recipes',
+    title: 'What to eat,',
+    accent: 'decided by your phase',
+    lead: 'No more improvising in front of the fridge. Every recipe and every food is chosen for what it does for your hormones this week.',
+    features: [
+      {
+        title: 'Recipes by phase',
+        body: 'Every recipe tagged by cycle phase and by meal: breakfast, lunch, snack or dinner.',
+      },
+      {
+        title: 'Weekly meal plan',
+        body: 'A 7-day plan built around the phase you are in, with a protein, carbohydrate and fat breakdown for every meal.',
+      },
+      {
+        title: 'Key food guide',
+        body: 'Browse the foods that support your hormones, tagged for oestrogen, progesterone, anti-inflammatory and energy.',
+      },
+      {
+        title: 'Shopping list',
+        body: 'Builds itself from your phase foods and your weekly plan. Add your own and tick things off in the shop.',
+      },
+      {
+        title: 'Saved recipes',
+        body: 'Keep your favourites and have them to hand when you need them.',
+      },
+    ],
+  },
+  {
+    eyebrow: 'With artificial intelligence',
+    title: 'A coach who',
+    accent: 'already knows the day you are on',
+    lead: 'The difference between searching the internet and asking someone who knows your cycle.',
+    features: [
+      {
+        title: 'Nutricycle AI coach',
+        body: 'Ask anything about your cycle, your symptoms or what you eat. It knows your phase and the exact day you are on, so the answer is for you — not a generic one.',
+        note: 'Powered by Google Gemini 2.0',
+      },
+      {
+        title: 'AI cycle predictor',
+        body: 'Predictions and insights drawn from your cycle history and the symptoms you have logged.',
+      },
+    ],
+  },
+  {
+    eyebrow: 'Daily log',
+    title: 'A minute a day,',
+    accent: 'months of patterns',
+    lead: 'The more you log, the more the app adjusts to you — and the more clearly you see what your body repeats each month.',
+    features: [
+      {
+        title: 'Daily log',
+        body: 'Symptoms, mood across 4 levels, energy across 3, and your own notes. Look back over your history whenever you like.',
+      },
+      {
+        title: 'Hydration',
+        body: 'Log your water intake with quick shortcuts: glass, bottle or flask.',
+      },
+      {
+        title: 'Guided wellbeing',
+        body: 'Yoga, meditation and breathing routines with a built-in timer, adapted to each phase.',
+      },
+    ],
+  },
+  {
+    eyebrow: 'Content and learning',
+    title: 'Understand',
+    accent: 'what is happening to you',
+    lead: 'Hormonal education in language that makes sense, inside the same app.',
+    features: [
+      {
+        title: 'Article library',
+        body: 'Evidence-based articles on hormonal health and cyclical nutrition, translated into your language.',
+      },
+      {
+        title: 'Video library',
+        body: 'Wellbeing videos by phase, with search and filters to find what you need today.',
+      },
+      {
+        title: 'Smart notifications',
+        body: 'Alerts when you move into a new phase, recommended recipes, and reminders to log your day.',
+      },
+    ],
+  },
+  {
+    eyebrow: 'Your account',
+    title: 'Yours,',
+    accent: 'in your language',
+    lead: '',
+    features: [
+      {
+        title: 'Personalised profile',
+        body: 'Your photo and your name, so the app feels like yours from day one.',
+      },
+      {
+        title: 'Spanish and English',
+        body: 'Switch language at any time without losing your history or your settings.',
+      },
+    ],
+  },
+];
+
+/**
+ * Merge the shared structure with the text for one locale.
+ *
+ * The assertions are deliberate. A missing group or card would otherwise
+ * render an English page with a Spanish card in it, or silently drop a
+ * feature — both worse than a build that refuses to finish.
+ */
+export function getFeatureGroups(locale: Locale): readonly FeatureGroup[] {
+  if (locale === 'es') return FEATURE_GROUPS_ES;
+
+  if (FEATURE_TEXT_EN.length !== FEATURE_GROUPS_ES.length) {
+    throw new Error(
+      `features.ts: ${FEATURE_GROUPS_ES.length} Spanish groups but ${FEATURE_TEXT_EN.length} English`,
+    );
+  }
+
+  return FEATURE_GROUPS_ES.map((group, i) => {
+    const text = FEATURE_TEXT_EN[i];
+    if (text.features.length !== group.features.length) {
+      throw new Error(
+        `features.ts: group "${group.id}" has ${group.features.length} Spanish cards but ${text.features.length} English`,
+      );
+    }
+    return {
+      ...group,
+      eyebrow: text.eyebrow,
+      title: text.title,
+      accent: text.accent,
+      lead: text.lead,
+      features: group.features.map((f, j) => ({
+        ...f,
+        title: text.features[j].title,
+        body: text.features[j].body,
+        ...(text.features[j].note !== undefined ? { note: text.features[j].note } : {}),
+      })),
+    };
+  });
+}
+
+/** @deprecated Spanish-only. Use getFeatureGroups(locale). */
+export const FEATURE_GROUPS = FEATURE_GROUPS_ES;

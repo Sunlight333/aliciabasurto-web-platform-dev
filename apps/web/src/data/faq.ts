@@ -1,3 +1,4 @@
+import type { Locale } from '@nutricycle/shared';
 import type { QA } from '@/components/content/faq-accordion';
 
 /**
@@ -22,7 +23,7 @@ export interface FaqGroup {
   items: QA[];
 }
 
-export const FAQ_GROUPS: readonly FaqGroup[] = [
+const FAQ_GROUPS_ES: readonly FaqGroup[] = [
   {
     id: 'app',
     title: 'Sobre la app',
@@ -116,3 +117,125 @@ export const FAQ_GROUPS: readonly FaqGroup[] = [
     ],
   },
 ] as const;
+
+/**
+ * English text, parallel to the Spanish structure above.
+ *
+ * Text only — ids, icons and tints live once, in FAQ_GROUPS_ES. The getter
+ * asserts the two line up, so a question added to one language and not the
+ * other fails the build rather than dropping silently off /en.
+ *
+ * ⚠️ The two hedged answers stay hedged. Offline behaviour and the device
+ * matrix are not documented in the supplied material, and an FAQ that
+ * guesses in translation is worse than one that points at support.
+ */
+interface FaqTextEn {
+  title: string;
+  items: { q: string; a: string }[];
+}
+
+const FAQ_TEXT_EN: readonly FaqTextEn[] = [
+  {
+    title: 'About the app',
+    items: [
+      {
+        q: 'Is Nutricycle free?',
+        a: 'Yes. Cycle tracking, recipes by phase, the daily log, the weekly plan, the shopping list and the articles are all included at no cost. The Hormonal Plan is optional and unlocks the AI coach without limits, the cycle predictor and unlimited saved recipes.',
+      },
+      {
+        q: 'What is cyclical nutrition?',
+        a: 'It means adapting what you eat to the phase of your menstrual cycle you are in. Your oestrogen and progesterone levels change across the month, and with them your energy, your digestion and what your body makes best use of. Instead of eating the same way for four weeks, you match your food to what your body is doing that week.',
+      },
+      {
+        q: 'Do I need to know how long my cycle is?',
+        a: 'Not exactly. When you set the app up you enter the date of your last period and a rough length; if you do not know it, you can start with the 28-day average. As you log your cycles, the prediction adjusts to yours.',
+      },
+      {
+        q: 'Is it available in Spanish?',
+        a: 'Yes. Nutricycle is available in Spanish and English, and you can switch language whenever you like from the settings without losing your history or your configuration.',
+      },
+      {
+        q: 'Does it work if my cycle is irregular?',
+        a: 'Yes, and it is one of the cases it was designed for. With irregular cycles the prediction is less precise at first, but the daily log and the recommendations by phase still work. The more cycles you log, the better it adjusts. If your cycles are very irregular or absent, do also speak to a health professional.',
+      },
+    ],
+  },
+  {
+    title: 'Privacy and data',
+    items: [
+      {
+        q: 'Who can see my health data?',
+        a: 'Nobody but you. Your cycle and symptom data are used solely to generate your recommendations inside the app. They are not sold, not shared with third parties and not used for advertising.',
+      },
+      {
+        q: 'Is my data secure?',
+        a: 'Industry-standard security measures are applied, including encryption of data in transit and at rest. No method of transmission over the internet is 100% secure, and we say so in the Privacy Policy.',
+      },
+      {
+        q: 'Can I delete my account and my data?',
+        a: 'Yes, at any time. Write to hola@aliciabasurto.com and we will delete your account along with the associated data. You also have the right to access your data, correct it and withdraw your consent.',
+      },
+    ],
+  },
+  {
+    title: 'Subscription',
+    items: [
+      {
+        q: 'How do I cancel the Hormonal Plan?',
+        a: 'From your account settings in the App Store or Google Play, depending on the device you subscribed on. Cancellation takes effect at the end of the period you have already paid for, and you keep access until then.',
+      },
+      {
+        q: 'Can I restore a previous purchase?',
+        a: 'Yes. There is a restore purchases button inside the app, which recovers your active subscription on a new device or after reinstalling.',
+      },
+      {
+        q: 'Who charges for the subscription?',
+        a: 'Apple or Google, depending on your device. Nutricycle does not process payments directly and does not store card details. Each platform’s billing conditions apply to your subscription.',
+      },
+      {
+        q: 'Is there a family plan?',
+        a: 'Not for now. Nutricycle is subscribed to per individual account. If the App Store or Google Play have family sharing enabled for the app, their rules would apply.',
+      },
+    ],
+  },
+  {
+    title: 'Technical and support',
+    items: [
+      {
+        q: 'Which devices does it work on?',
+        a: 'Nutricycle is available for iOS and Android. Minimum version requirements are shown on the app listing in the App Store and Google Play, which is always the up-to-date source.',
+      },
+      {
+        q: 'Does it work offline?',
+        a: 'Some features need a connection — the AI coach and syncing your history among them. If you want to confirm exactly how it behaves without data, write to us and we will tell you.',
+      },
+      {
+        q: 'How do I contact support?',
+        a: 'Write to hola@aliciabasurto.com. With the Hormonal Plan you get priority support.',
+      },
+    ],
+  },
+];
+
+export function getFaqGroups(locale: Locale): readonly FaqGroup[] {
+  if (locale === 'es') return FAQ_GROUPS_ES;
+
+  if (FAQ_TEXT_EN.length !== FAQ_GROUPS_ES.length) {
+    throw new Error(
+      `faq.ts: ${FAQ_GROUPS_ES.length} Spanish groups but ${FAQ_TEXT_EN.length} English`,
+    );
+  }
+
+  return FAQ_GROUPS_ES.map((group, i) => {
+    const text = FAQ_TEXT_EN[i];
+    if (text.items.length !== group.items.length) {
+      throw new Error(
+        `faq.ts: group "${group.id}" has ${group.items.length} Spanish questions but ${text.items.length} English`,
+      );
+    }
+    return { ...group, title: text.title, items: text.items.map((qa) => ({ ...qa })) };
+  });
+}
+
+/** @deprecated Spanish-only. Use getFaqGroups(locale). */
+export const FAQ_GROUPS = FAQ_GROUPS_ES;
