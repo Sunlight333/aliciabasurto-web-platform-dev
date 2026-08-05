@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { isLocale, DEFAULT_LOCALE, type Locale } from '@/lib/i18n';
 import { notFound } from 'next/navigation';
 import { getArticle, getArticles } from '@/lib/content';
 
@@ -16,9 +17,10 @@ export function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
+  const { locale: rawLocale, slug } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
   const article = getArticle(slug);
   if (!article) return {};
   return {

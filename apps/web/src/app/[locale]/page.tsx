@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { isLocale, DEFAULT_LOCALE, type Locale } from '@/lib/i18n';
 import { Hero } from '@/components/marketing/hero';
 import { ProblemSection } from '@/components/content/problem-section';
 import { HowItWorks } from '@/components/content/how-it-works';
@@ -23,7 +24,13 @@ export const metadata: Metadata = {
  * visitor who hasn't understood the value yet will not install
  * (cta-strategy.md §3).
  */
-export default function HomePage() {
+export default async function HomePage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
   return (
     <>
       <Hero />

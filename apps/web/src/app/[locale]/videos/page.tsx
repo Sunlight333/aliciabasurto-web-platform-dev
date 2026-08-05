@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { isLocale, DEFAULT_LOCALE, type Locale } from '@/lib/i18n';
 import { PageHero } from '@/components/layout/page-hero';
 import { Section } from '@/components/layout/section';
 import { SectionTexture } from '@/components/layout/section-texture';
@@ -15,7 +16,13 @@ export const metadata: Metadata = {
   alternates: { canonical: '/videos' },
 };
 
-export default function VideosPage() {
+export default async function VideosPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
   const videos = getVideos();
 
   return (

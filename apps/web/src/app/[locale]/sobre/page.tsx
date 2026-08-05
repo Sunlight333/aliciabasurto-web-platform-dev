@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { isLocale, DEFAULT_LOCALE, type Locale } from '@/lib/i18n';
 import Image from 'next/image';
 import { Leaf, CircleDashed, HeartHandshake, ArrowRight, AlertTriangle } from 'lucide-react';
 import { PageHero } from '@/components/layout/page-hero';
@@ -31,7 +32,7 @@ export const metadata: Metadata = {
  *   happen, so the section states what is verifiable and asks for the
  *   rest.
  * - Proof. The marquee is built and wired, but every quote, name and
- *   portrait in `REVIEWS` is placeholder — no testimonial has consent to
+ *   portrait in `getReviews(locale)` is placeholder — no testimonial has consent to
  *   publish yet. See the warning at the head of data/reviews.ts: this
  *   section must not go live until real reviews replace them.
  */
@@ -56,7 +57,13 @@ const PILLARS = [
   },
 ];
 
-export default function SobrePage() {
+export default async function SobrePage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
   return (
     <>
       <PageHero

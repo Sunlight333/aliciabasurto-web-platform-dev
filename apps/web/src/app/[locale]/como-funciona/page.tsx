@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { isLocale, DEFAULT_LOCALE, type Locale } from '@/lib/i18n';
 import Image from 'next/image';
 import {
   UserPlus,
@@ -76,7 +77,13 @@ const STEPS: {
   },
 ];
 
-export default function ComoFuncionaPage() {
+export default async function ComoFuncionaPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
   return (
     <>
       <PageHero

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { isLocale, DEFAULT_LOCALE, type Locale } from '@/lib/i18n';
 import Link from 'next/link';
 import { Droplet, Sprout, Sun, Moon, ArrowRight, Info, type LucideIcon } from 'lucide-react';
 import { PHASES, phaseDays, type PhaseSlug } from '@nutricycle/shared';
@@ -9,7 +10,7 @@ import { Container } from '@/components/layout/container';
 import { Eyebrow } from '@/components/ui/eyebrow';
 import { Reveal } from '@/components/motion/reveal';
 import { CtaBand } from '@/components/marketing/cta-band';
-import { PHASE_DETAIL } from '@/data/phase-detail';
+import { getPhaseDetail } from '@/data/phase-detail';
 
 export const metadata: Metadata = {
   title: 'Las 4 fases de tu ciclo menstrual',
@@ -48,7 +49,13 @@ const STYLES: Record<PhaseSlug, { band: string; chip: string; ink: string }> = {
   },
 };
 
-export default function CicloPage() {
+export default async function CicloPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
   return (
     <>
       <PageHero
@@ -78,7 +85,7 @@ export default function CicloPage() {
             {PHASES.map((phase, i) => {
               const Icon = PHASE_ICONS[phase.slug];
               const s = STYLES[phase.slug];
-              const detail = PHASE_DETAIL[phase.slug];
+              const detail = getPhaseDetail(locale)[phase.slug];
               return (
                 <Reveal as="li" key={phase.slug} delay={i * 100}>
                   <article className="card card-hover overflow-hidden">

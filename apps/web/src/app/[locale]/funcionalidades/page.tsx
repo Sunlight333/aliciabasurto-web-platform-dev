@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { isLocale, DEFAULT_LOCALE, type Locale } from '@/lib/i18n';
 import {
   Wand2,
   CalendarDays,
@@ -28,7 +29,7 @@ import { Container } from '@/components/layout/container';
 import { Eyebrow } from '@/components/ui/eyebrow';
 import { Reveal } from '@/components/motion/reveal';
 import { CtaBand } from '@/components/marketing/cta-band';
-import { FEATURE_GROUPS, type Feature } from '@/data/features';
+import { getFeatureGroups, type Feature } from '@/data/features';
 import { cn } from '@/lib/cn';
 
 export const metadata: Metadata = {
@@ -60,7 +61,13 @@ const ICONS: Record<string, LucideIcon> = {
   Languages,
 };
 
-export default function FuncionalidadesPage() {
+export default async function FuncionalidadesPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
   return (
     <>
       <PageHero
@@ -73,7 +80,7 @@ export default function FuncionalidadesPage() {
         veil={0.66}
       >
         <ul className="flex flex-wrap justify-center gap-3">
-          {FEATURE_GROUPS.map((g) => (
+          {getFeatureGroups(locale).map((g) => (
             <li key={g.id}>
               <a
                 href={`#${g.id}`}
@@ -86,7 +93,7 @@ export default function FuncionalidadesPage() {
         </ul>
       </PageHero>
 
-      {FEATURE_GROUPS.map((group) => (
+      {getFeatureGroups(locale).map((group) => (
         <Section
           key={group.id}
           id={group.id}

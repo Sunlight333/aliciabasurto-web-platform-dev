@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { isLocale, DEFAULT_LOCALE, type Locale } from '@/lib/i18n';
 import { Check, Minus, Crown, Sparkles, Store, ArrowRight } from 'lucide-react';
 import { PageHero } from '@/components/layout/page-hero';
 import { Section } from '@/components/layout/section';
@@ -61,7 +62,13 @@ const COMPARISON: { feature: string; free: string | true; premium: string | true
   { feature: 'Soporte prioritario', free: '—', premium: 'Incluido' },
 ];
 
-export default function MembresiaPage() {
+export default async function MembresiaPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
   return (
     <>
       <PageHero

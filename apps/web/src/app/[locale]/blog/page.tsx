@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { isLocale, DEFAULT_LOCALE, type Locale } from '@/lib/i18n';
 import Link from 'next/link';
 import { PageHero } from '@/components/layout/page-hero';
 import { Section } from '@/components/layout/section';
@@ -16,7 +17,13 @@ export const metadata: Metadata = {
   alternates: { canonical: '/blog' },
 };
 
-export default function BlogPage() {
+export default async function BlogPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
   const articles = getArticles();
 
   return (

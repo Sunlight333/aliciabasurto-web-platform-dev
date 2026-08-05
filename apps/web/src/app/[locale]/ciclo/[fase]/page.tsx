@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { isLocale, DEFAULT_LOCALE, type Locale } from '@/lib/i18n';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import {
@@ -22,7 +23,7 @@ import { Container } from '@/components/layout/container';
 import { Eyebrow } from '@/components/ui/eyebrow';
 import { Reveal } from '@/components/motion/reveal';
 import { CtaBand } from '@/components/marketing/cta-band';
-import { PHASE_DETAIL } from '@/data/phase-detail';
+import { getPhaseDetail } from '@/data/phase-detail';
 import { PHASE_HERO } from '@/lib/phase-hero';
 
 const ICONS: Record<PhaseSlug, LucideIcon> = {
@@ -47,14 +48,15 @@ export function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ fase: string }>;
+  params: Promise<{ locale: string; fase: string }>;
 }): Promise<Metadata> {
-  const { fase } = await params;
+  const { locale: rawLocale, fase } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
   const phase = getPhase(fase as PhaseSlug);
   if (!phase) return {};
   return {
     title: `Fase ${phase.name} — qué comer y cómo te sentís`,
-    description: `${PHASE_DETAIL[phase.slug].summary} Alimentos, movimiento y señales de la fase ${phase.name.toLowerCase()} del ciclo menstrual.`,
+    description: `${getPhaseDetail(locale)[phase.slug].summary} Alimentos, movimiento y señales de la fase ${phase.name.toLowerCase()} del ciclo menstrual.`,
     alternates: { canonical: `/ciclo/${phase.slug}` },
   };
 }
@@ -62,13 +64,14 @@ export async function generateMetadata({
 export default async function FasePage({
   params,
 }: {
-  params: Promise<{ fase: string }>;
+  params: Promise<{ locale: string; fase: string }>;
 }) {
-  const { fase } = await params;
+  const { locale: rawLocale, fase } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
   const phase = getPhase(fase as PhaseSlug);
   if (!phase) notFound();
 
-  const detail = PHASE_DETAIL[phase.slug];
+  const detail = getPhaseDetail(locale)[phase.slug];
   const s = STYLES[phase.slug];
   const hero = PHASE_HERO[phase.slug];
   const Icon = ICONS[phase.slug];

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { isLocale, DEFAULT_LOCALE, type Locale } from '@/lib/i18n';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
@@ -20,9 +21,10 @@ export function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ fase: string }>;
+  params: Promise<{ locale: string; fase: string }>;
 }): Promise<Metadata> {
-  const { fase } = await params;
+  const { locale: rawLocale, fase } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
   const phase = getPhase(fase as PhaseSlug);
   if (!phase) return {};
   return {

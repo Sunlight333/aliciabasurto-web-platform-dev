@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { isLocale, DEFAULT_LOCALE, type Locale } from '@/lib/i18n';
 import { Smartphone, ShieldCheck, CreditCard, Wrench, Mail } from 'lucide-react';
 import { SITE } from '@nutricycle/shared';
 import { PageHero } from '@/components/layout/page-hero';
@@ -9,7 +10,7 @@ import { Eyebrow } from '@/components/ui/eyebrow';
 import { Reveal } from '@/components/motion/reveal';
 import { CtaBand } from '@/components/marketing/cta-band';
 import { FaqAccordion, type QA } from '@/components/content/faq-accordion';
-import { FAQ_GROUPS } from '@/data/faq';
+import { getFaqGroups } from '@/data/faq';
 
 export const metadata: Metadata = {
   title: 'Preguntas frecuentes — Nutricycle',
@@ -25,7 +26,7 @@ const ICONS = { Smartphone, ShieldCheck, CreditCard, Wrench };
  * which is most of the point of an FAQ page on a site whose job is
  * top-of-funnel search (project-brief.md § Mission).
  */
-function faqJsonLd(groups: typeof FAQ_GROUPS) {
+function faqJsonLd(groups: ReturnType<typeof getFaqGroups>) {
   const all: QA[] = groups.flatMap((g) => g.items);
   return {
     '@context': 'https://schema.org',
@@ -38,12 +39,18 @@ function faqJsonLd(groups: typeof FAQ_GROUPS) {
   };
 }
 
-export default function FaqPage() {
+export default async function FaqPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(FAQ_GROUPS)) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(getFaqGroups(locale))) }}
       />
 
       <PageHero
@@ -56,7 +63,7 @@ export default function FaqPage() {
         veil={0.56}
       >
         <ul className="flex flex-wrap justify-center gap-3">
-          {FAQ_GROUPS.map((g) => (
+          {getFaqGroups(locale).map((g) => (
             <li key={g.id}>
               <a
                 href={`#${g.id}`}
@@ -69,7 +76,7 @@ export default function FaqPage() {
         </ul>
       </PageHero>
 
-      {FAQ_GROUPS.map((group, i) => {
+      {getFaqGroups(locale).map((group, i) => {
         const Icon = ICONS[group.icon];
         return (
           <Section

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { isLocale, DEFAULT_LOCALE, type Locale } from '@/lib/i18n';
 import { Mail, HelpCircle, ShieldCheck, Store, ArrowRight } from 'lucide-react';
 import { SITE } from '@nutricycle/shared';
 import { PageHero } from '@/components/layout/page-hero';
@@ -52,7 +53,13 @@ const ROUTES = [
   },
 ];
 
-export default function ContactoPage() {
+export default async function ContactoPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
   return (
     <>
       <PageHero

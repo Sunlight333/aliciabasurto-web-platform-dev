@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { isLocale, DEFAULT_LOCALE, type Locale } from '@/lib/i18n';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight, Mail } from 'lucide-react';
@@ -30,7 +31,13 @@ const LINKS = [
   { href: '/sobre', label: 'Sobre Alicia', note: 'El método detrás de Nutricycle' },
 ];
 
-export default function EnlacesPage() {
+export default async function EnlacesPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
   const social = SOCIAL.filter((s) => s.href);
 
   return (

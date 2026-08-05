@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { isLocale, DEFAULT_LOCALE, type Locale } from '@/lib/i18n';
 import Image from 'next/image';
 import { Check } from 'lucide-react';
 import { STORE } from '@nutricycle/shared';
@@ -23,7 +24,13 @@ const POINTS = [
  * Single-purpose conversion page. Also the landing target for /ir/app while
  * store URLs are missing, so it must never be a dead end.
  */
-export default function DescargarPage() {
+export default async function DescargarPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-surface-blush via-surface-raised to-surface-lilac py-24 lg:py-32">
       <div aria-hidden className="pointer-events-none absolute inset-0">
