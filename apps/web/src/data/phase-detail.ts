@@ -1,4 +1,4 @@
-import type { PhaseSlug } from '@nutricycle/shared';
+import { type Locale, type Localized, type PhaseSlug, pick } from '@nutricycle/shared';
 
 /**
  * Educational copy for /ciclo/[fase].
@@ -31,7 +31,8 @@ export interface PhaseDetail {
   tip: string;
 }
 
-export const PHASE_DETAIL: Record<PhaseSlug, PhaseDetail> = {
+const PHASE_DETAIL_TEXT: Localized<Record<PhaseSlug, PhaseDetail>> = {
+  es: {
   menstrual: {
     summary:
       'El revestimiento del útero se desprende y las hormonas están en su punto más bajo del mes. Es la fase de menor energía disponible, y eso es fisiología, no falta de voluntad.',
@@ -156,4 +157,90 @@ export const PHASE_DETAIL: Record<PhaseSlug, PhaseDetail> = {
       'Pilates, fuerza moderada, caminatas largas. Bajá la intensidad conforme se acerca el período en vez de pelear con el cansancio.',
     tip: 'El hambre de esta fase es real y tiene una causa metabólica. Comer más ahora no es un fallo de disciplina.',
   },
+  },
+  en: {
+    menstrual: {
+      summary:
+        'The lining of the uterus sheds and hormones are at their lowest point of the month. This is the phase with the least energy available, and that is physiology, not a lack of willpower.',
+      feels: [
+        'Less energy and a pull towards staying in',
+        'Cramps or heaviness low in the abdomen',
+        'A need for more sleep',
+        'Less tolerance for hard effort',
+      ],
+      eat: [
+        { label: 'Iron', why: 'Between 30 and 80 ml of blood is lost. Lentils, spinach and red meat help replace it.' },
+        { label: 'Magnesium', why: 'Associated with milder cramps. Dark chocolate, almonds, avocado.' },
+        { label: 'Omega-3', why: 'Anti-inflammatory; it sits well alongside the pain of this phase.' },
+        { label: 'Warm, cooked food', why: 'Easier to digest when your system is asking for rest.' },
+      ],
+      movement:
+        'Walking, stretching, gentle yoga. It is the worst week of the month to demand maximum strength of yourself, and the best one not to.',
+      tip: 'If you can choose, leave demanding meetings and decisions for next week. Your clarity comes back on its own.',
+    },
+    folicular: {
+      summary:
+        'Oestrogen starts to rise, and with it come energy, mental clarity and the appetite to start things. This is the phase with the most capacity to learn and to train.',
+      feels: [
+        'More energy and a better mood',
+        'More clarity for thinking and deciding',
+        'More appetite for socialising',
+        'Better tolerance for demanding exercise',
+      ],
+      eat: [
+        { label: 'Fresh, light foods', why: 'They keep pace with rising oestrogen without weighing digestion down.' },
+        { label: 'Fermented foods', why: 'Yoghurt, kimchi and sauerkraut support oestrogen metabolism through the microbiome.' },
+        { label: 'Cruciferous vegetables', why: 'Broccoli, cauliflower and cabbage support the liver pathway that processes oestrogen.' },
+        { label: 'Flaxseed', why: 'Part of the seed cycling practice in the first half of the cycle.' },
+      ],
+      movement:
+        'The best window for strength, intervals or starting a new routine. Your body will take more now than it will in two weeks.',
+      tip: 'Use this phase for whatever needs initiative: new projects, difficult conversations, learning something.',
+    },
+    ovulatoria: {
+      summary:
+        'Oestrogen reaches its peak and the egg is released. Ovulation lasts around 24 hours, but the fertile window stretches to about six days because sperm survive for up to five.',
+      feels: [
+        'A peak in energy and mood',
+        'Feeling more sociable and talkative',
+        'Changes in cervical fluid',
+        'Some women notice a brief twinge on one side',
+      ],
+      eat: [
+        { label: 'Antioxidants', why: 'Berries and leafy greens support egg health.' },
+        { label: 'Raw vegetables', why: 'They are better tolerated now than at any other point in the cycle.' },
+        { label: 'Zinc', why: 'Pumpkin seeds and shellfish; associated with supporting ovulation.' },
+        { label: 'Fibre', why: 'Helps clear excess oestrogen after the peak.' },
+      ],
+      movement:
+        'Your performance ceiling for the month. A good moment for a demanding class, a race or lifting heavier.',
+      tip: 'It is the shortest phase and the easiest to waste. If you had something that needs presence and energy, put it here.',
+    },
+    lutea: {
+      summary:
+        'Progesterone rises and the body prepares for a possible pregnancy. Basal metabolism can rise by up to 300 calories a day, which explains a good part of premenstrual hunger.',
+      feels: [
+        'More hunger, especially for carbohydrates',
+        'Bloating and breast tenderness',
+        'A more changeable mood in the last few days',
+        'Poorer quality sleep towards the end of the phase',
+      ],
+      eat: [
+        { label: 'Complex carbohydrates', why: 'Oats, sweet potato and quinoa steady your blood sugar and take the edge off cravings.' },
+        { label: 'Vitamin B6', why: 'Banana and chickpeas; it plays a part in producing progesterone.' },
+        { label: 'Magnesium', why: 'A deficiency is associated with more intense PMS.' },
+        { label: 'Less caffeine', why: 'It can worsen breast tenderness and premenstrual symptoms in this phase.' },
+      ],
+      movement:
+        'Pilates, moderate strength work, long walks. Ease the intensity down as your period approaches instead of fighting the tiredness.',
+      tip: 'The hunger of this phase is real and has a metabolic cause. Eating more now is not a failure of discipline.',
+    },
+  },
 };
+
+export function getPhaseDetail(locale: Locale): Record<PhaseSlug, PhaseDetail> {
+  return pick(PHASE_DETAIL_TEXT, locale);
+}
+
+/** @deprecated Spanish-only. Use getPhaseDetail(locale). */
+export const PHASE_DETAIL = getPhaseDetail('es');

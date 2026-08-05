@@ -1,3 +1,5 @@
+import { type Locale, type Localized, pick } from '@nutricycle/shared';
+
 /**
  * ⚠️ PLACEHOLDER CONTENT — NOT REAL CUSTOMER REVIEWS.
  *
@@ -21,10 +23,10 @@
  * card fall back to a monogram.
  */
 
-export interface Review {
+interface RawReview {
   id: string;
   name: string;
-  quote: string;
+  quote: Localized<string>;
   /** Required: an absent line would break vertical alignment across cards */
   location: string;
   /** Ties the review to the product's spine — must match a PhaseSlug */
@@ -40,13 +42,15 @@ export interface Review {
  * `location` is required, not optional — an absent line would shift every
  * element below it out of alignment with its neighbours.
  */
-export const REVIEWS: readonly Review[] = [
+const REVIEW_DATA: readonly RawReview[] = [
   {
     id: 'r1',
     name: 'Camila Restrepo',
     location: 'Medellín',
-    quote:
-      'Llevaba años culpándome por no tener disciplina. Resulta que solo necesitaba comer distinto cada semana.',
+    quote: { es:
+        'Llevaba años culpándome por no tener disciplina. Resulta que solo necesitaba comer distinto cada semana.',
+      en:
+        'I spent years blaming myself for having no discipline. It turned out I just needed to eat differently each week.' },
     phase: 'lutea',
     rating: 5,
     avatar: '/images/reviews/01-camisa-rosa.webp',
@@ -55,8 +59,10 @@ export const REVIEWS: readonly Review[] = [
     id: 'r2',
     name: 'Valentina Ortiz',
     location: 'Ciudad de México',
-    quote:
-      'La app me dice qué cocinar según el día de mi ciclo. Dejé de improvisar y mi energía por las mañanas cambió.',
+    quote: { es:
+        'La app me dice qué cocinar según el día de mi ciclo. Dejé de improvisar y mi energía por las mañanas cambió.',
+      en:
+        'The app tells me what to cook for the day of my cycle I am on. I stopped improvising and my mornings feel different.' },
     phase: 'folicular',
     rating: 5,
     avatar: '/images/reviews/02-cocina-marmol.webp',
@@ -65,8 +71,10 @@ export const REVIEWS: readonly Review[] = [
     id: 'r3',
     name: 'Daniela Ruiz',
     location: 'Bogotá',
-    quote:
-      'El acné hormonal era mi mayor inseguridad. Cuatro meses siguiendo las recetas por fase y mi piel es otra.',
+    quote: { es:
+        'El acné hormonal era mi mayor inseguridad. Cuatro meses siguiendo las recetas por fase y mi piel es otra.',
+      en:
+        'Hormonal acne was my biggest insecurity. Four months following the recipes by phase and my skin is another skin.' },
     phase: 'menstrual',
     rating: 5,
     avatar: '/images/reviews/03-jersey-gris.webp',
@@ -75,8 +83,10 @@ export const REVIEWS: readonly Review[] = [
     id: 'r4',
     name: 'Mariana Peña',
     location: 'Lima',
-    quote:
-      'Lo que más valoro es que no me prohíbe nada. Me enseña cuándo mi cuerpo aprovecha mejor cada alimento.',
+    quote: { es:
+        'Lo que más valoro es que no me prohíbe nada. Me enseña cuándo mi cuerpo aprovecha mejor cada alimento.',
+      en:
+        'What I value most is that it forbids nothing. It teaches me when my body makes the most of each food.' },
     phase: 'ovulatoria',
     rating: 5,
     avatar: '/images/reviews/04-sofa-crema.webp',
@@ -85,8 +95,10 @@ export const REVIEWS: readonly Review[] = [
     id: 'r5',
     name: 'Sofía Aguirre',
     location: 'Buenos Aires',
-    quote:
-      'Entender por qué me sentía distinta cada semana me quitó un peso enorme. Ya no peleo con mi cuerpo.',
+    quote: { es:
+        'Entender por qué me sentía distinta cada semana me quitó un peso enorme. Ya no peleo con mi cuerpo.',
+      en:
+        'Understanding why I felt different each week lifted an enormous weight. I no longer fight with my body.' },
     phase: 'lutea',
     rating: 5,
     avatar: '/images/reviews/05-jersey-verde.webp',
@@ -95,8 +107,10 @@ export const REVIEWS: readonly Review[] = [
     id: 'r6',
     name: 'Lucía Fernández',
     location: 'Santiago',
-    quote:
-      'La lista de compras me ahorra la peor parte. Llego al súper y ya sé exactamente qué necesita mi fase.',
+    quote: { es:
+        'La lista de compras me ahorra la peor parte. Llego al súper y ya sé exactamente qué necesita mi fase.',
+      en:
+        'The shopping list saves me the worst part. I get to the supermarket already knowing what my phase needs.' },
     phase: 'folicular',
     rating: 5,
     avatar: '/images/reviews/06-retrato-calido.webp',
@@ -105,8 +119,10 @@ export const REVIEWS: readonly Review[] = [
     id: 'r7',
     name: 'Regina Salazar',
     location: 'Guadalajara',
-    quote:
-      'Antes cenaba lo mismo todo el mes. Ahora ajusto la cena a la fase y duermo de un tirón desde la tercera semana.',
+    quote: { es:
+        'Antes cenaba lo mismo todo el mes. Ahora ajusto la cena a la fase y duermo de un tirón desde la tercera semana.',
+      en:
+        'I used to eat the same dinner all month. Now I match dinner to the phase and from the third week I sleep straight through.' },
     phase: 'ovulatoria',
     rating: 5,
     avatar: '/images/reviews/07-camisa-azul.webp',
@@ -115,8 +131,10 @@ export const REVIEWS: readonly Review[] = [
     id: 'r8',
     name: 'Paulina Navarro',
     location: 'Ciudad de México',
-    quote:
-      'Los primeros días ya no me tumban. Como lo que toca, me caliento con caldos y sigo con mi semana normal.',
+    quote: { es:
+        'Los primeros días ya no me tumban. Como lo que toca, me caliento con caldos y sigo con mi semana normal.',
+      en:
+        'The first days no longer floor me. I eat what suits them, warm up with broths and carry on with my week.' },
     phase: 'menstrual',
     rating: 5,
     avatar: '/images/reviews/08-cocina-tulipanes.webp',
@@ -125,8 +143,10 @@ export const REVIEWS: readonly Review[] = [
     id: 'r9',
     name: 'Fernanda Cruz',
     location: 'Monterrey',
-    quote:
-      'Los antojos de la semana previa dejaron de ganarme. No es fuerza de voluntad, es comer lo que esa fase pide.',
+    quote: { es:
+        'Los antojos de la semana previa dejaron de ganarme. No es fuerza de voluntad, es comer lo que esa fase pide.',
+      en:
+        'The cravings in the week before stopped winning. It is not willpower, it is eating what that phase asks for.' },
     phase: 'lutea',
     rating: 5,
     avatar: '/images/reviews/09-encimera-verduras.webp',
@@ -135,8 +155,10 @@ export const REVIEWS: readonly Review[] = [
     id: 'r10',
     name: 'Andrea Molina',
     location: 'Quito',
-    quote:
-      'Empecé por curiosidad y me quedé por la energía. Cocino en veinte minutos con lo que la app me propone.',
+    quote: { es:
+        'Empecé por curiosidad y me quedé por la energía. Cocino en veinte minutos con lo que la app me propone.',
+      en:
+        'I started out of curiosity and stayed for the energy. I cook in twenty minutes with whatever the app suggests.' },
     phase: 'folicular',
     rating: 5,
     avatar: '/images/reviews/10-sofa-plantas.webp',
@@ -145,10 +167,29 @@ export const REVIEWS: readonly Review[] = [
     id: 'r11',
     name: 'Ximena Duarte',
     location: 'Puebla',
-    quote:
-      'Es la primera vez que una app de comida no me hace sentir culpable. Explica el porqué y una entiende su cuerpo.',
+    quote: { es:
+        'Es la primera vez que una app de comida no me hace sentir culpable. Explica el porqué y una entiende su cuerpo.',
+      en:
+        'It is the first food app that has never made me feel guilty. It explains the why, and you come to understand your body.' },
     phase: 'ovulatoria',
     rating: 5,
     avatar: '/images/reviews/11-mexico-exterior.webp',
   },
 ] as const;
+
+/** A review with its quote resolved for one locale. */
+export interface Review extends Omit<RawReview, 'quote'> {
+  quote: string;
+}
+
+/**
+ * Names and locations are proper nouns and stay as they are in both
+ * languages — translating "Ciudad de México" to "Mexico City" in an English
+ * testimonial would misrepresent where the person said they live.
+ */
+export function getReviews(locale: Locale): readonly Review[] {
+  return REVIEW_DATA.map((r) => ({ ...r, quote: pick(r.quote, locale) }));
+}
+
+/** @deprecated Spanish-only. Use getReviews(locale). */
+export const REVIEWS = getReviews('es');
