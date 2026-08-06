@@ -249,11 +249,17 @@ The app is substantially more capable than the current site communicates. These 
 
 ## 9. Revised route inventory
 
-**26 route templates** (down from 31), bilingual.
+**27 route templates** (down from 31), bilingual.
+
+> **Amended 2026-08-05.** The client supplied `doc/Nutricycle_Cursos.pdf`,
+> a brochure for two paid courses. That reverses the "no course product"
+> finding below: `/cursos` is now a route, and the removal of `/programas`
+> stands only in the sense that the page came back under a different name
+> and a much smaller shape — one page, two programmes, no `[slug]`.
 
 | Group | Routes |
 | --- | --- |
-| **Marketing** (6) | `/` · `/funcionalidades` · `/como-funciona` · `/membresia` · `/descargar` · [`/sobre`](../04-content/about-page.md) |
+| **Marketing** (7) | `/` · `/funcionalidades` · `/como-funciona` · `/membresia` · `/descargar` · [`/sobre`](../04-content/about-page.md) · `/cursos` |
 | **Education** (4) | `/blog` · `/blog/[slug]` · `/ciclo` · `/ciclo/[fase]` ×4 |
 | **Recipes** (3) | `/recetas` · `/recetas/fase/[fase]` ×4 · `/recetas/[slug]` |
 | **Video** (2) | `/videos` · `/videos/[slug]` |
@@ -265,7 +271,7 @@ The app is substantially more capable than the current site communicates. These 
 
 | Route | Reason |
 | --- | --- |
-| `/programas`, `/programas/[slug]` | No course product — `/membresia` is the app subscription |
+| ~~`/programas`, `/programas/[slug]`~~ | ⚠️ **Reversed 2026-08-05.** Was "no course product — `/membresia` is the app subscription". The client's course brochure proves otherwise; rebuilt as `/cursos` (single page, no `[slug]`). |
 | `/checkout` ×3 | Billing is handled by the stores |
 | `/politica-de-reembolso` | Store-handled refunds; no web transaction |
 | `/precios` | Merged into `/membresia` |
@@ -280,6 +286,7 @@ The app is substantially more capable than the current site communicates. These 
 | `/funcionalidades` | The app has far more features than one page could hold |
 | `/como-funciona` | Converts skeptical visitors — the 5-step walkthrough |
 | `/descargar` | Single-purpose conversion page for ad and email campaigns |
+| `/cursos` | **Added 2026-08-05** from `doc/Nutricycle_Cursos.pdf`. Two programmes — the accompanied method course and the PCOS mini course. One page, because two products do not justify an index plus detail pages. |
 
 ### URL estimate
 
@@ -308,6 +315,8 @@ The app is substantially more capable than the current site communicates. These 
 | 11 | **App screenshots** — `/funcionalidades`, `/como-funciona`, `/descargar` are built around them; zero exist | Client / app dev | ❌ **New — blocks Phase 2** |
 | 12 | **Store badge artwork** (ES + EN) — `public/badges/` is empty | Client | ❌ **New** |
 | 13 | **SVG logo** + full favicon set — all brand assets are raster today | Client / design | ❌ **New** |
+| 14 | **Course price, duration, start dates and enrolment link** — `Nutricycle_Cursos.pdf` ends on an email address, so `/cursos` sells two programmes without saying what they cost or when they run | Client | ❌ **New 2026-08-05 — blocks the page converting** |
+| 15 | **Course hero photograph** — `/cursos` ships on the gradient fallback | Client / design | ❌ **New 2026-08-05** |
 
 Items 1 and 2 now gate more work than anything else. Without them the content layer cannot be built and the phase system cannot be trusted.
 

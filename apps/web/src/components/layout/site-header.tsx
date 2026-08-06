@@ -37,24 +37,31 @@ import { cn } from '@/lib/cn';
  * 1024–1279 gets the compact bar and the sheet, which carry the same controls.
  */
 /**
- * Three links a side. The language pill is *not* one of the six and is not
- * counted in this balance — it is a utility control parked at the right
- * edge, outside the nav.
+ * Four links left, three right. The language pill is *not* one of the seven
+ * and is not counted in this balance — it is a utility control parked at the
+ * right edge, outside the nav.
  *
  * The split is by rendered width, not by counting labels. Three-and-three
- * alone does not balance anything: the six labels run 58px to 95px, so the
+ * alone did not balance anything: the six labels ran 58px to 95px, so the
  * obvious grouping (método/ciclo/recetas against funciones/membresía/sobre)
- * lands 255px against 336px and leaves the left side visibly light. Measured
- * across all ten possible splits, this one is the closest that keeps the
- * grouping coherent — 287px against 305px, Δ18.
+ * landed 255px against 336px and left the left side visibly light. The
+ * six-link row settled at 287px against 305px, Δ18.
  *
- * It also reads as two ideas rather than a shuffled list: learn and who
- * (método · tu ciclo · sobre alicia) on the left, use and buy (recetas ·
- * funciones · membresía) on the right, with `Sobre Alicia` resting beside
- * the logo — the person next to the mark.
+ * ⚠️ `Cursos` (2026-08-05) makes seven, so an even split no longer exists.
+ * Measured at 1440: 353px left against 289px right, Δ64. Every alternative
+ * arrangement is worse — the labels are 58–97px wide and the total is 642px,
+ * so moving any single link swings the balance by ~90px and overshoots. This
+ * is the closest split available, not a compromise waiting to be improved.
+ *
+ * It still reads as two ideas rather than a shuffled list: learn and who
+ * (método · tu ciclo · cursos · sobre alicia) on the left, use and buy
+ * (recetas · funciones · membresía) on the right, with `Sobre Alicia` resting
+ * beside the logo — the person next to the mark.
  *
  * ⚠️ Re-measure if a label changes. The balance is a property of the text,
- * so a longer word silently un-balances the row.
+ * so a longer word silently un-balances the row. An eighth link does not fit
+ * at `xl`; the next one to be added forces a different bar, not another
+ * re-split.
  */
 /**
  * Hrefs are Spanish-canonical and translated at render time by

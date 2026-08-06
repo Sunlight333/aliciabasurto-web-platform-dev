@@ -159,6 +159,13 @@ frame that shows.
 | `heroes/faq.avif` | 9850185 | A single dried flower on a beige plate | 68 KB | `/faq` | 0.56 |
 | `heroes/contacto.avif` | 6958775 | Vase, frame and candle on a white shelf | 18 KB | `/contacto` | 0.58 |
 | `heroes/videos.avif` | 19085283 | Circular shadow on a sunlit cream wall | 6 KB | `/videos` | 0.45 |
+| — pending — | — | Hero frame for `/cursos` not yet chosen | — | `/cursos` | — |
+
+`/cursos` ships without a hero photograph on purpose. `PageHero` falls
+back to the gradient field when `image` is absent, which is what a route
+is meant to look like before its frame is chosen — a placeholder borrowed
+from another page would read as finished and quietly outlive the decision.
+The course brochure (`doc/Nutricycle_Cursos.pdf`) supplied no imagery.
 
 The four phase frames are chosen as a **colour story**, not four
 illustrations of the same idea: linen warmth, new growth, an open bloom,
