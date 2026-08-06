@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { isLocale, DEFAULT_LOCALE, type Locale } from '@/lib/i18n';
+import { isLocale, DEFAULT_LOCALE, getDictionary, localizePath, alternatesFor, type Locale } from '@/lib/i18n';
 import Image from 'next/image';
 import { Check } from 'lucide-react';
 import { STORE } from '@nutricycle/shared';
@@ -7,17 +7,25 @@ import { Container } from '@/components/layout/container';
 import { Eyebrow } from '@/components/ui/eyebrow';
 import { StoreButtons } from '@/components/marketing/store-buttons';
 
-export const metadata: Metadata = {
-  title: 'Descargar Nutricycle',
-  description:
-    'Descarga Nutricycle gratis en iOS y Android. Recetas y alimentos clave para cada fase de tu ciclo.',
-  alternates: { canonical: '/descargar' },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  const t = getDictionary(locale);
+  return {
+    title: t.meta.descargar.title,
+    description: t.meta.descargar.description,
+    alternates: { canonical: '/descargar', languages: alternatesFor('/descargar') },
+  };
+}
 
-const POINTS = [
-  'Plan diario según tu fase actual',
-  `${STORE.recipeCount} recetas en video con beneficios hormonales`,
-  'Asesora con IA que conoce tu ciclo',
+const points = (t: ReturnType<typeof getDictionary>) => [
+  t.download.points[0],
+  `${STORE.recipeCount} ${t.download.points[1]}`,
+  t.download.points[2],
 ];
 
 /**
@@ -31,6 +39,7 @@ export default async function DescargarPage({
 }) {
   const { locale: rawLocale } = await params;
   const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  const t = getDictionary(locale);
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-surface-blush via-surface-raised to-surface-lilac py-24 lg:py-32">
       <div aria-hidden className="pointer-events-none absolute inset-0">
@@ -58,21 +67,20 @@ export default async function DescargarPage({
             className="animate-float mx-auto h-28 w-28 rounded-[1.75rem] shadow-lg"
           />
 
-          <Eyebrow className="mt-9">Gratis · iOS y Android</Eyebrow>
+          <Eyebrow className="mt-9">{t.download.badge}</Eyebrow>
 
           <h1 className="mt-5 text-h1 text-ink">
             Descarga <span className="text-accent">Nutricycle</span>
           </h1>
 
           <p className="mx-auto mt-6 max-w-lg text-lead text-muted">
-            Tu ciclo, tu guía. Recetas, alimentos clave y educación hormonal para
-            cada fase — sin dietas, sin restricciones.
+            {t.download.lead}
           </p>
 
-          <StoreButtons source="descargar" size="lg" className="mt-10 justify-center" />
+          <StoreButtons source="descargar" size="lg" className="mt-10 justify-center" locale={locale} />
 
           <ul className="mx-auto mt-12 flex max-w-md flex-col gap-4 text-left">
-            {POINTS.map((point) => (
+            {points(t).map((point) => (
               <li key={point} className="flex items-start gap-3.5">
                 <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-follicular-soft">
                   <Check strokeWidth={2.6} className="h-4 w-4 text-follicular-ink" />
@@ -83,7 +91,7 @@ export default async function DescargarPage({
           </ul>
 
           <p className="mt-10 text-caption text-muted">
-            Descarga gratis · Plan Hormonal desde la app
+            {t.download.note}
           </p>
         </div>
       </Container>

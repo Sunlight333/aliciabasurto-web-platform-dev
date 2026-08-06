@@ -7,12 +7,12 @@ import {
   Flower2,
   ArrowRight,
 } from 'lucide-react';
-import { getDictionary, type Locale } from '@/lib/i18n';
+import { getDictionary, localizePath, type Locale } from '@/lib/i18n';
 import { Section } from '@/components/layout/section';
 import { Container } from '@/components/layout/container';
 import { Eyebrow } from '@/components/ui/eyebrow';
 import { Reveal } from '@/components/motion/reveal';
-import { FEATURES } from '@/data/home';
+import { getFeatures } from '@/data/home';
 import { cn } from '@/lib/cn';
 
 const ICONS = {
@@ -38,7 +38,7 @@ export function FeaturesSection({ locale }: { locale: Locale }) {
         </Reveal>
 
         <ul className="mt-14 grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
-          {FEATURES.map((feature, i) => {
+          {getFeatures(locale).map((feature, i) => {
             const Icon = ICONS[feature.icon];
             return (
               <Reveal as="li" key={feature.title} delay={i * 90} className="h-full">
@@ -70,7 +70,7 @@ export function FeaturesSection({ locale }: { locale: Locale }) {
 
         <Reveal className="mt-12 text-center" delay={560}>
           <a
-            href="/funcionalidades"
+            href={localizePath('/funcionalidades', locale)}
             className="group inline-flex items-center gap-2.5 font-sans text-nav font-semibold text-action transition-colors hover:text-action-hover"
           >
             {t.home.features.seeAll}

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { isLocale, DEFAULT_LOCALE, type Locale } from '@/lib/i18n';
+import { isLocale, DEFAULT_LOCALE, getDictionary, localizePath, type Locale } from '@/lib/i18n';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Clock, Users, ArrowLeft, ArrowRight, Sparkles, Info } from 'lucide-react';
@@ -26,7 +26,8 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale: rawLocale, slug } = await params;
   const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
-  const recipe = getRecipe(slug);
+  const t = getDictionary(locale);
+  const recipe = getRecipe(slug, locale);
   if (!recipe) return {};
   return {
     title: recipe.title,
@@ -65,11 +66,12 @@ export default async function RecetaPage({
 }) {
   const { locale: rawLocale, slug } = await params;
   const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
-  const recipe = getRecipe(slug);
+  const t = getDictionary(locale);
+  const recipe = getRecipe(slug, locale);
   if (!recipe) notFound();
 
   const phase = getPhase(recipe.phase, locale);
-  const others = getRecipes().filter((r) => r.slug !== recipe.slug);
+  const others = getRecipes(locale).filter((r) => r.slug !== recipe.slug);
 
   return (
     <>
@@ -79,7 +81,7 @@ export default async function RecetaPage({
       />
 
       <PageHero
-        eyebrow={`Receta · Fase ${phase?.name.toLowerCase()}`}
+        eyebrow={`${t.content.recipeEyebrow} · ${t.cycle.phaseEyebrow} ${phase?.name.toLowerCase()}`}
         title={recipe.title}
         lead={recipe.excerpt}
         image="/images/heroes/recetas.avif"
@@ -88,8 +90,8 @@ export default async function RecetaPage({
       >
         <ul className="flex flex-wrap justify-center gap-3">
           {[
-            { icon: Clock, label: `${recipe.minutes} min` },
-            { icon: Users, label: `${recipe.servings} porciones` },
+            { icon: Clock, label: `${recipe.minutes} ${t.content.minutes}` },
+            { icon: Users, label: `${recipe.servings} ${t.content.servings}` },
           ].map((m) => (
             <li
               key={m.label}
@@ -135,7 +137,7 @@ export default async function RecetaPage({
           </Reveal>
 
           <Reveal className="mt-14" delay={120}>
-            <h2 className="text-h2 text-ink">Preparación</h2>
+            <h2 className="text-h2 text-ink">{t.content.preparation}</h2>
             <ol className="mt-7 flex flex-col gap-6">
               {recipe.steps.map((step, i) => (
                 <li key={step.title} className="card flex gap-6 p-7">
@@ -152,7 +154,7 @@ export default async function RecetaPage({
           </Reveal>
 
           <Reveal className="mt-14" delay={160}>
-            <h2 className="text-h2 text-ink">Consejos</h2>
+            <h2 className="text-h2 text-ink">{t.content.tips}</h2>
             <ul className="mt-7 flex flex-col gap-3">
               {recipe.tips.map((t) => (
                 <li key={t} className="flex gap-4 text-body text-muted">
@@ -169,14 +171,14 @@ export default async function RecetaPage({
 
           <Reveal className="mt-14" delay={200}>
             <div className={cn('rounded-card p-8', phase && PHASE_CHIP[phase.slug])}>
-              <h2 className="font-display text-h3">Por qué acompaña a esta fase</h2>
+              <h2 className="font-display text-h3">{t.content.whyPhase}</h2>
               <p className="mt-4 text-body">{recipe.benefits}</p>
             </div>
           </Reveal>
 
           <Reveal className="mt-14 grid gap-10 sm:grid-cols-2" delay={240}>
             <div>
-              <h2 className="text-h3 text-ink">Para acompañar</h2>
+              <h2 className="text-h3 text-ink">{t.content.toPairWith}</h2>
               <ul className="mt-5 flex flex-col gap-2.5">
                 {recipe.pairings.map((p) => (
                   <li key={p} className="text-small text-muted">
@@ -186,7 +188,7 @@ export default async function RecetaPage({
               </ul>
             </div>
             <div>
-              <h2 className="text-h3 text-ink">Variaciones</h2>
+              <h2 className="text-h3 text-ink">{t.content.variations}</h2>
               <ul className="mt-5 flex flex-col gap-2.5">
                 {recipe.variations.map((v) => (
                   <li key={v} className="text-small text-muted">
@@ -201,12 +203,12 @@ export default async function RecetaPage({
             <p className="flex items-start gap-3.5 rounded-card border border-hairline bg-white p-6 text-caption text-muted">
               <Info aria-hidden strokeWidth={2} className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
               <span>
-                Información general de nutrición, no consejo médico.{' '}
+                {t.content.nutritionNotice}{' '}
                 <Link
-                  href="/aviso-medico"
+                  href={localizePath('/aviso-medico', locale)}
                   className="font-semibold text-accent underline underline-offset-4"
                 >
-                  Leé el aviso médico
+                  {t.content.nutritionNoticeLink}
                 </Link>
                 .
               </span>
@@ -218,20 +220,20 @@ export default async function RecetaPage({
           <Reveal className="mt-14 border-t border-hairline pt-9" delay={320}>
             <div className="flex flex-wrap items-center justify-between gap-5">
               <Link
-                href={`/recetas/fase/${recipe.phase}`}
+                href={localizePath(`/recetas/fase/${recipe.phase}`, locale)}
                 className="group inline-flex items-center gap-2.5 font-sans text-nav font-semibold text-action transition-colors hover:text-action-hover"
               >
                 <ArrowLeft
                   strokeWidth={2.2}
                   className="h-5.5 w-5.5 transition-transform duration-300 group-hover:-translate-x-1.5"
                 />
-                Más de la fase {phase?.name.toLowerCase()}
+                {t.content.moreFromPhaseBefore} {phase?.name.toLowerCase()}
               </Link>
               <Link
-                href="/recetas"
+                href={localizePath('/recetas', locale)}
                 className="group inline-flex items-center gap-2.5 font-sans text-nav font-semibold text-muted transition-colors hover:text-ink"
               >
-                Todas las recetas
+                {t.recipes.seeAll}
                 <ArrowRight
                   strokeWidth={2.2}
                   className="h-5.5 w-5.5 transition-transform duration-300 group-hover:translate-x-1.5"
@@ -241,12 +243,12 @@ export default async function RecetaPage({
 
             {others.length > 0 && (
               <>
-                <Eyebrow className="mt-12">También te puede servir</Eyebrow>
+                <Eyebrow className="mt-12">{t.content.alsoUseful}</Eyebrow>
                 <ul className="mt-5 flex flex-col gap-3">
                   {others.slice(0, 3).map((o) => (
                     <li key={o.slug}>
                       <Link
-                        href={`/recetas/${o.slug}`}
+                        href={localizePath(`/recetas/${o.slug}`, locale)}
                         className="card card-hover block p-6 font-display text-h4 text-ink"
                       >
                         {o.title}
@@ -260,7 +262,7 @@ export default async function RecetaPage({
         </Container>
       </Section>
 
-      <CtaBand source={`receta-${recipe.slug}`} />
+      <CtaBand source={`receta-${recipe.slug}`} locale={locale} />
     </>
   );
 }

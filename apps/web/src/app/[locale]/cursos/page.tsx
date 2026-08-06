@@ -19,12 +19,20 @@ import { Reveal } from '@/components/motion/reveal';
 import { CtaBand } from '@/components/marketing/cta-band';
 import { getCourses, type Course } from '@/data/courses';
 
-export const metadata: Metadata = {
-  title: 'Cursos — Nutrición Cíclica con Alicia Basurto',
-  description:
-    'Dos programas con el método que está detrás de la app: Nutrición Cíclica desde cero, con sesión semanal en vivo, y un mini curso de SOP y alimentación.',
-  alternates: { canonical: '/cursos', languages: alternatesFor('/cursos') },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  const t = getDictionary(locale);
+  return {
+    title: t.meta.cursos.title,
+    description: t.meta.cursos.description,
+    alternates: { canonical: '/cursos', languages: alternatesFor('/cursos') },
+  };
+}
 
 const ICONS: Record<string, LucideIcon> = { GraduationCap, HeartPulse };
 
@@ -38,9 +46,9 @@ const ICONS: Record<string, LucideIcon> = { GraduationCap, HeartPulse };
  * flow, so every "empezar" here is an email to Alicia and the gap is
  * stated on the page instead of being filled with invented numbers.
  *
- * The hero has no photograph for the same reason: PageHero falls back to
- * the gradient field, which is what a page is meant to look like before
- * its photography is chosen. Pending in image-assets.md §3b.
+ * The hero photograph is a study still life — tea and a handwritten page —
+ * rather than food. Every other route opens on ingredients; this one sells
+ * learning the method, so the frame is the notebook, not the meal.
  */
 export default async function CursosPage({
   params,
@@ -59,6 +67,9 @@ export default async function CursosPage({
         title={t.pages.cursos.title}
         accent={t.pages.cursos.accent}
         lead={t.pages.cursos.lead}
+        image="/images/heroes/cursos.avif"
+        focal="center 45%"
+        veil={0.5}
       >
         <ul className="flex flex-wrap justify-center gap-3">
           {courses.map((c) => (
@@ -116,7 +127,7 @@ export default async function CursosPage({
         </Container>
       </Section>
 
-      <CtaBand source="cursos" />
+      <CtaBand source="cursos" locale={locale} />
     </>
   );
 }
@@ -132,8 +143,10 @@ function CourseBlock({
 
   return (
     <Section id={course.id} surface={course.surface}>
+      {/* Only on the cream section — the scrim is cream, so it would wash
+          the mint tint off the other one. */}
       {course.surface === 'raised' && (
-        <SectionTexture src="/images/textures/papel.avif" />
+        <SectionTexture src="/images/textures/estudio.avif" />
       )}
 
       <Container className="relative">

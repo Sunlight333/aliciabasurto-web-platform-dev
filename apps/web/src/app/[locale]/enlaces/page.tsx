@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { isLocale, DEFAULT_LOCALE, type Locale } from '@/lib/i18n';
+import { isLocale, DEFAULT_LOCALE, getDictionary, localizePath, type Locale } from '@/lib/i18n';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight, Mail } from 'lucide-react';
@@ -23,12 +23,13 @@ export const metadata: Metadata = {
  * already exists and would compete with the real pages for the same
  * queries. It exists to be pasted into a bio, not found on Google.
  */
-const LINKS = [
-  { href: '/recetas', label: 'Recetas por fase del ciclo', note: 'Qué comer esta semana' },
-  { href: '/ciclo', label: 'Las 4 fases de tu ciclo', note: 'Qué le pasa a tu cuerpo' },
-  { href: '/funcionalidades', label: 'Qué hace la app', note: 'Todas las funciones' },
-  { href: '/blog', label: 'Educación hormonal', note: 'Artículos y guías' },
-  { href: '/sobre', label: 'Sobre Alicia', note: 'El método detrás de Nutricycle' },
+const links = (t: ReturnType<typeof getDictionary>, locale: Locale) => [
+  { href: localizePath('/recetas', locale), ...t.links.items.recipes },
+  { href: localizePath('/ciclo', locale), ...t.links.items.cycle },
+  { href: localizePath('/funcionalidades', locale), ...t.links.items.features },
+  { href: localizePath('/cursos', locale), ...t.links.items.courses },
+  { href: localizePath('/blog', locale), ...t.links.items.blog },
+  { href: localizePath('/sobre', locale), ...t.links.items.about },
 ];
 
 export default async function EnlacesPage({
@@ -38,6 +39,7 @@ export default async function EnlacesPage({
 }) {
   const { locale: rawLocale } = await params;
   const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  const t = getDictionary(locale);
   const social = SOCIAL.filter((s) => s.href);
 
   return (
@@ -67,15 +69,15 @@ export default async function EnlacesPage({
             className="h-24 w-auto"
           />
 
-          <Eyebrow className="mt-8">Nutrición cíclica</Eyebrow>
+          <Eyebrow className="mt-8">{t.links.eyebrow}</Eyebrow>
           <h1 className="mt-4 text-h2 text-ink">
-            Come con tu ciclo, <span className="text-accent">vuelve a sentirte tú</span>
+            {t.links.titleBefore} <span className="text-accent">{t.links.titleAccent}</span>
           </h1>
 
-          <StoreButtons source="enlaces" className="mt-9 w-full" />
+          <StoreButtons source="enlaces" className="mt-9 w-full" locale={locale} />
 
           <ul className="mt-10 flex w-full flex-col gap-3">
-            {LINKS.map((l) => (
+            {links(t, locale).map((l) => (
               <li key={l.href}>
                 <Link
                   href={l.href}

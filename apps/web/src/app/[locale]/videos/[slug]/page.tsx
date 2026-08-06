@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { isLocale, DEFAULT_LOCALE, getDictionary, type Locale } from '@/lib/i18n';
+import { isLocale, DEFAULT_LOCALE, getDictionary, type Locale, localizePath } from '@/lib/i18n';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, ArrowRight, Clock, Info } from 'lucide-react';
@@ -30,7 +30,7 @@ export async function generateMetadata({
   const { locale: rawLocale, slug } = await params;
   const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
   const t = getDictionary(locale);
-  const video = getVideos().find((v) => v.slug === slug);
+  const video = getVideos(locale).find((v) => v.slug === slug);
   if (!video) return {};
   return {
     title: video.title,
@@ -55,7 +55,7 @@ export default async function VideoPage({
   const { locale: rawLocale, slug } = await params;
   const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
   const t = getDictionary(locale);
-  const videos = getVideos();
+  const videos = getVideos(locale);
   const video = videos.find((v) => v.slug === slug);
   if (!video) notFound();
 
@@ -112,20 +112,23 @@ export default async function VideoPage({
         <Container className="relative">
           <div className="mx-auto max-w-4xl">
             <Reveal>
-              <VideoPlayer slug={video.slug} title={video.title} />
+              <VideoPlayer
+                slug={video.slug}
+                title={video.title}
+                unsupported={t.videos.unsupported}
+              />
             </Reveal>
 
             <Reveal className="mt-10" delay={80}>
               <p className="flex items-start gap-3.5 rounded-card border border-hairline bg-white p-6 text-caption text-muted">
                 <Info aria-hidden strokeWidth={2} className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
                 <span>
-                  Sin locución: mirá las manos y seguí los pasos. Información general de
-                  nutrición, no consejo médico.{' '}
+                  {t.content.videoNotice}{' '}
                   <Link
-                    href="/aviso-medico"
+                    href={localizePath('/aviso-medico', locale)}
                     className="font-semibold text-accent underline underline-offset-4"
                   >
-                    Leé el aviso médico
+                    {t.content.nutritionNoticeLink}
                   </Link>
                   .
                 </span>
@@ -149,7 +152,7 @@ export default async function VideoPage({
                   </Link>
                 ) : (
                   <Link
-                    href="/videos"
+                    href={localizePath('/videos', locale)}
                     className="group inline-flex items-center gap-2.5 font-sans text-nav font-semibold text-action transition-colors hover:text-action-hover"
                   >
                     <ArrowLeft
@@ -175,12 +178,12 @@ export default async function VideoPage({
 
               {others.length > 0 && (
                 <>
-                  <Eyebrow className="mt-12">Seguí con estos</Eyebrow>
+                  <Eyebrow className="mt-12">{t.content.keepWatching}</Eyebrow>
                   <ul className="mt-5 flex flex-col gap-3">
                     {others.slice(0, 3).map((o) => (
                       <li key={o.slug}>
                         <Link
-                          href={`/videos/${o.slug}`}
+                          href={localizePath(`/videos/${o.slug}`, locale)}
                           className="card card-hover flex items-center justify-between gap-5 p-6"
                         >
                           <span className="font-display text-h4 text-ink">{o.title}</span>
@@ -198,7 +201,7 @@ export default async function VideoPage({
         </Container>
       </Section>
 
-      <CtaBand source={`video-${video.slug}`} />
+      <CtaBand source={`video-${video.slug}`} locale={locale} />
     </>
   );
 }

@@ -317,6 +317,8 @@ The app is substantially more capable than the current site communicates. These 
 | 13 | **SVG logo** + full favicon set — all brand assets are raster today | Client / design | ❌ **New** |
 | 14 | **Course price, duration, start dates and enrolment link** — `Nutricycle_Cursos.pdf` ends on an email address, so `/cursos` sells two programmes without saying what they cost or when they run | Client | ❌ **New 2026-08-05 — blocks the page converting** |
 | 15 | **Course hero photograph** — `/cursos` ships on the gradient fallback | Client / design | ❌ **New 2026-08-05** |
+| 16 | **English legal documents** — Terms, Privacy, Cookies and the Medical Notice exist only in Spanish. `/en` renders the Spanish text behind an English notice saying the Spanish version binds; a counsel-approved translation is needed, not a machine one | Client / counsel | ❌ **New 2026-08-06** |
+| 17 | **Review of the English recipe and video copy** — the ten video summaries and the one published recipe were translated here, not by the client. It is their culinary voice and should be read back before launch | Client | ❌ **New 2026-08-06** |
 
 Items 1 and 2 now gate more work than anything else. Without them the content layer cannot be built and the phase system cannot be trusted.
 

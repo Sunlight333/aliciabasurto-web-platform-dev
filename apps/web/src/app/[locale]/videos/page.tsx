@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { isLocale, DEFAULT_LOCALE, getDictionary, type Locale } from '@/lib/i18n';
+import { isLocale, DEFAULT_LOCALE, getDictionary, alternatesFor, type Locale, localizePath } from '@/lib/i18n';
 import { PageHero } from '@/components/layout/page-hero';
 import { Section } from '@/components/layout/section';
 import { SectionTexture } from '@/components/layout/section-texture';
@@ -9,12 +9,20 @@ import { CtaBand } from '@/components/marketing/cta-band';
 import { EmptyState, VideoCard } from '@/components/content/content-pieces';
 import { getVideos } from '@/lib/content';
 
-export const metadata: Metadata = {
-  title: 'Videos — recetas paso a paso',
-  description:
-    'Diez recetas en video de 6 a 25 segundos: cámara cenital, manos a la obra y el plato terminado. Sin locución y sin vueltas.',
-  alternates: { canonical: '/videos' },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  const t = getDictionary(locale);
+  return {
+    title: t.meta.videos.title,
+    description: t.meta.videos.description,
+    alternates: { canonical: '/videos', languages: alternatesFor('/videos') },
+  };
+}
 
 export default async function VideosPage({
   params,
@@ -24,7 +32,7 @@ export default async function VideosPage({
   const { locale: rawLocale } = await params;
   const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
   const t = getDictionary(locale);
-  const videos = getVideos();
+  const videos = getVideos(locale);
 
   return (
     <>
@@ -46,7 +54,7 @@ export default async function VideosPage({
               <EmptyState
                 title={t.pages.videos.emptyTitle}
                 body="Los videos por fase viven hoy dentro de la app, junto con las recetas y el plan semanal."
-                action={{ href: '/funcionalidades', label: 'Ver qué incluye la app' }}
+                action={{ href: localizePath('/funcionalidades', locale), label: t.content.recipesEmptyAction }}
               />
             </Reveal>
           ) : (
@@ -64,7 +72,7 @@ export default async function VideosPage({
         </Container>
       </Section>
 
-      <CtaBand source="videos" />
+      <CtaBand source="videos" locale={locale} />
     </>
   );
 }

@@ -22,10 +22,13 @@ export function VideoPlayer({
   slug,
   title,
   className,
+  unsupported,
 }: {
   slug: string;
   title: string;
   className?: string;
+  /** Localised fallback text for browsers that cannot play the source. */
+  unsupported: string;
 }) {
   return (
     <div
@@ -47,7 +50,7 @@ export function VideoPlayer({
           <source key={s.src} src={s.src} type={s.type} />
         ))}
         {/* Shown only where <video> itself is unsupported */}
-        Tu navegador no puede reproducir este video: {title}.
+        {unsupported} {title}.
       </video>
     </div>
   );

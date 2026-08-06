@@ -116,6 +116,7 @@ back to its licence.
 | `textures/calma.avif` | 16408396 | Soft plant shadows on a warm wall | 91 KB | `/funcionalidades` · `/ciclo` · `/ciclo/[fase]` |
 | `textures/papel.avif` | 8941369 | Soft off-white paper texture | 80 KB | `/funcionalidades` · `/sobre` · `/membresia` · `/blog` · `/recetas/[slug]` |
 | `textures/luz.avif` | 16408400 | Shadow bars across warm plaster | 79 KB | `/videos` · `/faq` (alternating groups) |
+| `textures/estudio.avif` | 17125132 | Notebooks, daisies and chamomile tea on white linen | 24 KB | `/cursos` → course block |
 | `textures/arena.avif` | 6279955 | Soft beige diagonal bands | 2 KB | `/contacto` |
 
 `arena.avif` is 2 KB because it genuinely is three flat bands — the
@@ -158,6 +159,7 @@ frame that shows.
 | `heroes/blog.avif` | 7657877 | Coffee, notebook and pen on white | 7 KB | `/blog` | 0.45 |
 | `heroes/faq.avif` | 9850185 | A single dried flower on a beige plate | 68 KB | `/faq` | 0.56 |
 | `heroes/contacto.avif` | 6958775 | Vase, frame and candle on a white shelf | 18 KB | `/contacto` | 0.58 |
+| `heroes/cursos.avif` | 9907955 | Tea glass beside a handwritten page and pencils | 7 KB | `/cursos` | 0.50 |
 | `heroes/videos.avif` | 19085283 | Circular shadow on a sunlit cream wall | 6 KB | `/videos` | 0.45 |
 | — pending — | — | Hero frame for `/cursos` not yet chosen | — | `/cursos` | — |
 

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { isLocale, DEFAULT_LOCALE, type Locale } from '@/lib/i18n';
+import { isLocale, DEFAULT_LOCALE, getDictionary, localizePath, type Locale } from '@/lib/i18n';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import {
@@ -15,7 +15,7 @@ import {
   ArrowLeft,
   type LucideIcon,
 } from 'lucide-react';
-import { PHASES, getPhase, phaseDays, type PhaseSlug } from '@nutricycle/shared';
+import { getPhases, getPhase, phaseDays, type PhaseSlug } from '@nutricycle/shared';
 import { PageHero } from '@/components/layout/page-hero';
 import { Section } from '@/components/layout/section';
 import { SectionTexture } from '@/components/layout/section-texture';
@@ -42,7 +42,7 @@ const STYLES: Record<PhaseSlug, { chip: string; ink: string }> = {
 
 /** Prerenders all four at build time — they are a fixed set, not a feed. */
 export function generateStaticParams() {
-  return PHASES.map((p) => ({ fase: p.slug }));
+  return getPhases(DEFAULT_LOCALE).map((p) => ({ fase: p.slug }));
 }
 
 export async function generateMetadata({
@@ -71,19 +71,20 @@ export default async function FasePage({
   const phase = getPhase(fase as PhaseSlug, locale);
   if (!phase) notFound();
 
+  const t = getDictionary(locale);
   const detail = getPhaseDetail(locale)[phase.slug];
   const s = STYLES[phase.slug];
   const hero = PHASE_HERO[phase.slug];
   const Icon = ICONS[phase.slug];
 
-  const index = PHASES.findIndex((p) => p.slug === phase.slug);
-  const prev = PHASES[(index - 1 + PHASES.length) % PHASES.length];
-  const next = PHASES[(index + 1) % PHASES.length];
+  const index = getPhases(locale).findIndex((p) => p.slug === phase.slug);
+  const prev = getPhases(locale)[(index - 1 + getPhases(locale).length) % getPhases(locale).length];
+  const next = getPhases(locale)[(index + 1) % getPhases(locale).length];
 
   return (
     <>
       <PageHero
-        eyebrow={`Fase ${phase.name} · ${phaseDays(phase, locale)}`}
+        eyebrow={`${t.cycle.phaseEyebrow} ${phase.name} · ${phaseDays(phase, locale)}`}
         title={phase.name}
         accent={phase.tagline}
         lead={detail.summary}
@@ -100,7 +101,7 @@ export default async function FasePage({
               <span className={`icon-chip ${s.chip}`}>
                 <Activity strokeWidth={1.9} className="h-9 w-9" />
               </span>
-              <h2 className="mt-6 text-h2 text-ink">Qué pasa por dentro</h2>
+              <h2 className="mt-6 text-h2 text-ink">{t.cycle.insideTitle}</h2>
               <p className="mt-5 text-body text-muted">{phase.hormone}</p>
               <p className="mt-4 text-body text-muted">{detail.summary}</p>
             </Reveal>
@@ -109,7 +110,7 @@ export default async function FasePage({
               <span className={`icon-chip ${s.chip}`}>
                 <Icon strokeWidth={1.9} className="h-9 w-9" />
               </span>
-              <h2 className="mt-6 text-h2 text-ink">Cómo suele sentirse</h2>
+              <h2 className="mt-6 text-h2 text-ink">{t.cycle.feelsTitle}</h2>
               <ul className="mt-5 flex flex-col gap-3.5">
                 {detail.feels.map((f) => (
                   <li key={f} className="flex gap-3.5 text-body text-muted">
@@ -122,7 +123,7 @@ export default async function FasePage({
                 ))}
               </ul>
               <p className="mt-5 text-caption text-muted">
-                Son tendencias, no reglas. Cada cuerpo las vive distinto.
+                {t.phases.trendsNote}
               </p>
             </Reveal>
           </div>
@@ -133,9 +134,9 @@ export default async function FasePage({
       <Section surface="base">
         <Container>
           <Reveal className="mx-auto max-w-2xl text-center">
-            <Eyebrow>Alimentación</Eyebrow>
+            <Eyebrow>{t.cycle.foodEyebrow}</Eyebrow>
             <h2 className="mt-5 text-h2 text-ink">
-              Qué acompaña <span className="text-accent">a tu cuerpo ahora</span>
+              {t.cycle.foodTitle} <span className="text-accent">{t.cycle.foodAccent}</span>
             </h2>
             <p className="mx-auto mt-6 max-w-xl text-body text-muted">
               {phase.nutrition}
@@ -159,10 +160,10 @@ export default async function FasePage({
 
           <Reveal className="mt-12 text-center" delay={380}>
             <Link
-              href={`/recetas/fase/${phase.slug}`}
+              href={localizePath(`/recetas/fase/${phase.slug}`, locale)}
               className="group inline-flex items-center gap-2.5 rounded-full bg-action px-7 py-4 font-sans text-nav font-semibold text-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:bg-action-hover hover:shadow-lg"
             >
-              Ver recetas de esta fase
+              {t.cycle.recipesCta}
               <ArrowRight
                 strokeWidth={2.2}
                 className="h-5.5 w-5.5 transition-transform duration-300 group-hover:translate-x-1.5"
@@ -177,8 +178,8 @@ export default async function FasePage({
         <Container>
           <ul className="grid gap-7 md:grid-cols-2">
             {[
-              { icon: Dumbbell, title: 'Movimiento', body: detail.movement },
-              { icon: Lightbulb, title: 'Un apunte práctico', body: detail.tip },
+              { icon: Dumbbell, title: t.cycle.movementTitle, body: detail.movement },
+              { icon: Lightbulb, title: t.cycle.tipTitle, body: detail.tip },
             ].map((c, i) => (
               <Reveal as="li" key={c.title} delay={i * 120} className="h-full">
                 <article className="card card-hover h-full p-9">
@@ -194,14 +195,14 @@ export default async function FasePage({
 
           <Reveal className="mt-10 text-center" delay={260}>
             <p className="mx-auto max-w-xl text-caption text-muted">
-              Información general, no diagnóstico.{' '}
+              {t.cycle.noticeBefore}{' '}
               <Link
-                href="/aviso-medico"
+                href={localizePath('/aviso-medico', locale)}
                 className="font-semibold text-accent underline underline-offset-4"
               >
-                Leé el aviso médico
+                {t.cycle.noticeLink}
               </Link>{' '}
-              antes de hacer cambios importantes en tu alimentación.
+              {t.cycle.noticeAfter}
             </p>
           </Reveal>
         </Container>
@@ -211,9 +212,9 @@ export default async function FasePage({
       <Section surface="base" size="tight">
         <SectionTexture src="/images/textures/calma.avif" />
         <Container className="relative">
-          <nav aria-label="Otras fases" className="grid gap-5 sm:grid-cols-2">
+          <nav aria-label={t.cycle.otherPhases} className="grid gap-5 sm:grid-cols-2">
             <Link
-              href={`/ciclo/${prev.slug}`}
+              href={localizePath(`/ciclo/${prev.slug}`, locale)}
               className="group card card-hover flex items-center gap-5 p-7"
             >
               <ArrowLeft
@@ -221,7 +222,7 @@ export default async function FasePage({
                 className="h-6 w-6 shrink-0 text-accent transition-transform duration-300 group-hover:-translate-x-1.5"
               />
               <span>
-                <span className="block text-caption text-muted">Fase anterior</span>
+                <span className="block text-caption text-muted">{t.cycle.prevPhase}</span>
                 <span className="mt-0.5 block font-display text-h4 text-ink">
                   {prev.name}
                 </span>
@@ -229,11 +230,11 @@ export default async function FasePage({
             </Link>
 
             <Link
-              href={`/ciclo/${next.slug}`}
+              href={localizePath(`/ciclo/${next.slug}`, locale)}
               className="group card card-hover flex items-center justify-end gap-5 p-7 text-right"
             >
               <span>
-                <span className="block text-caption text-muted">Fase siguiente</span>
+                <span className="block text-caption text-muted">{t.cycle.nextPhase}</span>
                 <span className="mt-0.5 block font-display text-h4 text-ink">
                   {next.name}
                 </span>
@@ -247,17 +248,17 @@ export default async function FasePage({
 
           <div className="mt-8 text-center">
             <Link
-              href="/ciclo"
+              href={localizePath('/ciclo', locale)}
               className="inline-flex items-center gap-2.5 font-sans text-nav font-semibold text-muted transition-colors hover:text-ink"
             >
               <Salad strokeWidth={2} className="h-5 w-5" />
-              Ver las cuatro fases
+              {t.cycle.allPhases}
             </Link>
           </div>
         </Container>
       </Section>
 
-      <CtaBand source={`ciclo-${phase.slug}`} />
+      <CtaBand source={`ciclo-${phase.slug}`} locale={locale} />
     </>
   );
 }

@@ -6,6 +6,7 @@ import { Eyebrow } from '@/components/ui/eyebrow';
 import { StoreButtons } from './store-buttons';
 import { CtaBackdrop } from './cta-backdrop';
 import { Reveal } from '@/components/motion/reveal';
+import { getDictionary, type Locale } from '@/lib/i18n';
 
 /**
  * Closing conversion band — light, per the no-dark-backgrounds rule.
@@ -19,7 +20,14 @@ import { Reveal } from '@/components/motion/reveal';
  *
  * Reused verbatim at the foot of /ciclo/[fase] and /recetas/[slug].
  */
-export function CtaBand({ source = 'closing' }: { source?: string }) {
+export function CtaBand({
+  source = 'closing',
+  locale,
+}: {
+  source?: string;
+  locale: Locale;
+}) {
+  const t = getDictionary(locale);
   return (
     <section className="relative overflow-hidden bg-surface-raised py-24 lg:py-36">
       <CtaBackdrop />
@@ -81,46 +89,46 @@ export function CtaBand({ source = 'closing' }: { source?: string }) {
               className="animate-float mx-auto h-24 w-24 rounded-[1.5rem] shadow-lg"
             />
 
-            <Eyebrow className="mt-8">Disponible en iOS y Android</Eyebrow>
+            <Eyebrow className="mt-8">{t.cta.eyebrow}</Eyebrow>
 
             <h2 className="mt-5 text-h1 text-ink">
-              Tu ciclo, tu guía —{' '}
-              <span className="text-accent">en tu bolsillo</span>
+              {t.cta.title}{' '}
+              <span className="text-accent">{t.cta.accent}</span>
             </h2>
 
             <p className="mx-auto mt-6 max-w-xl text-lead text-muted">
-              Cada día, los alimentos y recetas que tu cuerpo necesita según tu
-              fase. Sin dietas, sin restricciones.
+              {t.cta.lead}
             </p>
 
             <ul className="mt-10 flex flex-wrap items-center justify-center gap-4">
               <Stat
                 icon={<Star strokeWidth={2.2} className="h-5 w-5 text-ovulation-ink" />}
                 value={STORE.rating}
-                label="Valoración"
+                label={t.cta.rating}
               />
               <Stat
                 icon={<ChefHat strokeWidth={2} className="h-5 w-5 text-menstrual-ink" />}
                 value={STORE.recipeCount}
-                label="Recetas"
+                label={t.cta.recipes}
               />
               <Stat
                 icon={
                   <CircleDashed strokeWidth={2} className="h-5 w-5 text-luteal-ink" />
                 }
                 value={STORE.phaseCount}
-                label="Fases"
+                label={t.cta.phases}
               />
             </ul>
 
             <StoreButtons
               source={source}
+              locale={locale}
               size="lg"
               className="mt-10 justify-center sm:inline-flex"
             />
 
             <p className="mt-6 text-caption text-muted">
-              Descarga gratis · Plan Hormonal desde la app
+              {t.cta.note}
             </p>
           </div>
         </Reveal>

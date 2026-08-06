@@ -16,5 +16,5 @@ export default async function Page({
 }) {
   const { locale: rawLocale } = await params;
   const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
-  return <LegalDocument doc={TERMINOS} />;
+  return <LegalDocument doc={TERMINOS} locale={locale} />;
 }

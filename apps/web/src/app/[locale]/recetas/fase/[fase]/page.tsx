@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
-import { isLocale, DEFAULT_LOCALE, getDictionary, type Locale } from '@/lib/i18n';
+import { isLocale, DEFAULT_LOCALE, getDictionary, localizePath, type Locale } from '@/lib/i18n';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-import { PHASES, getPhase, phaseDays, type PhaseSlug } from '@nutricycle/shared';
+import { getPhases, getPhase, phaseDays, type PhaseSlug } from '@nutricycle/shared';
 import { PageHero } from '@/components/layout/page-hero';
 import { Section } from '@/components/layout/section';
 import { SectionTexture } from '@/components/layout/section-texture';
@@ -15,7 +15,7 @@ import { getRecipesByPhase } from '@/lib/content';
 import { PHASE_HERO } from '@/lib/phase-hero';
 
 export function generateStaticParams() {
-  return PHASES.map((p) => ({ fase: p.slug }));
+  return getPhases(DEFAULT_LOCALE).map((p) => ({ fase: p.slug }));
 }
 
 export async function generateMetadata({
@@ -46,20 +46,20 @@ export default async function RecetasFasePage({
   const phase = getPhase(fase as PhaseSlug, locale);
   if (!phase) notFound();
 
-  const recipes = getRecipesByPhase(phase.slug);
+  const recipes = getRecipesByPhase(phase.slug, locale);
 
   return (
     <>
       <PageHero
-        eyebrow={`Recetas · ${phaseDays(phase, locale)}`}
-        title={`Fase ${phase.name.toLowerCase()},`}
+        eyebrow={`${t.pages.recetas.eyebrow} · ${phaseDays(phase, locale)}`}
+        title={`${t.cycle.phaseEyebrow} ${phase.name.toLowerCase()},`}
         accent={t.pages.recetas.phaseAccent}
         lead={phase.nutrition}
         image={PHASE_HERO[phase.slug].image}
         focal="center 50%"
         veil={PHASE_HERO[phase.slug].veil}
       >
-        <PhaseFilter active={phase.slug} />
+        <PhaseFilter active={phase.slug} locale={locale} />
       </PageHero>
 
       <Section surface="raised">
@@ -68,9 +68,9 @@ export default async function RecetasFasePage({
           {recipes.length === 0 ? (
             <Reveal>
               <EmptyState
-                title={`Aún no hay recetas para la fase ${phase.name.toLowerCase()}`}
-                body="Estamos publicando la selección por fases. La biblioteca completa está disponible en la app."
-                action={{ href: '/recetas', label: 'Ver todas las recetas' }}
+                title={`${t.content.recipesPhaseEmptyTitleBefore} ${phase.name.toLowerCase()}`}
+                body={t.content.recipesPhaseEmptyBody}
+                action={{ href: localizePath('/recetas', locale), label: t.recipes.seeAll }}
               />
             </Reveal>
           ) : (
@@ -85,10 +85,10 @@ export default async function RecetasFasePage({
 
           <Reveal className="mt-12 text-center" delay={220}>
             <Link
-              href={`/ciclo/${phase.slug}`}
+              href={localizePath(`/ciclo/${phase.slug}`, locale)}
               className="group inline-flex items-center gap-2.5 font-sans text-nav font-semibold text-action transition-colors hover:text-action-hover"
             >
-              Entender la fase {phase.name.toLowerCase()}
+              {t.recipes.understandPhase} {phase.name.toLowerCase()}
               <ArrowRight
                 strokeWidth={2.2}
                 className="h-5.5 w-5.5 transition-transform duration-300 group-hover:translate-x-1.5"
@@ -98,7 +98,7 @@ export default async function RecetasFasePage({
         </Container>
       </Section>
 
-      <CtaBand source={`recetas-${phase.slug}`} />
+      <CtaBand source={`recetas-${phase.slug}`} locale={locale} />
     </>
   );
 }

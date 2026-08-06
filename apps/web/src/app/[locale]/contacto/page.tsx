@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { isLocale, DEFAULT_LOCALE, getDictionary, type Locale } from '@/lib/i18n';
+import { isLocale, DEFAULT_LOCALE, getDictionary, localizePath, alternatesFor, type Locale } from '@/lib/i18n';
 import { Mail, HelpCircle, ShieldCheck, Store, ArrowRight } from 'lucide-react';
 import { SITE } from '@nutricycle/shared';
 import { PageHero } from '@/components/layout/page-hero';
@@ -10,12 +10,20 @@ import { Eyebrow } from '@/components/ui/eyebrow';
 import { Reveal } from '@/components/motion/reveal';
 import { CtaBand } from '@/components/marketing/cta-band';
 
-export const metadata: Metadata = {
-  title: 'Contacto — Nutricycle',
-  description:
-    'Escribinos a hola@aliciabasurto.com. Soporte de la app, privacidad y eliminación de datos, y consultas sobre la suscripción.',
-  alternates: { canonical: '/contacto' },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  const t = getDictionary(locale);
+  return {
+    title: t.meta.contacto.title,
+    description: t.meta.contacto.description,
+    alternates: { canonical: '/contacto', languages: alternatesFor('/contacto') },
+  };
+}
 
 /**
  * Email-first, no form — deliberately.
@@ -29,28 +37,10 @@ export const metadata: Metadata = {
  * Routing the reader to the right subject line does most of the work a
  * form's category dropdown would have done anyway.
  */
-const ROUTES = [
-  {
-    icon: HelpCircle,
-    title: 'Soporte de la app',
-    body: 'Algo no funciona, no podés entrar o la app se comporta raro.',
-    subject: 'Soporte Nutricycle',
-    tint: 'bg-luteal-soft text-luteal-ink',
-  },
-  {
-    icon: ShieldCheck,
-    title: 'Privacidad y datos',
-    body: 'Acceder a tus datos, corregirlos o eliminar tu cuenta por completo.',
-    subject: 'Solicitud sobre mis datos',
-    tint: 'bg-follicular-soft text-follicular-ink',
-  },
-  {
-    icon: Store,
-    title: 'Suscripción y pagos',
-    body: 'Dudas sobre el Plan Hormonal, restaurar una compra o cancelar.',
-    subject: 'Consulta sobre mi suscripción',
-    tint: 'bg-ovulation-soft text-ovulation-ink',
-  },
+const routes = (t: ReturnType<typeof getDictionary>) => [
+  { icon: HelpCircle, ...t.contact.reasons.support, tint: 'bg-luteal-soft text-luteal-ink' },
+  { icon: ShieldCheck, ...t.contact.reasons.privacy, tint: 'bg-follicular-soft text-follicular-ink' },
+  { icon: Store, ...t.contact.reasons.billing, tint: 'bg-ovulation-soft text-ovulation-ink' },
 ];
 
 export default async function ContactoPage({
@@ -77,7 +67,7 @@ export default async function ContactoPage({
         <SectionTexture src="/images/textures/arena.avif" scrim={0.9} />
         <Container className="relative">
           <ul className="grid gap-7 md:grid-cols-3">
-            {ROUTES.map((r, i) => (
+            {routes(t).map((r, i) => (
               <Reveal as="li" key={r.title} delay={i * 100} className="h-full">
                 <article className="card card-hover flex h-full flex-col p-8">
                   <span className={`icon-chip ${r.tint}`}>
@@ -113,19 +103,18 @@ export default async function ContactoPage({
                 {SITE.email}
               </a>
               <p className="mt-5 text-small text-muted">
-                Respondemos en días hábiles. Si tu consulta es sobre la
-                suscripción, mirá primero las{' '}
+                {t.contact.replyNoteBefore}{' '}
                 <a href="/faq#suscripcion" className="text-accent underline underline-offset-4">
-                  preguntas frecuentes
+                  {t.contact.replyNoteLink}
                 </a>{' '}
-                — suele estar resuelta ahí.
+                {t.contact.replyNoteAfter}
               </p>
             </div>
           </Reveal>
         </Container>
       </Section>
 
-      <CtaBand source="contacto" />
+      <CtaBand source="contacto" locale={locale} />
     </>
   );
 }

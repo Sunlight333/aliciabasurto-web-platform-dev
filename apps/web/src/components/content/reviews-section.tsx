@@ -8,7 +8,7 @@ import { Container } from '@/components/layout/container';
 import { Eyebrow } from '@/components/ui/eyebrow';
 import { Reveal } from '@/components/motion/reveal';
 import { getDictionary, type Locale } from '@/lib/i18n';
-import { REVIEWS, type Review } from '@/data/reviews';
+import { getReviews, type Review } from '@/data/reviews';
 import { cn } from '@/lib/cn';
 
 /** Pixels per second. Slow enough to read a card as it passes. */
@@ -75,6 +75,8 @@ export function ReviewsSection({
   title?: React.ReactNode;
 }) {
   const t = getDictionary(locale);
+  const reviews = getReviews(locale);
+  const count = reviews.length;
   const trackRef = useRef<HTMLUListElement>(null);
   const [dragging, setDragging] = useState(false);
 
@@ -101,8 +103,8 @@ export function ReviewsSection({
      *  and padding can never make it drift. */
     const setWidth = () => {
       const kids = track.children as HTMLCollectionOf<HTMLElement>;
-      if (kids.length <= REVIEWS.length) return 0;
-      return kids[REVIEWS.length].offsetLeft - kids[0].offsetLeft;
+      if (kids.length <= count) return 0;
+      return kids[count].offsetLeft - kids[0].offsetLeft;
     };
 
     // Start in the middle copy so there is runway in both directions.
@@ -182,7 +184,7 @@ export function ReviewsSection({
       io?.disconnect();
       window.removeEventListener('resize', onResize);
     };
-  }, []);
+  }, [count]);
 
   // ----- pointer drag (mouse only; touch keeps native momentum scrolling)
   const onPointerDown = (e: React.PointerEvent<HTMLUListElement>) => {
@@ -215,7 +217,7 @@ export function ReviewsSection({
     boost.current += dir * (first ? first.clientWidth + 24 : 320);
   };
 
-  const items = Array.from({ length: SETS }, () => REVIEWS).flat();
+  const items = Array.from({ length: SETS }, () => reviews).flat();
 
   return (
     // `isolate` gives this section its own stacking context, so the cards'
@@ -257,7 +259,7 @@ export function ReviewsSection({
         {items.map((review, i) => (
           <li
             key={`${review.id}-${i}`}
-            aria-hidden={i >= REVIEWS.length}
+            aria-hidden={i >= count}
             className="w-[var(--rc)] shrink-0 will-change-transform"
           >
             {variant === 'ficha' ? (

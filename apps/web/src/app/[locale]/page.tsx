@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { isLocale, DEFAULT_LOCALE, type Locale } from '@/lib/i18n';
+import { isLocale, DEFAULT_LOCALE, alternatesFor, getDictionary, type Locale } from '@/lib/i18n';
 import { Hero } from '@/components/marketing/hero';
 import { ProblemSection } from '@/components/content/problem-section';
 import { HowItWorks } from '@/components/content/how-it-works';
@@ -9,12 +9,20 @@ import { FounderSection } from '@/components/content/founder-section';
 import { ReviewsSection } from '@/components/content/reviews-section';
 import { CtaBand } from '@/components/marketing/cta-band';
 
-export const metadata: Metadata = {
-  title: 'Nutricycle — Come con tu ciclo, vuelve a sentirte tú',
-  description:
-    'Nutricycle adapta tu alimentación, recetas y rutinas a cada fase de tu ciclo menstrual. Recetas por fase, gráfico hormonal y asesora con IA. Gratis en iOS y Android.',
-  alternates: { canonical: '/' },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  const t = getDictionary(locale);
+  return {
+    title: t.meta.home.title,
+    description: t.meta.home.description,
+    alternates: { canonical: '/', languages: alternatesFor('/') },
+  };
+}
 
 /**
  * Landing page — 8 sections.
@@ -40,7 +48,7 @@ export default async function HomePage({
       <FeaturesSection locale={locale} />
       <FounderSection locale={locale} />
       <ReviewsSection locale={locale} />
-      <CtaBand source="home-closing" />
+      <CtaBand source="home-closing" locale={locale} />
     </>
   );
 }

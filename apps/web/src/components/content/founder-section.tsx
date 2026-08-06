@@ -1,5 +1,5 @@
 import { ArrowRight, Leaf, CircleDashed, HeartHandshake } from 'lucide-react';
-import { getDictionary, type Locale } from '@/lib/i18n';
+import { getDictionary, localizePath, type Locale } from '@/lib/i18n';
 import { Section } from '@/components/layout/section';
 import { Container } from '@/components/layout/container';
 import { Eyebrow } from '@/components/ui/eyebrow';
@@ -17,19 +17,10 @@ import { PortraitRotator, type Portrait } from './portrait-rotator';
  * frame is still worth requesting (image-assets.md §5 gap #3); dropping
  * it back to two is one deletion.
  */
-const PORTRAITS: readonly Portrait[] = [
-  {
-    src: '/images/alicia/portrait-smiling.jpg',
-    alt: 'Alicia Basurto, health coach de nutrición hormonal, en su cocina',
-  },
-  {
-    src: '/images/alicia/portrait-tea.jpg',
-    alt: 'Alicia Basurto sosteniendo una infusión en su cocina',
-  },
-  {
-    src: '/images/alicia/kitchen-chopping-alt.avif',
-    alt: 'Alicia Basurto cortando verduras frescas en su cocina',
-  },
+const portraits = (t: ReturnType<typeof getDictionary>): readonly Portrait[] => [
+  { src: '/images/alicia/portrait-smiling.jpg', alt: t.home.founder.alt.smiling },
+  { src: '/images/alicia/portrait-tea.jpg', alt: t.home.founder.alt.tea },
+  { src: '/images/alicia/kitchen-chopping-alt.avif', alt: t.home.founder.alt.chopping },
 ];
 
 /**
@@ -47,25 +38,10 @@ const PORTRAITS: readonly Portrait[] = [
  *
  * No app CTA by design — the closing band owns the download ask.
  */
-const PILLARS = [
-  {
-    icon: Leaf,
-    title: 'La comida como medicina',
-    body: 'Cada alimento elegido por lo que le hace a tus hormonas.',
-    tint: 'bg-follicular-soft text-follicular-ink',
-  },
-  {
-    icon: CircleDashed,
-    title: 'Sincronizada a tu ciclo',
-    body: 'Lo que tu cuerpo necesita cambia cada semana. Tu plan también.',
-    tint: 'bg-luteal-soft text-luteal-ink',
-  },
-  {
-    icon: HeartHandshake,
-    title: 'Sin dietas restrictivas',
-    body: 'Nada de contar calorías ni prohibirte comida.',
-    tint: 'bg-menstrual-soft text-menstrual-ink',
-  },
+const pillars = (t: ReturnType<typeof getDictionary>) => [
+  { icon: Leaf, ...t.home.founder.pillars.medicine, tint: 'bg-follicular-soft text-follicular-ink' },
+  { icon: CircleDashed, ...t.home.founder.pillars.synced, tint: 'bg-luteal-soft text-luteal-ink' },
+  { icon: HeartHandshake, ...t.home.founder.pillars.noDiets, tint: 'bg-menstrual-soft text-menstrual-ink' },
 ];
 
 export function FounderSection({ locale }: { locale: Locale }) {
@@ -100,7 +76,7 @@ export function FounderSection({ locale }: { locale: Locale }) {
               />
 
               <div className="relative overflow-hidden rounded-[2rem] border-4 border-white shadow-xl transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-1.5">
-                <PortraitRotator images={PORTRAITS} className="aspect-[4/5]" />
+                <PortraitRotator images={portraits(t)} className="aspect-[4/5]" />
               </div>
 
               {/* Desktop only. On mobile the columns stack, putting this
@@ -108,10 +84,10 @@ export function FounderSection({ locale }: { locale: Locale }) {
                   repetition read as a mistake. */}
               <div className="glass-strong relative z-10 -mt-10 ml-6 mr-10 hidden rounded-2xl px-6 py-5 shadow-lg lg:block">
                 <p className="font-display text-h4 font-semibold text-ink">
-                  Alicia Basurto
+                  {t.home.founder.name}
                 </p>
                 <p className="mt-1 text-caption text-muted">
-                  Health coach de nutrición hormonal
+                  {t.home.founder.role}
                 </p>
               </div>
             </div>
@@ -119,36 +95,28 @@ export function FounderSection({ locale }: { locale: Locale }) {
 
           {/* ---------- Copy ---------- */}
           <Reveal className="lg:col-span-7 lg:order-1" delay={140}>
-            <Eyebrow>Sobre mí</Eyebrow>
+            <Eyebrow>{t.home.founder.eyebrow}</Eyebrow>
 
             {/* Deliberate two-line lockup — as one run it orphaned "Cíclica". */}
             <h2 className="mt-5 text-h2 text-ink">
-              Alicia Basurto:
+              {t.home.founder.titleBefore}
               <br />
-              <span className="text-accent">Nutrición Cíclica</span>
+              <span className="text-accent">{t.home.founder.accent}</span>
             </h2>
 
             <blockquote className="mt-8 border-l-2 border-accent-display/50 pl-6">
               <p className="font-display text-h3 leading-snug text-ink italic">
-                La comida correcta en el momento correcto.
+                {t.home.founder.quote}
               </p>
             </blockquote>
 
             <div className="mt-7 max-w-xl space-y-5 text-body text-muted">
-              <p>
-                Durante años mi cuerpo fue una espiral de acné, fatiga y
-                desequilibrios que afectaban mi calidad de vida.
-              </p>
-              <p>
-                Después de seis años revirtiendo mis propios síntomas, consolidé
-                una metodología basada en la alimentación como medicina. Hoy mi
-                misión es enseñar a otras mujeres a sincronizar sus hábitos con la
-                inteligencia de su ciclo menstrual.
-              </p>
+              <p>{t.home.founder.body1}</p>
+              <p>{t.home.founder.body2}</p>
             </div>
 
             <ul className="mt-10 flex flex-col gap-px overflow-hidden rounded-card border border-white/70 bg-white/50">
-              {PILLARS.map(({ icon: Icon, title, body, tint }) => (
+              {pillars(t).map(({ icon: Icon, title, body, tint }) => (
                 <li key={title} className="flex items-start gap-5 bg-white/70 p-5">
                   <span
                     className={`grid h-12 w-12 shrink-0 place-items-center rounded-xl ${tint}`}
@@ -166,10 +134,10 @@ export function FounderSection({ locale }: { locale: Locale }) {
             </ul>
 
             <a
-              href="/sobre"
+              href={localizePath('/sobre', locale)}
               className="group mt-10 inline-flex items-center gap-2.5 rounded-full bg-action px-7 py-4 font-sans text-nav font-semibold text-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:bg-action-hover hover:shadow-lg"
             >
-              Conóceme
+              {t.home.founder.cta}
               <ArrowRight
                 strokeWidth={2.2}
                 className="h-5.5 w-5.5 transition-transform duration-300 group-hover:translate-x-1.5"

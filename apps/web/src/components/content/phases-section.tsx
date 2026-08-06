@@ -1,5 +1,5 @@
-import { PHASES, phaseDays, type Phase } from '@nutricycle/shared';
-import type { Locale } from '@/lib/i18n';
+import { getPhases, phaseDays, type Phase } from '@nutricycle/shared';
+import { getDictionary, localizePath, type Locale } from '@/lib/i18n';
 import { Droplet, Sprout, Sun, Moon, ArrowRight } from 'lucide-react';
 import { Section } from '@/components/layout/section';
 import { Container } from '@/components/layout/container';
@@ -41,19 +41,20 @@ const STYLES: Record<
 };
 
 export function PhasesSection({ locale }: { locale: Locale }) {
+  const t = getDictionary(locale);
   return (
     <Section surface="sunken">
       <Container>
         <Reveal className="mx-auto max-w-2xl text-center">
-          <Eyebrow>Las 4 fases</Eyebrow>
+          <Eyebrow>{t.home.phases.eyebrow}</Eyebrow>
           <h2 className="mt-5 text-h2 text-ink">
-            Un plan diferente para cada{' '}
-            <span className="text-accent">momento de tu ciclo</span>
+            {t.home.phases.title}{' '}
+            <span className="text-accent">{t.home.phases.accent}</span>
           </h2>
         </Reveal>
 
         <ul className="mt-14 grid gap-7 sm:grid-cols-2 xl:grid-cols-4">
-          {PHASES.map((phase, i) => (
+          {getPhases(locale).map((phase, i) => (
             <Reveal as="li" key={phase.slug} delay={i * 100} className="h-full">
               <PhaseCard phase={phase} locale={locale} />
             </Reveal>
@@ -62,10 +63,10 @@ export function PhasesSection({ locale }: { locale: Locale }) {
 
         <Reveal className="mt-12 text-center" delay={440}>
           <a
-            href="/ciclo"
+            href={localizePath('/ciclo', locale)}
             className="group inline-flex items-center gap-2.5 rounded-full border border-hairline-strong bg-white px-7 py-4 font-sans text-nav font-semibold text-ink shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
           >
-            Explora las fases
+            {t.home.phases.cta}
             <ArrowRight
               strokeWidth={2.2}
               className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1.5"

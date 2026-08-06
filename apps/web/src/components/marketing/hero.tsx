@@ -68,7 +68,7 @@ export function Hero({ locale }: { locale: Locale }) {
           <StoreButtons
             source="home-hero"
             className="mt-9 w-full max-w-xs justify-center sm:max-w-lg lg:max-w-none lg:flex-col lg:items-stretch"
-          />
+          locale={locale} />
 
           <p className="mt-5 text-caption font-medium text-muted">
             {t.home.hero.note}
@@ -80,13 +80,13 @@ export function Hero({ locale }: { locale: Locale }) {
             <Stat
               icon={<Star strokeWidth={2.2} className="h-5 w-5 text-ovulation-ink" />}
               value={STORE.rating}
-              label="Valoración"
+              label={t.cta.rating}
             />
             <li aria-hidden className="my-3 w-px bg-hairline" />
             <Stat
               icon={<ChefHat strokeWidth={2} className="h-5 w-5 text-menstrual-ink" />}
               value={STORE.recipeCount}
-              label="Recetas"
+              label={t.cta.recipes}
             />
             <li aria-hidden className="my-3 w-px bg-hairline" />
             <Stat
@@ -94,7 +94,7 @@ export function Hero({ locale }: { locale: Locale }) {
                 <CircleDashed strokeWidth={2} className="h-5 w-5 text-luteal-ink" />
               }
               value={STORE.phaseCount}
-              label="Fases"
+              label={t.cta.phases}
             />
           </ul>
         </div>

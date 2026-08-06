@@ -1,4 +1,4 @@
-import type { PhaseSlug } from '@nutricycle/shared';
+import { DEFAULT_LOCALE, type Locale, type PhaseSlug } from '@nutricycle/shared';
 import type { Article, Recipe, Video } from './index';
 import cremaDeZapallo from '@/content/recipes/crema-de-zapallo.json';
 import videos from '@/content/videos.json';
@@ -40,16 +40,26 @@ const VIDEOS: Video[] = videos as Video[];
 const published = <T extends { publishedToWeb: boolean }>(items: T[]) =>
   items.filter((i) => i.publishedToWeb);
 
-export function getRecipes(): Recipe[] {
-  return published(RECIPES);
+/**
+ * Merge an item's English overlay when the locale asks for it.
+ *
+ * The overlay is spread over the Spanish item rather than replacing it, so
+ * untranslated fields keep their Spanish value instead of coming back
+ * undefined and rendering a blank card.
+ */
+const localize = <T extends { en?: object }>(item: T, locale: Locale): T =>
+  locale === 'en' && item.en ? { ...item, ...item.en } : item;
+
+export function getRecipes(locale: Locale = DEFAULT_LOCALE): Recipe[] {
+  return published(RECIPES).map((r) => localize(r, locale));
 }
 
-export function getRecipe(slug: string): Recipe | undefined {
-  return getRecipes().find((r) => r.slug === slug);
+export function getRecipe(slug: string, locale: Locale = DEFAULT_LOCALE): Recipe | undefined {
+  return getRecipes(locale).find((r) => r.slug === slug);
 }
 
-export function getRecipesByPhase(phase: PhaseSlug): Recipe[] {
-  return getRecipes().filter((r) => r.phase === phase);
+export function getRecipesByPhase(phase: PhaseSlug, locale: Locale = DEFAULT_LOCALE): Recipe[] {
+  return getRecipes(locale).filter((r) => r.phase === phase);
 }
 
 export function getArticles(): Article[] {
@@ -60,8 +70,8 @@ export function getArticle(slug: string): Article | undefined {
   return getArticles().find((a) => a.slug === slug);
 }
 
-export function getVideos(): Video[] {
-  return published(VIDEOS);
+export function getVideos(locale: Locale = DEFAULT_LOCALE): Video[] {
+  return published(VIDEOS).map((v) => localize(v, locale));
 }
 
 export interface SearchHit {
@@ -73,14 +83,14 @@ export interface SearchHit {
 }
 
 /** Substring match over title and excerpt — adequate at this corpus size. */
-export function search(query: string): SearchHit[] {
+export function search(query: string, locale: Locale = DEFAULT_LOCALE): SearchHit[] {
   const q = query.trim().toLowerCase();
   if (q.length < 2) return [];
 
   const hit = (text: string) => text.toLowerCase().includes(q);
 
   return [
-    ...getRecipes()
+    ...getRecipes(locale)
       .filter((r) => hit(r.title) || hit(r.excerpt))
       .map((r): SearchHit => ({
         kind: 'receta',
@@ -98,7 +108,7 @@ export function search(query: string): SearchHit[] {
         excerpt: a.excerpt,
         href: `/blog/${a.slug}`,
       })),
-    ...getVideos()
+    ...getVideos(locale)
       .filter((v) => hit(v.title) || hit(v.excerpt))
       .map((v): SearchHit => ({
         kind: 'video',

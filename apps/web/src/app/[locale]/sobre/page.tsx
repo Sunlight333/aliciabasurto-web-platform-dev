@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { isLocale, DEFAULT_LOCALE, getDictionary, type Locale } from '@/lib/i18n';
+import { isLocale, DEFAULT_LOCALE, getDictionary, localizePath, alternatesFor, type Locale } from '@/lib/i18n';
 import Image from 'next/image';
 import { Leaf, CircleDashed, HeartHandshake, ArrowRight, AlertTriangle } from 'lucide-react';
 import { PageHero } from '@/components/layout/page-hero';
@@ -12,12 +12,20 @@ import { CtaBand } from '@/components/marketing/cta-band';
 import { FullBleedQuote } from '@/components/marketing/full-bleed-quote';
 import { ReviewsSection } from '@/components/content/reviews-section';
 
-export const metadata: Metadata = {
-  title: 'Sobre Alicia Basurto — Nutrición Cíclica',
-  description:
-    'Health coach de nutrición hormonal. Después de seis años revirtiendo sus propios síntomas, Alicia consolidó un método basado en la alimentación como medicina.',
-  alternates: { canonical: '/sobre' },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  const t = getDictionary(locale);
+  return {
+    title: t.meta.sobre.title,
+    description: t.meta.sobre.description,
+    alternates: { canonical: '/sobre', languages: alternatesFor('/sobre') },
+  };
+}
 
 /**
  * Follows about-page.md §3 exactly: hero, story, credentials, full-bleed
@@ -32,29 +40,14 @@ export const metadata: Metadata = {
  *   happen, so the section states what is verifiable and asks for the
  *   rest.
  * - Proof. The marquee is built and wired, but every quote, name and
- *   portrait in `getReviews(locale)` is placeholder — no testimonial has consent to
+ *   portrait in `REVIEWS` is placeholder — no testimonial has consent to
  *   publish yet. See the warning at the head of data/reviews.ts: this
  *   section must not go live until real reviews replace them.
  */
-const PILLARS = [
-  {
-    icon: Leaf,
-    title: 'La comida como medicina',
-    body: 'Cada alimento elegido por lo que le hace a tus hormonas, no por sus calorías.',
-    tint: 'bg-follicular-soft text-follicular-ink',
-  },
-  {
-    icon: CircleDashed,
-    title: 'Sincronizada a tu ciclo',
-    body: 'Lo que tu cuerpo necesita cambia cada semana. Tu plan también.',
-    tint: 'bg-luteal-soft text-luteal-ink',
-  },
-  {
-    icon: HeartHandshake,
-    title: 'Sin dietas restrictivas',
-    body: 'Nada de contar calorías ni prohibirte comida. Ese camino ya lo probaste.',
-    tint: 'bg-menstrual-soft text-menstrual-ink',
-  },
+const pillars = (t: ReturnType<typeof getDictionary>) => [
+  { icon: Leaf, ...t.about.pillars.medicine, tint: 'bg-follicular-soft text-follicular-ink' },
+  { icon: CircleDashed, ...t.about.pillars.synced, tint: 'bg-luteal-soft text-luteal-ink' },
+  { icon: HeartHandshake, ...t.about.pillars.noDiets, tint: 'bg-menstrual-soft text-menstrual-ink' },
 ];
 
 export default async function SobrePage({
@@ -80,34 +73,15 @@ export default async function SobrePage({
         <Container>
           <div className="grid items-start gap-14 lg:grid-cols-12 lg:gap-16">
             <Reveal className="lg:col-span-7">
-              <Eyebrow>Mi historia</Eyebrow>
+              <Eyebrow>{t.about.storyEyebrow}</Eyebrow>
               <h2 className="mt-5 text-h2 text-ink">
-                Empecé <span className="text-accent">por necesidad</span>
+                {t.about.storyTitle} <span className="text-accent">{t.about.storyAccent}</span>
               </h2>
 
               <div className="mt-8 space-y-6 text-body text-muted">
-                <p>
-                  Durante años mi cuerpo fue una espiral de acné, fatiga y
-                  desequilibrios que afectaban mi calidad de vida. Probé lo que
-                  prueba casi todo el mundo: dietas más estrictas, más disciplina,
-                  más culpa cuando no funcionaba.
-                </p>
-                <p>
-                  Lo que no había entendido es que estaba comiendo igual las cuatro
-                  semanas del mes, mientras mi cuerpo cambiaba por completo entre
-                  una y otra. No era falta de disciplina. Era falta de contexto.
-                </p>
-                <p>
-                  Después de seis años revirtiendo mis propios síntomas, consolidé
-                  una metodología basada en la alimentación como medicina —
-                  ajustada a cada fase del ciclo, sin restricciones y sin contar
-                  calorías.
-                </p>
-                <p>
-                  Hoy mi misión es que otras mujeres no tarden seis años en
-                  descubrir lo mismo. Nutricycle es ese método, ordenado y
-                  automatizado, para que no tengas que llevar la cuenta vos.
-                </p>
+                {t.about.story.map((para) => (
+                  <p key={para.slice(0, 24)}>{para}</p>
+                ))}
               </div>
             </Reveal>
 
@@ -121,7 +95,7 @@ export default async function SobrePage({
                   <div className="relative aspect-[2/3]">
                     <Image
                       src="/images/alicia/portrait-smiling.jpg"
-                      alt="Alicia Basurto, health coach de nutrición hormonal, en su cocina"
+                      alt={t.home.founder.alt.smiling}
                       fill
                       priority
                       sizes="(min-width: 1024px) 420px, 90vw"
@@ -140,17 +114,13 @@ export default async function SobrePage({
         <SectionTexture src="/images/textures/papel.avif" />
         <Container className="relative" size="prose">
           <Reveal>
-            <Eyebrow>Formación</Eyebrow>
+            <Eyebrow>{t.about.credentialsEyebrow}</Eyebrow>
             <h2 className="mt-5 text-h2 text-ink">
-              De dónde viene <span className="text-accent">el método</span>
+              {t.about.credentialsTitle} <span className="text-accent">{t.about.credentialsAccent}</span>
             </h2>
 
             <ul className="mt-9 flex flex-col gap-4">
-              {[
-                'Seis años aplicando y ajustando el método en mi propio ciclo antes de enseñarlo.',
-                'Acompañamiento a mujeres con SPM, SOP, acné hormonal, fatiga y ciclos irregulares.',
-                'Más de 40 recetas desarrolladas y clasificadas por fase del ciclo.',
-              ].map((c) => (
+              {t.about.credentials.map((c) => (
                 <li key={c} className="card flex gap-4 p-6">
                   <span
                     aria-hidden
@@ -169,9 +139,8 @@ export default async function SobrePage({
                 className="mt-0.5 h-5 w-5 shrink-0 text-ovulation-ink"
               />
               <span>
-                <strong className="font-semibold">Pendiente del cliente:</strong>{' '}
-                titulaciones, certificaciones y años de práctica profesional. Esta
-                lista sólo recoge lo verificable hoy — nada aquí está inventado.
+                <strong className="font-semibold">{t.about.pendingLabel}</strong>{' '}
+                {t.about.pendingBody}
               </span>
             </p>
           </Reveal>
@@ -179,8 +148,8 @@ export default async function SobrePage({
       </Section>
 
       <FullBleedQuote
-        quote="La comida correcta en el momento correcto."
-        attribution="Alicia Basurto"
+        quote={t.home.founder.quote}
+        attribution={t.home.founder.name}
         image="/images/alicia/kitchen-wide.avif"
       />
 
@@ -188,14 +157,14 @@ export default async function SobrePage({
       <Section surface="lilac">
         <Container>
           <Reveal className="mx-auto max-w-2xl text-center">
-            <Eyebrow>El método</Eyebrow>
+            <Eyebrow>{t.about.methodEyebrow}</Eyebrow>
             <h2 className="mt-5 text-h2 text-ink">
-              Tres cosas que <span className="text-accent">no negocio</span>
+              {t.about.methodTitle} <span className="text-accent">{t.about.methodAccent}</span>
             </h2>
           </Reveal>
 
           <ul className="mt-14 grid gap-7 md:grid-cols-3">
-            {PILLARS.map((p, i) => (
+            {pillars(t).map((p, i) => (
               <Reveal as="li" key={p.title} delay={i * 100} className="h-full">
                 <article className="card card-hover h-full p-8">
                   <span className={`icon-chip ${p.tint}`}>
@@ -210,10 +179,10 @@ export default async function SobrePage({
 
           <Reveal className="mt-12 text-center" delay={340}>
             <a
-              href="/como-funciona"
+              href={localizePath('/como-funciona', locale)}
               className="group inline-flex items-center gap-2.5 rounded-full bg-white px-7 py-4 font-sans text-nav font-semibold text-ink shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
             >
-              Cómo lo aplica la app
+              {t.about.methodCta}
               <ArrowRight
                 strokeWidth={2.2}
                 className="h-5.5 w-5.5 transition-transform duration-300 group-hover:translate-x-1.5"
@@ -235,7 +204,7 @@ export default async function SobrePage({
         }
       />
 
-      <CtaBand source="sobre" />
+      <CtaBand source="sobre" locale={locale} />
     </>
   );
 }

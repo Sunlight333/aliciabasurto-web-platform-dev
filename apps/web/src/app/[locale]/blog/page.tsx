@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { isLocale, DEFAULT_LOCALE, getDictionary, type Locale } from '@/lib/i18n';
+import { isLocale, DEFAULT_LOCALE, getDictionary, localizePath, alternatesFor, type Locale } from '@/lib/i18n';
 import Link from 'next/link';
 import { PageHero } from '@/components/layout/page-hero';
 import { Section } from '@/components/layout/section';
@@ -10,12 +10,20 @@ import { CtaBand } from '@/components/marketing/cta-band';
 import { EmptyState } from '@/components/content/content-pieces';
 import { getArticles } from '@/lib/content';
 
-export const metadata: Metadata = {
-  title: 'Educación hormonal — artículos',
-  description:
-    'Artículos sobre el ciclo menstrual, las hormonas y la nutrición cíclica. Qué pasa en cada fase y cómo acompañarlo con la alimentación.',
-  alternates: { canonical: '/blog' },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  const t = getDictionary(locale);
+  return {
+    title: t.meta.blog.title,
+    description: t.meta.blog.description,
+    alternates: { canonical: '/blog', languages: alternatesFor('/blog') },
+  };
+}
 
 export default async function BlogPage({
   params,
@@ -46,8 +54,8 @@ export default async function BlogPage({
             <Reveal>
               <EmptyState
                 title={t.pages.blog.emptyTitle}
-                body="Mientras tanto, la guía de las cuatro fases explica lo esencial: qué pasa en tu cuerpo cada semana y qué comer en cada una."
-                action={{ href: '/ciclo', label: 'Ver las 4 fases' }}
+                body={t.content.articlesEmptyBody}
+                action={{ href: localizePath('/ciclo', locale), label: t.content.articlesEmptyAction }}
               />
             </Reveal>
           ) : (
@@ -69,7 +77,7 @@ export default async function BlogPage({
         </Container>
       </Section>
 
-      <CtaBand source="blog" />
+      <CtaBand source="blog" locale={locale} />
     </>
   );
 }

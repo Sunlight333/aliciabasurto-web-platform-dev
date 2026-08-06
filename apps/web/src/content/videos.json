@@ -6,7 +6,11 @@
     "phase": "general",
     "duration": 25.2,
     "publishedToWeb": true,
-    "source": "Video del cliente #21"
+    "source": "Video del cliente #21",
+    "en": {
+      "title": "Carrot and cheese taco",
+      "excerpt": "The tortilla is built from grated carrot and cheese, baked until golden, then filled with beef, avocado and pico de gallo."
+    }
   },
   {
     "slug": "pan-de-psyllium",
@@ -15,7 +19,11 @@
     "phase": "general",
     "duration": 14.57,
     "publishedToWeb": true,
-    "source": "Video del cliente #22"
+    "source": "Video del cliente #22",
+    "en": {
+      "title": "Psyllium bread",
+      "excerpt": "Whipped whites, yolks, almond flour and psyllium. Into the tin, into the oven, and out comes a moist crumb that slices cleanly."
+    }
   },
   {
     "slug": "tortilla-de-col-y-zanahoria",
@@ -24,7 +32,11 @@
     "phase": "general",
     "duration": 16.57,
     "publishedToWeb": true,
-    "source": "Video del cliente #24"
+    "source": "Video del cliente #24",
+    "en": {
+      "title": "Cabbage and carrot tortilla",
+      "excerpt": "Red cabbage and carrot in ribbons, bound together and browned in the pan. Finished with a pale cream on top and chopped chives."
+    }
   },
   {
     "slug": "pan-con-huevo-y-ensalada-verde",
@@ -33,7 +45,11 @@
     "phase": "general",
     "duration": 12.63,
     "publishedToWeb": true,
-    "source": "Video del cliente #25"
+    "source": "Video del cliente #25",
+    "en": {
+      "title": "Bread with egg and green salad",
+      "excerpt": "Scrambled eggs just set, tomatoes and spinach a minute in the pan, and sourdough bread with nut butter."
+    }
   },
   {
     "slug": "wrap-de-arroz-con-atun",
@@ -42,7 +58,11 @@
     "phase": "general",
     "duration": 9.27,
     "publishedToWeb": true,
-    "source": "Video del cliente #26"
+    "source": "Video del cliente #26",
+    "en": {
+      "title": "Rice wrap with tuna",
+      "excerpt": "A rice and egg base browned in the pan, mashed avocado on top, tuna, red onion and a spoonful of cream."
+    }
   },
   {
     "slug": "fideos-con-sardinas",
@@ -51,7 +71,11 @@
     "phase": "general",
     "duration": 19.5,
     "publishedToWeb": true,
-    "source": "Video del cliente #27"
+    "source": "Video del cliente #27",
+    "en": {
+      "title": "Pasta with sardines",
+      "excerpt": "Red onion, garlic, pepper, olives and sardines make the sauce. The pasta goes in and it finishes with fresh parsley."
+    }
   },
   {
     "slug": "granola-de-tiramisu",
@@ -60,7 +84,11 @@
     "phase": "general",
     "duration": 23.47,
     "publishedToWeb": true,
-    "source": "Video del cliente #28"
+    "source": "Video del cliente #28",
+    "en": {
+      "title": "Tiramisu granola",
+      "excerpt": "Oats, nuts and seeds mixed with cocoa and a sweet binder, spread on a tray and baked until crisp."
+    }
   },
   {
     "slug": "lentejas-rojas-al-curry",
@@ -69,7 +97,11 @@
     "phase": "general",
     "duration": 8.37,
     "publishedToWeb": true,
-    "source": "Video del cliente #29"
+    "source": "Video del cliente #29",
+    "en": {
+      "title": "Red lentil curry",
+      "excerpt": "Red onion in the base of the pot, red lentils, tomato and coconut milk. Cooked down until thick and finished with coriander."
+    }
   },
   {
     "slug": "granola-con-yogurt-y-kiwi",
@@ -78,7 +110,11 @@
     "phase": "general",
     "duration": 6,
     "publishedToWeb": true,
-    "source": "Video del cliente #30"
+    "source": "Video del cliente #30",
+    "en": {
+      "title": "Granola with yoghurt and kiwi",
+      "excerpt": "Yoghurt, cocoa granola and sliced kiwi. Six seconds and three ingredients: the fastest breakfast in the series."
+    }
   },
   {
     "slug": "quinoa-de-chocolate",
@@ -87,6 +123,10 @@
     "phase": "general",
     "duration": 14.07,
     "publishedToWeb": true,
-    "source": "Video del cliente #31"
+    "source": "Video del cliente #31",
+    "en": {
+      "title": "Chocolate quinoa",
+      "excerpt": "Cooked quinoa with mashed banana and cocoa, served in a bowl and finished with banana slices, coconut flakes and raspberries."
+    }
   }
 ]

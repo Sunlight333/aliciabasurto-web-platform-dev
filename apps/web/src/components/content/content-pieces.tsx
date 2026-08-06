@@ -1,8 +1,8 @@
 import Link from 'next/link';
-import type { Locale } from '@/lib/i18n';
 import Image from 'next/image';
 import { Clock, Users, ArrowRight, Inbox, Play } from 'lucide-react';
-import { PHASES, getPhase, type PhaseSlug } from '@nutricycle/shared';
+import { getPhases, getPhase, type PhaseSlug } from '@nutricycle/shared';
+import { getDictionary, localizePath, type Locale } from '@/lib/i18n';
 import type { Recipe, Video } from '@/lib/content';
 import { formatDuration, videoPoster } from '@/lib/media';
 import { cn } from '@/lib/cn';
@@ -55,8 +55,9 @@ export function EmptyState({
 
 export function RecipeCard({ recipe, locale }: { recipe: Recipe; locale: Locale }) {
   const phase = getPhase(recipe.phase, locale);
+  const t = getDictionary(locale);
   return (
-    <Link href={`/recetas/${recipe.slug}`} className="card card-hover flex h-full flex-col p-8">
+    <Link href={localizePath(`/recetas/${recipe.slug}`, locale)} className="card card-hover flex h-full flex-col p-8">
       <div className="flex flex-wrap items-center gap-2.5">
         <span
           className={cn(
@@ -64,10 +65,10 @@ export function RecipeCard({ recipe, locale }: { recipe: Recipe; locale: Locale 
             PHASE_CHIP[recipe.phase],
           )}
         >
-          Fase {phase?.name.toLowerCase()}
+          {t.cycle.phaseEyebrow} {phase?.name.toLowerCase()}
         </span>
         <span className="inline-flex rounded-full bg-surface-sunken px-3.5 py-1.5 font-sans text-caption font-medium text-muted capitalize">
-          {recipe.mealType}
+          {t.content.mealType[recipe.mealType]}
         </span>
       </div>
 
@@ -137,12 +138,19 @@ export function VideoCard({ video }: { video: Video }) {
 }
 
 /** Phase filter row, shared by /recetas and /recetas/fase/[fase]. */
-export function PhaseFilter({ active }: { active?: PhaseSlug }) {
+export function PhaseFilter({
+  active,
+  locale,
+}: {
+  active?: PhaseSlug;
+  locale: Locale;
+}) {
+  const t = getDictionary(locale);
   return (
     <ul className="flex flex-wrap justify-center gap-3">
       <li>
         <Link
-          href="/recetas"
+          href={localizePath('/recetas', locale)}
           aria-current={!active ? 'page' : undefined}
           className={cn(
             'inline-flex rounded-full border px-5 py-2.5 font-sans text-caption font-semibold shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md',
@@ -151,13 +159,13 @@ export function PhaseFilter({ active }: { active?: PhaseSlug }) {
               : 'border-hairline bg-white text-ink',
           )}
         >
-          Todas
+          {t.recipes.all}
         </Link>
       </li>
-      {PHASES.map((p) => (
+      {getPhases(locale).map((p) => (
         <li key={p.slug}>
           <Link
-            href={`/recetas/fase/${p.slug}`}
+            href={localizePath(`/recetas/fase/${p.slug}`, locale)}
             aria-current={active === p.slug ? 'page' : undefined}
             className={cn(
               'inline-flex rounded-full border px-5 py-2.5 font-sans text-caption font-semibold shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md',

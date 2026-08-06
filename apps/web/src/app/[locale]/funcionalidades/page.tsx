@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { isLocale, DEFAULT_LOCALE, getDictionary, type Locale } from '@/lib/i18n';
+import { isLocale, DEFAULT_LOCALE, getDictionary, alternatesFor, type Locale } from '@/lib/i18n';
 import {
   Wand2,
   CalendarDays,
@@ -32,12 +32,20 @@ import { CtaBand } from '@/components/marketing/cta-band';
 import { getFeatureGroups, type Feature } from '@/data/features';
 import { cn } from '@/lib/cn';
 
-export const metadata: Metadata = {
-  title: 'Funciones de Nutricycle',
-  description:
-    'Rastreador del ciclo, recetas por fase, gráfico hormonal, plan semanal de comidas, lista de compras y una asesora con IA que conoce tu fase. Todo en Nutricycle.',
-  alternates: { canonical: '/funcionalidades' },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  const t = getDictionary(locale);
+  return {
+    title: t.meta.funcionalidades.title,
+    description: t.meta.funcionalidades.description,
+    alternates: { canonical: '/funcionalidades', languages: alternatesFor('/funcionalidades') },
+  };
+}
 
 const ICONS: Record<string, LucideIcon> = {
   Wand2,
@@ -142,7 +150,7 @@ export default async function FuncionalidadesPage({
                   delay={i * 90}
                   className="h-full"
                 >
-                  <FeatureCard feature={feature} />
+                  <FeatureCard feature={feature} premiumNote={t.content.premiumNote} />
                 </Reveal>
               ))}
             </ul>
@@ -150,12 +158,12 @@ export default async function FuncionalidadesPage({
         </Section>
       ))}
 
-      <CtaBand source="funcionalidades" />
+      <CtaBand source="funcionalidades" locale={locale} />
     </>
   );
 }
 
-function FeatureCard({ feature }: { feature: Feature }) {
+function FeatureCard({ feature, premiumNote }: { feature: Feature; premiumNote: string }) {
   const Icon = ICONS[feature.icon];
 
   return (
@@ -189,7 +197,7 @@ function FeatureCard({ feature }: { feature: Feature }) {
 
       {feature.premium && (
         <p className="mt-5 text-caption text-muted">
-          Incluido en el Plan Hormonal, desde la app.
+          {premiumNote}
         </p>
       )}
     </article>

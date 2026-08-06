@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { isLocale, DEFAULT_LOCALE, getDictionary, type Locale } from '@/lib/i18n';
+import { isLocale, DEFAULT_LOCALE, getDictionary, alternatesFor, type Locale, localizePath } from '@/lib/i18n';
 import { PageHero } from '@/components/layout/page-hero';
 import { Section } from '@/components/layout/section';
 import { SectionTexture } from '@/components/layout/section-texture';
@@ -9,12 +9,20 @@ import { CtaBand } from '@/components/marketing/cta-band';
 import { EmptyState, RecipeCard, PhaseFilter } from '@/components/content/content-pieces';
 import { getRecipes } from '@/lib/content';
 
-export const metadata: Metadata = {
-  title: 'Recetas por fase del ciclo',
-  description:
-    'Recetas organizadas por fase del ciclo menstrual: menstrual, folicular, ovulatoria y lútea. Qué cocinar según lo que tu cuerpo necesita esta semana.',
-  alternates: { canonical: '/recetas' },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  const t = getDictionary(locale);
+  return {
+    title: t.meta.recetas.title,
+    description: t.meta.recetas.description,
+    alternates: { canonical: '/recetas', languages: alternatesFor('/recetas') },
+  };
+}
 
 export default async function RecetasPage({
   params,
@@ -24,7 +32,7 @@ export default async function RecetasPage({
   const { locale: rawLocale } = await params;
   const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
   const t = getDictionary(locale);
-  const recipes = getRecipes();
+  const recipes = getRecipes(locale);
 
   return (
     <>
@@ -37,7 +45,7 @@ export default async function RecetasPage({
         focal="center 45%"
         veil={0.68}
       >
-        <PhaseFilter />
+        <PhaseFilter locale={locale} />
       </PageHero>
 
       <Section surface="raised">
@@ -47,8 +55,8 @@ export default async function RecetasPage({
             <Reveal>
               <EmptyState
                 title={t.pages.recetas.emptyTitle}
-                body="Estamos preparando la selección abierta. Mientras tanto, la biblioteca completa está en la app."
-                action={{ href: '/funcionalidades', label: 'Ver qué incluye la app' }}
+                body={t.content.recipesEmptyBody}
+                action={{ href: localizePath('/funcionalidades', locale), label: t.content.recipesEmptyAction }}
               />
             </Reveal>
           ) : (
@@ -63,7 +71,7 @@ export default async function RecetasPage({
         </Container>
       </Section>
 
-      <CtaBand source="recetas" />
+      <CtaBand source="recetas" locale={locale} />
     </>
   );
 }

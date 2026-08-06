@@ -1,4 +1,4 @@
-import type { PhaseSlug } from '@nutricycle/shared';
+import type { Locale, PhaseSlug } from '@nutricycle/shared';
 
 /**
  * The content interface every page imports from.
@@ -10,6 +10,31 @@ import type { PhaseSlug } from '@nutricycle/shared';
  */
 
 export type MealType = 'desayuno' | 'almuerzo' | 'snack' | 'cena';
+
+/**
+ * English overlay for a piece of content.
+ *
+ * Client content arrives in Spanish. Rather than duplicate whole files per
+ * locale — which drifts the moment one side is edited — each item carries an
+ * optional `en` block with only the translatable fields, and the loader
+ * merges it when the locale is English. A missing overlay falls back to
+ * Spanish, so a new recipe is publishable before it is translated.
+ *
+ * ⚠️ The English text is a translation of the client's Spanish, made here
+ * and not reviewed by them. It should be read back before launch — it is
+ * their culinary voice, not ours.
+ */
+export interface RecipeEn {
+  title: string;
+  excerpt: string;
+  intro: string;
+  ingredients: string[];
+  steps: { title: string; body: string }[];
+  tips: string[];
+  benefits: string;
+  pairings: string[];
+  variations: string[];
+}
 
 export interface Recipe {
   slug: string;
@@ -30,6 +55,8 @@ export interface Recipe {
   publishedToWeb: boolean;
   /** Provenance, so migrated content is distinguishable from new */
   source?: string;
+  /** English overlay; absent means "not translated yet, show Spanish". */
+  en?: RecipeEn;
 }
 
 export interface Article {
@@ -57,6 +84,7 @@ export interface Video {
   publishedToWeb: boolean;
   /** Provenance, so client media is distinguishable from anything new */
   source?: string;
+  en?: { title: string; excerpt: string };
 }
 
 export {

@@ -3,7 +3,7 @@ import { Section } from '@/components/layout/section';
 import { Container } from '@/components/layout/container';
 import { Eyebrow } from '@/components/ui/eyebrow';
 import { Reveal } from '@/components/motion/reveal';
-import { PROBLEMS } from '@/data/home';
+import { getProblems } from '@/data/home';
 import { getDictionary, type Locale } from '@/lib/i18n';
 
 const ICONS = { HelpCircle, Salad, BellRing };
@@ -22,7 +22,7 @@ export function ProblemSection({ locale }: { locale: Locale }) {
         </Reveal>
 
         <ul className="mt-14 grid gap-7 md:grid-cols-3">
-          {PROBLEMS.map((problem, i) => {
+          {getProblems(locale).map((problem, i) => {
             const Icon = ICONS[problem.icon];
             return (
               <Reveal as="li" key={problem.pain} delay={i * 110}>

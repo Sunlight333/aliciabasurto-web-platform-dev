@@ -27,6 +27,14 @@ export const en: Dictionary = {
       accent: 'to your body',
       titleAfter: '',
       lead: 'Three steps. The app works out the rest for you, every day.',
+      stepLabel: 'Step',
+      cta: 'Learn the method',
+    },
+    phases: {
+      eyebrow: 'The 4 phases',
+      title: 'A different plan for every',
+      accent: 'moment of your cycle',
+      cta: 'Explore the phases',
     },
     features: {
       eyebrow: 'What is included',
@@ -51,6 +59,9 @@ export const en: Dictionary = {
       titleBefore: 'Alicia Basurto:',
       accent: 'Cyclical Nutrition',
       quote: 'The right food at the right moment.',
+      body1: 'For years my body was a spiral of acne, fatigue and imbalances that affected my quality of life.',
+      body2: 'After six years reversing my own symptoms, I consolidated a method built on food as medicine. Today my mission is to teach other women to sync their habits with the intelligence of their cycle.',
+      cta: 'Meet me',
       pillars: {
         medicine: {
           title: 'Food as medicine',
@@ -170,6 +181,260 @@ export const en: Dictionary = {
     pendingBody: 'price, duration, start dates and a payment link for each programme. The brochure supplied does not include them, so enrolment runs by email for now — none of it is invented on the page.',
   },
 
+  membership: {
+    planEyebrow: 'Hormonal Plan',
+    planTitle: 'Two ways to',
+    planAccent: 'subscribe',
+    priceNote: 'Reference prices in US dollars. Your local store shows the final amount in your currency before you confirm.',
+    compareEyebrow: 'Comparison',
+    compareTitle: 'What each',
+    compareAccent: 'plan includes',
+    tableCaption: 'Feature comparison between the free plan and the Hormonal Plan',
+    colFeature: 'Feature',
+    colFree: 'Free',
+    colPremium: 'Hormonal Plan',
+    billingEyebrow: 'Billing',
+    billingTitle: 'Handled',
+    billingAccent: 'by your store',
+    faqLink: 'See subscription questions',
+  },
+
+  about: {
+    storyEyebrow: 'My story',
+    storyTitle: 'I started',
+    storyAccent: 'out of necessity',
+    story: [
+      'For years my body was a spiral of acne, fatigue and imbalances that affected my quality of life. I tried what almost everyone tries: stricter diets, more discipline, more guilt when it did not work.',
+      'What I had not understood is that I was eating the same way all four weeks of the month, while my body changed completely from one to the next. It was not a lack of discipline. It was a lack of context.',
+      'After six years reversing my own symptoms, I consolidated a method built on food as medicine — adjusted to each phase of the cycle, with no restrictions and no counting calories.',
+      'Today my mission is that other women do not take six years to discover the same thing. Nutricycle is that method, ordered and automated, so you do not have to keep count yourself.',
+    ],
+    credentialsEyebrow: 'Background',
+    credentialsTitle: 'Where the method',
+    credentialsAccent: 'comes from',
+    credentials: [
+      'Six years applying and adjusting the method on my own cycle before teaching it.',
+      'Working with women who have PMS, PCOS, hormonal acne, fatigue and irregular cycles.',
+      'More than 40 recipes developed and classified by phase of the cycle.',
+    ],
+    pendingLabel: 'Pending from the client:',
+    pendingBody: 'qualifications, certifications and years of professional practice. This list only records what is verifiable today — nothing here is invented.',
+    methodEyebrow: 'The method',
+    methodTitle: 'Three things I',
+    methodAccent: 'do not negotiate',
+    methodCta: 'How the app applies it',
+    pillars: {
+      medicine: {
+        title: 'Food as medicine',
+        body: 'Every food chosen for what it does to your hormones, not for its calories.',
+      },
+      synced: {
+        title: 'Synced to your cycle',
+        body: 'What your body needs changes every week. So does your plan.',
+      },
+      noDiets: {
+        title: 'No restrictive diets',
+        body: 'No counting calories, no forbidding yourself food. You have already tried that road.',
+      },
+    },
+  },
+
+  method: {
+    stepsEyebrow: 'Five steps',
+    stepsTitle: 'What happens',
+    stepsAccent: 'from the moment you open it',
+    whyEyebrow: 'Why it works',
+    whyTitle: 'Your body is not the same',
+    whyAccent: 'every week',
+    whyLead: 'Your hormones rise and fall in a pattern that repeats every month. Eating against that pattern costs you double; eating with it, half.',
+    phasesCta: 'See the 4 phases in detail',
+    originEyebrow: 'The method',
+    originTitle: 'Six years of',
+    originAccent: 'testing it herself',
+    originBody1: 'Nutricycle did not come out of a spreadsheet. It came out of six years in which Alicia reversed her own symptoms — acne, fatigue, irregular cycles — using food as medicine.',
+    originBody2: 'The app is that method, ordered and automated, so you do not have to keep count yourself.',
+    originCta: 'Meet Alicia',
+  },
+
+  cycle: {
+    insideTitle: 'What happens inside',
+    feelsTitle: 'How it usually feels',
+    foodEyebrow: 'Food',
+    foodTitle: 'What supports',
+    foodAccent: 'your body right now',
+    recipesCta: 'See recipes for this phase',
+    movementTitle: 'Movement',
+    tipTitle: 'One practical note',
+    noticeBefore: 'General information, not a diagnosis.',
+    noticeLink: 'Read the medical notice',
+    noticeAfter: 'before making significant changes to how you eat.',
+    otherPhases: 'Other phases',
+    prevPhase: 'Previous phase',
+    nextPhase: 'Next phase',
+    allPhases: 'See all four phases',
+    mapEyebrow: 'The map',
+    mapTitle: 'A full cycle,',
+    mapAccent: 'start to finish',
+    detailCtaBefore: 'See the',
+    detailCtaAfter: ' phase in detail',
+    rangeNote: 'The day ranges are based on a 28-day cycle. Yours can run from 21 to 35 days and still be normal — the app fits the phases to your actual length.',
+    disclaimerTitle: 'This is information, not a diagnosis',
+    disclaimerBody: 'What you read here describes general tendencies of the menstrual cycle. It does not replace advice from a health professional, and there are situations — pregnancy, PCOS, endometriosis, hormonal medication — where it is worth checking before changing how you eat.',
+    disclaimerLink: 'Read the full medical notice',
+    phaseEyebrow: 'Phase',
+    detailCta: 'See the phase in detail',
+  },
+
+  content: {
+    mealType: { desayuno: 'breakfast', almuerzo: 'lunch', snack: 'snack', cena: 'dinner' },
+    premiumNote: 'Included in the Hormonal Plan, from the app.',
+    tips: 'Tips',
+    recipesEmptyBody: 'We are putting the open selection together. In the meantime, the full library is in the app.',
+    recipesEmptyAction: 'See what the app includes',
+    recipesPhaseEmptyTitleBefore: 'No recipes yet for the',
+    recipesPhaseEmptyBody: 'We are publishing the selection phase by phase. The full library is available in the app.',
+    videosEmptyBody: 'We are uploading the video recipes. In the meantime, the full library is in the app.',
+    articlesEmptyBody: 'In the meantime, the guide to the four phases covers the essentials: what happens in your body each week and what to eat in each one.',
+    articlesEmptyAction: 'See the 4 phases',
+    recipeEyebrow: 'Recipe',
+    preparation: 'Method',
+    whyPhase: 'Why it suits this phase',
+    toPairWith: 'To serve alongside',
+    variations: 'Variations',
+    moreFromPhaseBefore: 'More from the',
+    alsoUseful: 'You might also like',
+    nutritionNotice: 'General nutrition information, not medical advice.',
+    nutritionNoticeLink: 'Read the medical notice',
+    nutritionNoticeAfter: 'before making significant changes to how you eat.',
+    videoNotice: 'No voiceover: watch the hands and follow the steps. General nutrition information, not medical advice.',
+    keepWatching: 'Keep watching',
+    minutes: 'min',
+    servings: 'servings',
+  },
+
+  faq: {
+    sectionLabel: 'Section',
+    stillStuckTitle: 'Did not find your answer?',
+    stillStuckBody: 'Write to us and we will reply by email.',
+    stillStuckCta: 'Go to contact',
+  },
+
+  contact: {
+    reasons: {
+      support: {
+        title: 'App support',
+        body: 'Something is not working, you cannot get in, or the app is behaving oddly.',
+        subject: 'Nutricycle support',
+      },
+      privacy: {
+        title: 'Privacy and data',
+        body: 'Access your data, correct it, or delete your account completely.',
+        subject: 'Request about my data',
+      },
+      billing: {
+        title: 'Subscription and payments',
+        body: 'Questions about the Hormonal Plan, restoring a purchase or cancelling.',
+        subject: 'Question about my subscription',
+      },
+    },
+    replyNoteBefore: 'We reply on working days. If your question is about the subscription, check the',
+    replyNoteLink: 'frequently asked questions',
+    replyNoteAfter: 'first — it is usually answered there.',
+    writeTo: 'Write to',
+  },
+
+  download: {
+    points: [
+      'A daily plan for the phase you are in',
+      'video recipes with their hormonal benefits',
+      'An AI coach that knows your cycle',
+    ],
+    badge: 'Free · iOS and Android',
+    lead: 'Your cycle, your guide. Recipes, key foods and hormonal education for every phase — no diets, no restrictions.',
+    note: 'Free download · Hormonal Plan from the app',
+  },
+
+  links: {
+    eyebrow: 'Cyclical nutrition',
+    titleBefore: 'Eat with your cycle,',
+    titleAccent: 'feel like yourself again',
+    items: {
+      recipes: { label: 'Recipes by cycle phase', note: 'What to eat this week' },
+      cycle: { label: 'The 4 phases of your cycle', note: 'What happens in your body' },
+      features: { label: 'What the app does', note: 'All the features' },
+      courses: { label: 'Courses with Alicia', note: 'Learn the full method' },
+      blog: { label: 'Hormonal education', note: 'Articles and guides' },
+      about: { label: 'About Alicia', note: 'The method behind Nutricycle' },
+    },
+  },
+
+  legal: {
+    eyebrow: 'Legal',
+    updated: 'Last updated',
+    index: 'Index',
+    contents: 'Contents',
+    spanishOnly: 'This document is available in Spanish only. The Spanish version is the binding one — an English translation is pending from the client’s counsel and has deliberately not been machine-translated.',
+  },
+
+  meta: {
+    home: {
+      title: 'Nutricycle — Eat with your cycle, feel like yourself again',
+      description: 'Nutricycle adapts your food, recipes and routines to each phase of your menstrual cycle. Recipes by phase, a hormone chart and an AI coach. Free on iOS and Android.',
+    },
+    blog: {
+      title: 'Hormonal education — articles',
+      description: 'Articles on the menstrual cycle, hormones and cyclical nutrition. What happens in each phase and how to support it with food.',
+    },
+    ciclo: {
+      title: 'The 4 phases of your menstrual cycle',
+      description: 'Menstrual, follicular, ovulatory and luteal: what happens to your hormones in each phase, how it usually feels and which foods suit your body best.',
+    },
+    comoFunciona: {
+      title: 'How Nutricycle works',
+      description: 'Five steps: create your account, log your cycle, get your daily plan, record how you feel and watch your patterns over the months.',
+    },
+    contacto: {
+      title: 'Contact — Nutricycle',
+      description: 'Write to hola@aliciabasurto.com. App support, privacy and data deletion, and questions about the subscription.',
+    },
+    cursos: {
+      title: 'Courses — Cyclical Nutrition with Alicia Basurto',
+      description: 'Two programmes built on the method behind the app: Cyclical Nutrition from scratch, with a weekly live session, and a PCOS mini course.',
+    },
+    descargar: {
+      title: 'Download Nutricycle',
+      description: 'Download Nutricycle free on iOS and Android. Recipes and key foods for every phase of your cycle.',
+    },
+    enlaces: {
+      title: 'Links — Nutricycle',
+      description: 'Every Nutricycle and Alicia Basurto link in one place: the app, recipes by phase, hormonal education and social profiles.',
+    },
+    faq: {
+      title: 'Frequently asked questions — Nutricycle',
+      description: 'Is it free? Does it work with irregular cycles? Who sees my health data? Answers about the app, privacy, the subscription and support.',
+    },
+    funcionalidades: {
+      title: 'Nutricycle features',
+      description: 'Cycle tracker, recipes by phase, hormone chart, weekly meal plan, shopping list and an AI coach that knows your phase. All in Nutricycle.',
+    },
+    membresia: {
+      title: 'Membership and pricing — Nutricycle',
+      description: 'Nutricycle is free to start. The Hormonal Plan unlocks the AI coach without limits, the cycle predictor and unlimited saved recipes.',
+    },
+    recetas: {
+      title: 'Recipes by cycle phase',
+      description: 'Recipes organised by phase of the menstrual cycle: menstrual, follicular, ovulatory and luteal. What to cook for what your body needs this week.',
+    },
+    sobre: {
+      title: 'About Alicia Basurto — Cyclical Nutrition',
+      description: 'Hormonal nutrition health coach. After six years reversing her own symptoms, Alicia consolidated a method built on food as medicine.',
+    },
+    videos: {
+      title: 'Video recipes — Nutricycle',
+      description: 'Ten video recipes of 6 to 25 seconds: overhead camera, hands at work and the finished plate. No voiceover, no filler.',
+    },
+  },
+
   nav: {
     method: 'Method',
     cycle: 'Your cycle',
@@ -255,6 +520,8 @@ export const en: Dictionary = {
   },
 
   recipes: {
+    seeAll: 'All recipes',
+    understandPhase: 'Understand the',
     eyebrow: 'Recipes',
     title: 'Cook for',
     accent: 'the phase you are in',

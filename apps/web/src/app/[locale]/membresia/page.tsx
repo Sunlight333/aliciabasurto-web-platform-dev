@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { isLocale, DEFAULT_LOCALE, getDictionary, type Locale } from '@/lib/i18n';
+import { isLocale, DEFAULT_LOCALE, getDictionary, alternatesFor, type Locale } from '@/lib/i18n';
 import { Check, Minus, Crown, Sparkles, Store, ArrowRight } from 'lucide-react';
 import { PageHero } from '@/components/layout/page-hero';
 import { Section } from '@/components/layout/section';
@@ -9,14 +9,26 @@ import { Eyebrow } from '@/components/ui/eyebrow';
 import { Reveal } from '@/components/motion/reveal';
 import { CtaBand } from '@/components/marketing/cta-band';
 import { StoreButtons } from '@/components/marketing/store-buttons';
+import { getPlans, getComparison, getBillingFacts } from '@/data/membership';
+import { localizePath } from '@/lib/i18n';
 import { cn } from '@/lib/cn';
 
-export const metadata: Metadata = {
-  title: 'Membresía y precios — Nutricycle',
-  description:
-    'Nutricycle es gratis para empezar. El Plan Hormonal desbloquea la asesora con IA sin límite, el predictor de ciclo y recetas guardadas ilimitadas.',
-  alternates: { canonical: '/membresia' },
-};
+const BILLING_ICONS = { Store, Sparkles, Check } as const;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  const t = getDictionary(locale);
+  return {
+    title: t.meta.membresia.title,
+    description: t.meta.membresia.description,
+    alternates: { canonical: '/membresia', languages: alternatesFor('/membresia') },
+  };
+}
 
 /**
  * Source: app-content-strategy.md § "Page 4: Membership".
@@ -26,42 +38,6 @@ export const metadata: Metadata = {
  * the stores localise currency per region — so these are shown as
  * reference, with the store named as the authority.
  */
-const PRICING = [
-  {
-    id: 'mensual',
-    name: 'Mensual',
-    price: '$14.99',
-    unit: '/ mes',
-    note: 'Cancelás cuando quieras',
-    featured: false,
-  },
-  {
-    id: 'anual',
-    name: 'Anual',
-    price: '$84.99',
-    unit: '/ año',
-    note: 'Equivale a $7.08 por mes',
-    badge: 'Ahorrás 53%',
-    featured: true,
-  },
-];
-
-const COMPARISON: { feature: string; free: string | true; premium: string | true }[] = [
-  { feature: 'Seguimiento del ciclo y calendario', free: true, premium: true },
-  { feature: 'Recetas por fase', free: true, premium: true },
-  { feature: 'Registro diario (síntomas, ánimo, energía)', free: true, premium: true },
-  { feature: 'Plan semanal de comidas', free: true, premium: true },
-  { feature: 'Lista de compras', free: true, premium: true },
-  { feature: 'Guía de alimentos clave', free: true, premium: true },
-  { feature: 'Artículos y videos', free: true, premium: true },
-  { feature: 'Registro de hidratación', free: true, premium: true },
-  { feature: 'Actividades de bienestar', free: true, premium: true },
-  { feature: 'Asesora Nutricycle AI', free: 'Limitada', premium: 'Sin límite' },
-  { feature: 'Predictor de ciclo con IA', free: '—', premium: 'Incluido' },
-  { feature: 'Recetas guardadas', free: 'Limitadas', premium: 'Sin límite' },
-  { feature: 'Soporte prioritario', free: '—', premium: 'Incluido' },
-];
-
 export default async function MembresiaPage({
   params,
 }: {
@@ -81,21 +57,21 @@ export default async function MembresiaPage({
         focal="center 50%"
         veil={0.5}
       >
-        <StoreButtons source="membresia-hero" className="justify-center" />
+        <StoreButtons source="membresia-hero" className="justify-center" locale={locale} />
       </PageHero>
 
       {/* Pricing */}
       <Section surface="raised">
         <Container>
           <Reveal className="mx-auto max-w-2xl text-center">
-            <Eyebrow>Plan Hormonal</Eyebrow>
+            <Eyebrow>{t.membership.planEyebrow}</Eyebrow>
             <h2 className="mt-5 text-h2 text-ink">
-              Dos formas de <span className="text-accent">suscribirte</span>
+              {t.membership.planTitle} <span className="text-accent">{t.membership.planAccent}</span>
             </h2>
           </Reveal>
 
           <ul className="mx-auto mt-14 grid max-w-3xl gap-7 sm:grid-cols-2">
-            {PRICING.map((plan, i) => (
+            {getPlans(locale).map((plan, i) => (
               <Reveal as="li" key={plan.id} delay={i * 110} className="h-full">
                 <article
                   className={cn(
@@ -126,8 +102,7 @@ export default async function MembresiaPage({
 
           <Reveal delay={280}>
             <p className="mx-auto mt-10 max-w-xl text-center text-caption text-muted">
-              Precios de referencia en dólares. La tienda de tu país muestra el
-              importe final en tu moneda antes de confirmar.
+              {t.membership.priceNote}
             </p>
           </Reveal>
         </Container>
@@ -138,9 +113,9 @@ export default async function MembresiaPage({
         <SectionTexture src="/images/textures/papel.avif" />
         <Container className="relative">
           <Reveal className="mx-auto max-w-2xl text-center">
-            <Eyebrow>Comparación</Eyebrow>
+            <Eyebrow>{t.membership.compareEyebrow}</Eyebrow>
             <h2 className="mt-5 text-h2 text-ink">
-              Qué incluye <span className="text-accent">cada plan</span>
+              {t.membership.compareTitle} <span className="text-accent">{t.membership.compareAccent}</span>
             </h2>
           </Reveal>
 
@@ -148,7 +123,7 @@ export default async function MembresiaPage({
             <div className="overflow-x-auto">
               <table className="w-full min-w-[34rem] border-collapse overflow-hidden rounded-card border border-hairline bg-white shadow-sm">
                 <caption className="sr-only">
-                  Comparación de funciones entre el plan gratuito y el Plan Hormonal
+                  {t.membership.tableCaption}
                 </caption>
                 <thead>
                   <tr className="border-b border-hairline bg-surface-raised">
@@ -156,24 +131,24 @@ export default async function MembresiaPage({
                       scope="col"
                       className="p-5 text-left font-sans text-caption font-bold tracking-[0.16em] text-accent-display uppercase"
                     >
-                      Función
+                      {t.membership.colFeature}
                     </th>
                     <th
                       scope="col"
                       className="w-32 p-5 text-center font-sans text-small font-semibold text-ink"
                     >
-                      Gratis
+                      {t.membership.colFree}
                     </th>
                     <th
                       scope="col"
                       className="w-40 bg-ovulation-soft p-5 text-center font-sans text-small font-semibold text-ovulation-ink"
                     >
-                      Plan Hormonal
+                      {t.membership.colPremium}
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {COMPARISON.map((row) => (
+                  {getComparison(locale).map((row) => (
                     <tr key={row.feature} className="border-b border-hairline last:border-0">
                       <th
                         scope="row"
@@ -196,37 +171,18 @@ export default async function MembresiaPage({
       <Section surface="lilac">
         <Container>
           <Reveal className="mx-auto max-w-2xl text-center">
-            <Eyebrow>Facturación</Eyebrow>
+            <Eyebrow>{t.membership.billingEyebrow}</Eyebrow>
             <h2 className="mt-5 text-h2 text-ink">
-              Se gestiona <span className="text-accent">desde tu tienda</span>
+              {t.membership.billingTitle} <span className="text-accent">{t.membership.billingAccent}</span>
             </h2>
           </Reveal>
 
           <ul className="mx-auto mt-14 grid max-w-4xl gap-7 md:grid-cols-3">
-            {[
-              {
-                icon: Store,
-                title: 'App Store o Google Play',
-                body: 'El cobro lo procesa la tienda de tu dispositivo, con sus condiciones y su moneda.',
-                tint: 'bg-luteal-soft text-luteal-ink',
-              },
-              {
-                icon: Sparkles,
-                title: 'Cancelás cuando quieras',
-                body: 'Desde los ajustes de tu cuenta en la tienda. Sigue activa hasta el final del período pagado.',
-                tint: 'bg-follicular-soft text-follicular-ink',
-              },
-              {
-                icon: Check,
-                title: 'Sin cargos ocultos',
-                body: 'Restaurar una compra anterior está disponible dentro de la app.',
-                tint: 'bg-menstrual-soft text-menstrual-ink',
-              },
-            ].map((c, i) => (
+            {getBillingFacts(locale).map((c, i) => (
               <Reveal as="li" key={c.title} delay={i * 100} className="h-full">
                 <article className="card card-hover h-full p-8">
                   <span className={`icon-chip ${c.tint}`}>
-                    <c.icon strokeWidth={1.9} className="h-9 w-9" />
+                    {(() => { const Icon = BILLING_ICONS[c.icon]; return <Icon strokeWidth={1.9} className="h-9 w-9" />; })()}
                   </span>
                   <h3 className="mt-6 text-h4 text-ink">{c.title}</h3>
                   <p className="mt-3 text-small text-muted">{c.body}</p>
@@ -237,10 +193,10 @@ export default async function MembresiaPage({
 
           <Reveal className="mt-12 text-center" delay={340}>
             <a
-              href="/faq"
+              href={localizePath('/faq', locale)}
               className="group inline-flex items-center gap-2.5 font-sans text-nav font-semibold text-action transition-colors hover:text-action-hover"
             >
-              Ver preguntas sobre la suscripción
+              {t.membership.faqLink}
               <ArrowRight
                 strokeWidth={2.2}
                 className="h-5.5 w-5.5 transition-transform duration-300 group-hover:translate-x-1.5"
@@ -250,7 +206,7 @@ export default async function MembresiaPage({
         </Container>
       </Section>
 
-      <CtaBand source="membresia" />
+      <CtaBand source="membresia" locale={locale} />
     </>
   );
 }

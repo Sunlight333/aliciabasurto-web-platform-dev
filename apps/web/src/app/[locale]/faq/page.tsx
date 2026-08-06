@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { isLocale, DEFAULT_LOCALE, getDictionary, type Locale } from '@/lib/i18n';
+import { isLocale, DEFAULT_LOCALE, getDictionary, localizePath, alternatesFor, type Locale } from '@/lib/i18n';
 import { Smartphone, ShieldCheck, CreditCard, Wrench, Mail } from 'lucide-react';
 import { SITE } from '@nutricycle/shared';
 import { PageHero } from '@/components/layout/page-hero';
@@ -12,12 +12,20 @@ import { CtaBand } from '@/components/marketing/cta-band';
 import { FaqAccordion, type QA } from '@/components/content/faq-accordion';
 import { getFaqGroups } from '@/data/faq';
 
-export const metadata: Metadata = {
-  title: 'Preguntas frecuentes — Nutricycle',
-  description:
-    '¿Es gratis? ¿Funciona con ciclos irregulares? ¿Quién ve mis datos de salud? Respuestas sobre la app, la privacidad, la suscripción y el soporte.',
-  alternates: { canonical: '/faq' },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  const t = getDictionary(locale);
+  return {
+    title: t.meta.faq.title,
+    description: t.meta.faq.description,
+    alternates: { canonical: '/faq', languages: alternatesFor('/faq') },
+  };
+}
 
 const ICONS = { Smartphone, ShieldCheck, CreditCard, Wrench };
 
@@ -96,7 +104,7 @@ export default async function FaqPage({
                     <Icon strokeWidth={1.9} className="h-9 w-9" />
                   </span>
                   <div>
-                    <Eyebrow>Sección {String(i + 1).padStart(2, '0')}</Eyebrow>
+                    <Eyebrow>{t.faq.sectionLabel} {String(i + 1).padStart(2, '0')}</Eyebrow>
                     <h2 className="mt-1.5 text-h2 text-ink">{group.title}</h2>
                   </div>
                 </div>
@@ -117,7 +125,7 @@ export default async function FaqPage({
               <span className="icon-chip mx-auto bg-luteal-soft text-luteal-ink">
                 <Mail strokeWidth={1.9} className="h-9 w-9" />
               </span>
-              <h2 className="mt-6 text-h3 text-ink">¿No encontraste tu respuesta?</h2>
+              <h2 className="mt-6 text-h3 text-ink">{t.faq.stillStuckTitle}</h2>
               <p className="mt-3 text-body text-muted">
                 Escribinos y te respondemos por correo.
               </p>
@@ -132,7 +140,7 @@ export default async function FaqPage({
         </Container>
       </Section>
 
-      <CtaBand source="faq" />
+      <CtaBand source="faq" locale={locale} />
     </>
   );
 }
