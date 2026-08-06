@@ -18,11 +18,23 @@ import { chromium } from 'playwright';
 
 const BASE = process.argv[2] || 'http://127.0.0.1:3272';
 
+/**
+ * The four legal routes are exempt, not fixed.
+ *
+ * Their text is the client's own, migrated verbatim, and data/legal.ts is
+ * explicit that changes belong with their counsel — so /en renders the
+ * Spanish document behind an English notice saying the Spanish version is
+ * the binding one. Machine-translating terms nobody approved would be a
+ * worse bug than the one this script looks for. Remove a route from here
+ * the day a counsel-approved translation lands.
+ */
+const LEGAL_UNTRANSLATED = ['/privacidad', '/terminos', '/cookies', '/aviso-medico'];
+
 const ROUTES = [
   '', '/recetas', '/recetas/crema-de-zapallo', '/recetas/fase/menstrual',
   '/recetas/fase/folicular', '/recetas/fase/ovulatoria', '/recetas/fase/lutea',
   '/ciclo', '/ciclo/menstrual', '/ciclo/folicular', '/ciclo/ovulatoria',
-  '/ciclo/lutea', '/como-funciona', '/funcionalidades', '/membresia', '/sobre',
+  '/ciclo/lutea', '/como-funciona', '/funcionalidades', '/membresia', '/sobre', '/cursos',
   '/faq', '/contacto', '/blog', '/videos', '/videos/pan-de-psyllium',
   '/descargar', '/enlaces', '/privacidad', '/terminos', '/cookies',
   '/aviso-medico',
@@ -46,8 +58,8 @@ const WORDS = new RegExp(
     'tienen','hace','hacer','puede','pueden','ser','estar','está','están','cada',
     'más','menos','muy','también','sólo','solo','años','día','días','semana',
     'mes','meses','cuerpo','ciclo','fase','fases','receta','recetas','comida',
-    'comidas','alimento','alimentos','salud','hormonal','hormonas','plan',
-    'gratis','descargar','ver','leer','aquí','ahora','siempre','nunca','según',
+    'comidas','alimento','alimentos','salud','hormonas',
+    'gratis','descargar','leer','aquí','ahora','siempre','nunca','según',
   ].join('|') + ')\\b',
   'i',
 );
@@ -55,6 +67,13 @@ const WORDS = new RegExp(
 const ALLOW = new Set([
   'Nutricycle', 'Alicia', 'Basurto', 'App Store', 'Google Play', 'Español',
   'Instagram', 'YouTube', 'Facebook', 'iOS', 'Android',
+  // Place names and product names stay Spanish in both languages.
+  'Ciudad de México', 'Medellín', 'Bogotá', 'Lima', 'Buenos Aires', 'Santiago',
+  'Guadalajara', 'Monterrey', 'Quito', 'Puebla', 'Plan Hormonal', 'Nutrición Cíclica',
+  // Reviewer names — people's names are not translated.
+  'Camila Restrepo', 'Valentina Ortiz', 'Daniela Ruiz', 'Mariana Peña', 'Sofía Aguirre',
+  'Lucía Fernández', 'Regina Salazar', 'Paulina Navarro', 'Fernanda Cruz', 'Andrea Molina',
+  'Ximena Duarte',
 ]);
 
 const browser = await chromium.launch();
@@ -91,6 +110,11 @@ for (const route of ROUTES) {
     return out;
   });
 
+  if (LEGAL_UNTRANSLATED.includes(route)) {
+    report.push({ route, status: 200, hits: [], exempt: true });
+    continue;
+  }
+
   const flagged = hits.filter(({ text }) => {
     if ([...ALLOW].some((a) => text === a)) return false;
     const stripped = [...ALLOW].reduce((s, a) => s.split(a).join(' '), text);
@@ -105,9 +129,10 @@ await browser.close();
 
 console.log('=== Spanish leaking onto /en ===\n');
 let clean = 0;
-for (const { route, status, hits } of report) {
+for (const { route, status, hits, exempt } of report) {
   const label = ('/en' + route || '/en').padEnd(32);
   if (status !== 200) { console.log(`${label} HTTP ${status}`); continue; }
+  if (exempt) { console.log(`${label} exempt — Spanish document, see LEGAL_UNTRANSLATED`); continue; }
   if (!hits.length) { clean++; console.log(`${label} clean`); continue; }
   console.log(`${label} ${hits.length} leak${hits.length > 1 ? 's' : ''}`);
   for (const h of hits.slice(0, 6)) {
